@@ -18,6 +18,8 @@ public class Customer implements Parcelable{
 
     private String telephone;
 
+    private boolean isView;
+
     public Customer(String identification, String name, String address, String contactPerson, String telephone) {
         this.identification = identification;
         this.name = name;
@@ -66,6 +68,13 @@ public class Customer implements Parcelable{
         this.telephone = telephone;
     }
 
+    public boolean isView() {
+        return isView;
+    }
+
+    public void setView(boolean view) {
+        isView = view;
+    }
 
     @Override
     public int describeContents() {

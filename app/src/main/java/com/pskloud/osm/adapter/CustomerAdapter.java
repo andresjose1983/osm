@@ -6,25 +6,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Customer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by andres on 08/06/16.
  */
-public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerHolder>{
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerHolder> implements Filterable {
 
     private List<Customer> customers;
+    private List<Customer> customersFilter;
 
     public CustomerAdapter(List<Customer> customers) {
         this.customers = customers;
+        this.customersFilter = new ArrayList<>(customers);
     }
 
-    public class CustomerHolder extends RecyclerView.ViewHolder{
+    public class CustomerHolder extends RecyclerView.ViewHolder {
 
         private TextView mTvName;
         private TextView mTvIdentification;
@@ -32,16 +37,21 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         public CustomerHolder(View itemView) {
             super(itemView);
-            mTvName = (TextView)itemView.findViewById(R.id.tv_name);
-            mTvIdentification = (TextView)itemView.findViewById(R.id.tv_identification);
+            mTvName = (TextView) itemView.findViewById(R.id.tv_name);
+            mTvIdentification = (TextView) itemView.findViewById(R.id.tv_identification);
             mVActions = itemView.findViewById(R.id.v_actions);
 
             itemView.setOnClickListener(v -> {
-                if (mVActions.getVisibility() == View.VISIBLE) {
-                    collapse();
+                Customer customer = customers.get(getAdapterPosition());
+                if (customer.isView()) {
+                    customer.setView(false);
+                    //collapse();
                 } else {
-                    expand();
+                    customer.setView(true);
+                    //expand();
                 }
+                customers.set(getAdapterPosition(), customer);
+                notifyItemChanged(getAdapterPosition());
             });
         }
 
@@ -84,7 +94,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 
                 ValueAnimator mAnimator = slideAnimator(mVActions.getHeight(), 0);
-                if(mAnimator != null){
+                if (mAnimator != null) {
                     mAnimator.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
@@ -110,7 +120,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 }
 
                 mAnimator.start();
-            }else {
+            } else {
                 mVActions.setVisibility(View.GONE);
             }
 
@@ -130,11 +140,65 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         Customer customer = customers.get(position);
         holder.mTvName.setText(customer.getName());
         holder.mTvIdentification.setText(customer.getIdentification());
-
+        if(customer.isView())
+            holder.expand();
+        else
+            holder.collapse();
     }
 
     @Override
     public int getItemCount() {
         return customers.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return new CustomerFilter(this, customersFilter);
+    }
+
+    private static class CustomerFilter extends Filter{
+
+        private List<Customer> filtersCustomers = new ArrayList<>();
+        final private List<Customer> customers;
+        final private CustomerAdapter customerAdapter;
+
+        public CustomerFilter(CustomerAdapter customerAdapter, List<Customer> customers) {
+            super();
+            this.customers = customers;
+            this.customerAdapter = customerAdapter;
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filtersCustomers.clear();
+            final FilterResults results = new FilterResults();
+
+            if (constraint.length() == 0) {
+                filtersCustomers.addAll(customers);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (final Customer customer : customers) {
+                    if (customer.getName().toLowerCase().contains(filterPattern) ||
+                            customer.getIdentification().toLowerCase().contains(filterPattern)) {
+                        filtersCustomers.add(customer);
+                    }
+                }
+            }
+            results.values = filtersCustomers;
+            results.count = filtersCustomers.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            customerAdapter.customers.clear();
+            customerAdapter.customers.addAll((ArrayList<Customer>) results.values);
+            customerAdapter.notifyDataSetChanged();
+        }
+
+
+    }
+
+
 }

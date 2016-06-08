@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">OSM</string>
+    <!-- Login -->
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_forget_password">Forgot password</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_field_required">This field is required</string>
+    <!-- End Login-->
+
+    <!--Main Map-->
+    <string name="title_activity_main">OSM</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_customers">Customers</string>
+    <string name="nav_order">Orders</string>
+    <string name="action_logout">Logout</string>
+    <string name="online">OnLine</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string-array name="companies">
+        <item>Company 1</item>
+        <item>Company 2</item>
+        <item>Company 3</item>
+    </string-array>
+    <!-- End Main Map-->
+
+</resources>

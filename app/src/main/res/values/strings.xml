@@ -28,4 +28,8 @@
     </string-array>
     <!-- End Main Map-->
 
+    <!-- Customers -->
+    <string name="title_activity_customers">Customers</string>
+    <!-- End customers-->
+
 </resources>

@@ -57,7 +57,11 @@ public class MainActivity extends DefaultActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()){
+            case R.id.nav_customers:
+                CustomersActivity.show(this);
+                break;
+        }
 
         mDrawer.closeDrawer(GravityCompat.START);
         return true;

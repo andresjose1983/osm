@@ -16,6 +16,11 @@ public abstract class DefaultActivity extends AppCompatActivity {
         setUp();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public abstract void init();
 
     public abstract void setUp();

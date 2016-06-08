@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:textColor="@color/colorPrimary"
-        android:text="@string/action_forget_password"
+        android:text="@string/action_forgot_password"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"

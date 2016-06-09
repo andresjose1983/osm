@@ -51,4 +51,8 @@
     </string-array>
     <!-- End customer -->
 
+    <!-- Products -->
+    <string name="title_activity_products">Products</string>
+    <!-- End products -->
+
 </resources>

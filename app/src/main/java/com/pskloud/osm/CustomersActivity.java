@@ -21,9 +21,9 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
 
     private FloatingActionButton mFabAdd;
     private RecyclerView mRvCustomers;
-    private CustomerAdapter customerAdapter;
-    private SearchView searchView;
-    List<Customer> customers = new ArrayList<>();
+    private CustomerAdapter mCustomerAdapter;
+    private SearchView mSearchView;
+    List<Customer> mCustomers = new ArrayList<>();
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, CustomersActivity.class));
@@ -38,13 +38,13 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_customers, menu);
+        getMenuInflater().inflate(R.menu.search, menu);
         // Associate searchable configuration with the SearchView
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setOnQueryTextListener(this);
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setOnQueryTextListener(this);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
@@ -57,15 +57,15 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     public void setUp() {
         for (int i = 0; i < 1000; i++) {
-            customers.add(new Customer(Integer.toOctalString(i), "Andres Mendez", "1", "1", "1"));
+            mCustomers.add(new Customer(Integer.toOctalString(i), "Andres Mendez", "1", "1", "1"));
         }
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRvCustomers.setLayoutManager(mLayoutManager);
         mRvCustomers.setItemAnimator(new DefaultItemAnimator());
 
-        customerAdapter = new CustomerAdapter(customers);
-        mRvCustomers.setAdapter(customerAdapter);
+        mCustomerAdapter = new CustomerAdapter(mCustomers);
+        mRvCustomers.setAdapter(mCustomerAdapter);
         mRvCustomers.setHasFixedSize(true);
 
         mFabAdd.setOnClickListener(view->goToCustomer(this, null));
@@ -85,7 +85,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     }
 
     private void filterCustomer(String query){
-        customerAdapter.getFilter().filter(query.toLowerCase());
+        mCustomerAdapter.getFilter().filter(query.toLowerCase());
     }
 
     public static void goToCustomer(final Context context, final Customer customer){

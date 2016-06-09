@@ -22,12 +22,12 @@ import java.util.List;
  */
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerHolder> implements Filterable {
 
-    private List<Customer> customers;
-    private List<Customer> customersFilter;
+    private List<Customer> mCustomers;
+    private List<Customer> mCustomersFilter;
 
     public CustomerAdapter(List<Customer> customers) {
-        this.customers = customers;
-        this.customersFilter = new ArrayList<>(customers);
+        this.mCustomers = customers;
+        mCustomersFilter = new ArrayList<>(customers);
     }
 
     public class CustomerHolder extends RecyclerView.ViewHolder {
@@ -45,7 +45,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             mIbEdit = itemView.findViewById(R.id.ib_edit);
 
             itemView.setOnClickListener(v -> {
-                Customer customer = customers.get(getAdapterPosition());
+                Customer customer = mCustomers.get(getAdapterPosition());
                 if (customer.isView()) {
                     customer.setView(false);
                     //collapse();
@@ -53,12 +53,12 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                     customer.setView(true);
                     //expand();
                 }
-                customers.set(getAdapterPosition(), customer);
+                mCustomers.set(getAdapterPosition(), customer);
                 notifyItemChanged(getAdapterPosition());
             });
 
             mIbEdit.setOnClickListener(view -> CustomersActivity.goToCustomer(
-                    itemView.getContext(), customers.get(getAdapterPosition())));
+                    itemView.getContext(), mCustomers.get(getAdapterPosition())));
         }
 
         private void expand() {
@@ -143,7 +143,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     @Override
     public void onBindViewHolder(CustomerHolder holder, int position) {
-        Customer customer = customers.get(position);
+        Customer customer = mCustomers.get(position);
         holder.mTvName.setText(customer.getName());
         holder.mTvIdentification.setText(customer.getIdentification());
         if(customer.isView())
@@ -154,12 +154,12 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     @Override
     public int getItemCount() {
-        return customers.size();
+        return mCustomers.size();
     }
 
     @Override
     public Filter getFilter() {
-        return new CustomerFilter(this, customersFilter);
+        return new CustomerFilter(this, mCustomersFilter);
     }
 
     private static class CustomerFilter extends Filter{
@@ -198,13 +198,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            customerAdapter.customers.clear();
-            customerAdapter.customers.addAll((ArrayList<Customer>) results.values);
+            customerAdapter.mCustomers.clear();
+            customerAdapter.mCustomers.addAll((ArrayList<Customer>) results.values);
             customerAdapter.notifyDataSetChanged();
         }
 
-
     }
-
-
 }

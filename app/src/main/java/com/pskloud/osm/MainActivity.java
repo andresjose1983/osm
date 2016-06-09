@@ -61,6 +61,9 @@ public class MainActivity extends DefaultActivity
             case R.id.nav_customers:
                 CustomersActivity.show(this);
                 break;
+            case R.id.nav_products:
+                ProductsActivity.show(this);
+                break;
         }
 
         mDrawer.closeDrawer(GravityCompat.START);

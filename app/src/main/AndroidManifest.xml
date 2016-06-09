@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pskloud.osm">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".OsmApplication"
         android:allowBackup="true"
@@ -39,6 +41,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pskloud.osm.CustomersActivity" />
+        </activity>
+        <activity
+            android:name=".ProductsActivity"
+            android:label="@string/title_activity_products"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pskloud.osm.MainActivity" />
         </activity>
     </application>
 

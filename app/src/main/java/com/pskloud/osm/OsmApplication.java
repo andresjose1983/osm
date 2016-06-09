@@ -7,15 +7,17 @@ import android.app.Application;
  */
 public class OsmApplication extends Application{
 
-    private static OsmApplication ourInstance = new OsmApplication();
+    private static OsmApplication sInstance;
+
 
     public static OsmApplication getInstance() {
-        return ourInstance;
+        return sInstance;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        sInstance = this;
     }
 
 }

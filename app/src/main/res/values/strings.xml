@@ -33,4 +33,21 @@
     <string name="search_title">Search customer</string>
     <!-- End customers-->
 
+    <!-- Customer -->
+    <string name="title_activity_customer">Customer</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_contact_person">Contact Person</string>
+    <string name="prompt_telephone_number">Telephone number</string>
+    <string name="prompt_address">Address</string>
+    <string name="prompt_identification">Identification</string>
+    <string name="action_done">Donet</string>
+    <string-array name="identifications">
+        <item>V</item>
+        <item>J</item>
+        <item>P</item>
+        <item>G</item>
+        <item>E</item>
+    </string-array>
+    <!-- End customer -->
+
 </resources>

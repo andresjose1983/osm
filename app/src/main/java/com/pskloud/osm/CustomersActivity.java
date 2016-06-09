@@ -38,7 +38,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.customers, menu);
+        getMenuInflater().inflate(R.menu.activity_customers, menu);
         // Associate searchable configuration with the SearchView
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setOnQueryTextListener(this);
@@ -68,6 +68,8 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
         mRvCustomers.setAdapter(customerAdapter);
         mRvCustomers.setHasFixedSize(true);
 
+        mFabAdd.setOnClickListener(view->goToCustomer(this, null));
+
     }
 
     @Override
@@ -84,5 +86,9 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
 
     private void filterCustomer(String query){
         customerAdapter.getFilter().filter(query.toLowerCase());
+    }
+
+    public static void goToCustomer(final Context context, final Customer customer){
+        CustomerActivity.show(context, customer);
     }
 }

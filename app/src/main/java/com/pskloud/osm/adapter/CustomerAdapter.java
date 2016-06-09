@@ -10,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.pskloud.osm.CustomersActivity;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Customer;
 
@@ -33,6 +34,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         private TextView mTvName;
         private TextView mTvIdentification;
+        private View mIbEdit;
         private View mVActions;
 
         public CustomerHolder(View itemView) {
@@ -40,6 +42,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             mTvName = (TextView) itemView.findViewById(R.id.tv_name);
             mTvIdentification = (TextView) itemView.findViewById(R.id.tv_identification);
             mVActions = itemView.findViewById(R.id.v_actions);
+            mIbEdit = itemView.findViewById(R.id.ib_edit);
 
             itemView.setOnClickListener(v -> {
                 Customer customer = customers.get(getAdapterPosition());
@@ -53,6 +56,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 customers.set(getAdapterPosition(), customer);
                 notifyItemChanged(getAdapterPosition());
             });
+
+            mIbEdit.setOnClickListener(view -> CustomersActivity.goToCustomer(
+                    itemView.getContext(), customers.get(getAdapterPosition())));
         }
 
         private void expand() {

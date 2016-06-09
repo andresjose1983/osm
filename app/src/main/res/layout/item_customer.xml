@@ -75,7 +75,7 @@
                 android:drawablePadding="@dimen/small"
                 android:foreground="?android:selectableItemBackground"
                 android:padding="@dimen/small"
-                android:text="@string/nav_order"
+                android:text="@string/nav_orders"
                 android:layout_marginTop="@dimen/smallest"
                 android:gravity="center_vertical" />
 

@@ -16,7 +16,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_customers">Customers</string>
-    <string name="nav_order">Orders</string>
+    <string name="nav_orders">Orders</string>
+    <string name="nav_products">Products</string>
     <string name="action_logout">Logout</string>
     <string name="online">OnLine</string>
     <string name="yes">Yes</string>

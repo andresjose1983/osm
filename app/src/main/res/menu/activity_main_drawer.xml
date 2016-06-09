@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_feature" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_customers"
             android:icon="@mipmap/ic_account_box"
             android:title="@string/nav_customers" />
+
+        <item
+            android:id="@+id/nav_products"
+            android:icon="@mipmap/ic_list"
+            android:title="@string/nav_products" />
+
+    </group>
+
+    <group android:id="@+id/group_transactions" android:checkableBehavior="single">
         <item
             android:id="@+id/nav_order"
             android:icon="@mipmap/ic_assignment"
-            android:title="@string/nav_order" />
-
+            android:title="@string/nav_orders" />
     </group>
 </menu>

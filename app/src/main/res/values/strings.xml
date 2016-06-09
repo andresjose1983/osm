@@ -31,7 +31,7 @@
 
     <!-- Customers -->
     <string name="title_activity_customers">Customers</string>
-    <string name="search_title">Search customer</string>
+    <string name="search_title">Search...</string>
     <!-- End customers-->
 
     <!-- Customer -->

@@ -12,6 +12,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 
 import com.pskloud.osm.adapter.CustomerAdapter;
+import com.pskloud.osm.fragment.DialogOrderFragment;
 import com.pskloud.osm.model.Customer;
 
 import java.util.ArrayList;
@@ -23,6 +24,9 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     private RecyclerView mRvCustomers;
     private CustomerAdapter mCustomerAdapter;
     private SearchView mSearchView;
+    private DialogOrderFragment bsdFragment;
+    public static final String ARG_CUSTOMER = "CUSTOMER";
+
     List<Customer> mCustomers = new ArrayList<>();
 
     public static void show(Context context) {
@@ -64,11 +68,13 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
         mRvCustomers.setLayoutManager(mLayoutManager);
         mRvCustomers.setItemAnimator(new DefaultItemAnimator());
 
-        mCustomerAdapter = new CustomerAdapter(mCustomers);
+        mCustomerAdapter = new CustomerAdapter(this, mCustomers);
         mRvCustomers.setAdapter(mCustomerAdapter);
         mRvCustomers.setHasFixedSize(true);
 
         mFabAdd.setOnClickListener(view->goToCustomer(this, null));
+
+        bsdFragment = DialogOrderFragment.newInstance();
 
     }
 
@@ -90,5 +96,12 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
 
     public static void goToCustomer(final Context context, final Customer customer){
         CustomerActivity.show(context, customer);
+    }
+
+    public void showOrder(final Customer customer){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARG_CUSTOMER, customer);
+        bsdFragment.setArguments(bundle);
+        bsdFragment.show(getSupportFragmentManager(), DialogOrderFragment.BOTTON_SHEET_NAME);
     }
 }

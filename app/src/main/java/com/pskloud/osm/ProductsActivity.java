@@ -12,8 +12,8 @@ import android.view.Menu;
 
 import com.pskloud.osm.adapter.ProductAdapter;
 import com.pskloud.osm.model.Product;
+import com.pskloud.osm.util.Functions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsActivity extends DefaultActivity implements SearchView.OnQueryTextListener {
@@ -21,7 +21,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     private SearchView mSearchView;
     private RecyclerView mRvProducts;
     private ProductAdapter mProductAdapter;
-    private List<Product> mProducts = new ArrayList<>();
+    private List<Product> mProducts = Functions.getProduct();
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, ProductsActivity.class));
@@ -35,20 +35,6 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
     @Override
     public void setUp() {
-        mProducts.add(new Product("70240216", "1K TEMPSISTOR 1% P/CS-800S", 4400, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("8A-14X ", "8A-14X CABLE DIM-DIM 8 CONTACTOS", 3400, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("Z-ML024-036", "ACCESORIOS DE LUZ MYSTIC LED", 4500, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("TAC-MP3M", "ADAPTADOR ENTRADA USB-MP3 PARA CONSOLAS", 21500, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("PN-USB-BLUE", "ADAPTADOR USB BLUETOOTH PARA CORNETAS", 1850, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("222012", "AGARRADERA DE GOMA NEGRA TIRADOR", 1050, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRvProducts.setLayoutManager(mLayoutManager);
@@ -61,7 +47,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
     @Override
     public void init() {
-        mRvProducts = (RecyclerView)findViewById(R.id.rvProducts);
+        mRvProducts = (RecyclerView)findViewById(R.id.rv_products);
     }
 
     @Override

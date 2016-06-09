@@ -18,13 +18,6 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/iv_product"
-            android:layout_width="@dimen/item_image_size"
-            android:layout_height="@dimen/item_image_size"
-            android:src="@mipmap/ic_file_download_black_48dp"
-            android:layout_marginLeft="@dimen/image_view_margin" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +36,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tv_code"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/tv_number"

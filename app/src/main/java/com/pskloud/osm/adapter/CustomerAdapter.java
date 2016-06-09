@@ -24,9 +24,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
     private List<Customer> mCustomers;
     private List<Customer> mCustomersFilter;
+    private CustomersActivity customersActivity;
 
-    public CustomerAdapter(List<Customer> customers) {
+    public CustomerAdapter(final CustomersActivity customersActivity, final List<Customer> customers) {
         this.mCustomers = customers;
+        this.customersActivity = customersActivity;
         mCustomersFilter = new ArrayList<>(customers);
     }
 
@@ -36,6 +38,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         private TextView mTvIdentification;
         private View mIbEdit;
         private View mVActions;
+        private View mTvOrder;
 
         public CustomerHolder(View itemView) {
             super(itemView);
@@ -43,6 +46,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             mTvIdentification = (TextView) itemView.findViewById(R.id.tv_identification);
             mVActions = itemView.findViewById(R.id.v_actions);
             mIbEdit = itemView.findViewById(R.id.ib_edit);
+            mTvOrder = itemView.findViewById(R.id.tv_order);
 
             itemView.setOnClickListener(v -> {
                 Customer customer = mCustomers.get(getAdapterPosition());
@@ -59,6 +63,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
             mIbEdit.setOnClickListener(view -> CustomersActivity.goToCustomer(
                     itemView.getContext(), mCustomers.get(getAdapterPosition())));
+
+            mTvOrder.setOnClickListener(view-> customersActivity.showOrder(mCustomers.get(getAdapterPosition())));
         }
 
         private void expand() {

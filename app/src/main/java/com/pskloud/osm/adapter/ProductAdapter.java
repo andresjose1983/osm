@@ -1,7 +1,6 @@
 package com.pskloud.osm.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Product;
 import com.pskloud.osm.util.Functions;
@@ -42,8 +39,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         public ProductHolder(View itemView) {
             super(itemView);
             mTvCode = (TextView) itemView.findViewById(R.id.tv_code);
-            mTvDescription = (TextView) itemView.findViewById(R.id.tv_description);
-            mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
+            mTvDescription = (TextView) itemView.findViewById(R.id.tv_number);
+            mTvPrice = (TextView) itemView.findViewById(R.id.tv_quantity);
             mIvPicture = (ImageView)itemView.findViewById(R.id.iv_product);
         }
     }

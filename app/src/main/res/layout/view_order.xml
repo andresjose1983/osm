@@ -4,62 +4,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     tools:context="com.pskloud.osm.CustomersActivity"
-    android:orientation="vertical">
+    tools:ignore="contentDescription">
 
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:elevation="@dimen/elevation"
-        android:background="@color/colorPrimary"
         android:layout_height="?android:attr/actionBarSize"
-        android:id="@+id/linearLayout2">
+        android:background="@color/colorPrimary"
+        android:elevation="@dimen/elevation"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/white"
             android:id="@+id/tv_title"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_marginLeft="@dimen/small"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/small" />
+
+
+        <ImageView
+            android:id="@+id/iv_add_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/smaller"
             android:layout_marginRight="@dimen/smaller"
-            android:layout_marginTop="@dimen/smallest"
-            android:layout_marginBottom="@dimen/smallest"
-            android:gravity="center_vertical" />
+            android:layout_weight="0.1"
+            android:clickable="true"
+            android:src="@mipmap/ic_add"
+            android:tint="@color/white" />
 
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:id="@+id/rv_orders"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv_orders"
-        android:layout_below="@+id/linearLayout2">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView">
 
 
     </android.support.v7.widget.RecyclerView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_add_order"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tint="@color/white"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:layout_gravity="bottom|end"
-        android:src="@mipmap/ic_add"
-        android:layout_above="@+id/linearLayout3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <View
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fab_margin"
-        android:layout_alignBottom="@+id/rv_orders"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout3" />
+        android:layout_below="@+id/linearLayout2"
+        android:layout_margin="@dimen/small"
+        android:text="@string/nav_orders"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

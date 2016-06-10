@@ -9,14 +9,16 @@
     android:foreground="?attr/selectableItemBackground"
     card_view:cardCornerRadius="@dimen/corner_radius"
     card_view:cardElevation="@dimen/elevation"
-    tools:ignore="contentDescription"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+    tools:ignore="contentDescription">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/small">
+        android:paddingLeft="@dimen/small"
+        android:paddingTop="@dimen/small"
+        android:paddingRight="@dimen/small">
 
         <TextView
             android:id="@+id/tv_name"
@@ -33,7 +35,8 @@
             android:layout_alignLeft="@+id/tv_name"
             android:layout_alignStart="@+id/tv_name"
             android:layout_below="@+id/tv_name"
-            android:text="New Text" />
+            android:text="New Text"
+            android:paddingBottom="@dimen/smaller" />
 
         <ImageButton
             android:id="@+id/ib_edit"
@@ -59,25 +62,25 @@
             tools:visibility="visible">
 
             <View
+                android:id="@+id/v_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:id="@+id/v_line"
-                android:background="@color/line"
-                android:layout_marginTop="@dimen/small" />
+                android:layout_marginTop="@dimen/small"
+                android:background="@color/line" />
 
             <TextView
                 android:id="@+id/tv_order"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/smallest"
+                android:layout_marginTop="@dimen/smallest"
                 android:clickable="true"
                 android:drawableLeft="@mipmap/ic_assignment"
                 android:drawablePadding="@dimen/small"
                 android:foreground="?android:selectableItemBackground"
-                android:padding="@dimen/small"
-                android:text="@string/nav_orders"
-                android:layout_marginTop="@dimen/smallest"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:padding="@dimen/smaller"
+                android:text="@string/nav_orders" />
 
         </LinearLayout>
 

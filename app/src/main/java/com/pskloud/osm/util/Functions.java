@@ -102,7 +102,7 @@ public final class Functions {
 
         List<Order> orders = new ArrayList<>();
         orders.add(new Order("001", new Date(), 5));
-        orders.add(new Order("002", new Date(), 15));
+        /*orders.add(new Order("002", new Date(), 15));
         orders.add(new Order("003", new Date(), 3));
         orders.add(new Order("004", new Date(), 4));
         orders.add(new Order("005", new Date(), 2));
@@ -110,7 +110,7 @@ public final class Functions {
         orders.add(new Order("007", new Date(), 10));
         orders.add(new Order("008", new Date(), 12));
         orders.add(new Order("009", new Date(), 6));
-        orders.add(new Order("010", new Date(), 8));
+        orders.add(new Order("010", new Date(), 8));*/
 
         return orders;
     }

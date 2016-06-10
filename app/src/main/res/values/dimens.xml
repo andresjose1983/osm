@@ -1,9 +1,9 @@
 <resources>
-    <dimen name="smallest">5dp</dimen>
-    <dimen name="corner_radius">6dp</dimen>
     <dimen name="recycler_view_padding">3dp</dimen>
     <dimen name="elevation">4dp</dimen>
-    <dimen name="image_view_margin">8dp</dimen>
+    <dimen name="smallest">5dp</dimen>
+    <dimen name="corner_radius">6dp</dimen>
+        <dimen name="image_view_margin">8dp</dimen>
     <dimen name="smaller">10dp</dimen>
     <dimen name="small">15dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->

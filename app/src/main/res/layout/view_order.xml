@@ -11,6 +11,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:elevation="@dimen/elevation"
         android:background="@color/colorPrimary"
         android:layout_height="?android:attr/actionBarSize"
         android:id="@+id/linearLayout2">
@@ -20,13 +21,12 @@
             android:layout_height="match_parent"
             android:textColor="@color/white"
             android:id="@+id/tv_title"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginLeft="@dimen/smaller"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_marginLeft="@dimen/small"
             android:layout_marginRight="@dimen/smaller"
             android:layout_marginTop="@dimen/smallest"
             android:layout_marginBottom="@dimen/smallest"
-            android:gravity="center"
-            android:textStyle="bold" />
+            android:gravity="center_vertical" />
 
     </LinearLayout>
 

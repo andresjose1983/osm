@@ -47,6 +47,8 @@ public class LoginActivity extends DefaultActivity {
             }
             return false;
         });
+
+        setTitle(R.string.title_activity_login);
     }
 
     /**

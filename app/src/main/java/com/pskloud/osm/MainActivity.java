@@ -1,5 +1,7 @@
 package com.pskloud.osm;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,10 @@ public class MainActivity extends DefaultActivity
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
     private NavigationView navigationView;
+
+    public static void show(Context context){
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

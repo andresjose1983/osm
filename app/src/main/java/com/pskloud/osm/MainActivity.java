@@ -1,6 +1,5 @@
 package com.pskloud.osm;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -18,8 +17,9 @@ public class MainActivity extends DefaultActivity
     private DrawerLayout mDrawer;
     private NavigationView navigationView;
 
-    public static void show(Context context){
-        context.startActivity(new Intent(context, MainActivity.class));
+    public static void show(LoginActivity activity){
+        activity.startActivity(new Intent(activity, MainActivity.class));
+        activity.finish();
     }
 
     @Override

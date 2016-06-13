@@ -1,5 +1,6 @@
 package com.pskloud.osm;
 
+import android.content.pm.ActivityInfo;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 
@@ -12,6 +13,7 @@ public abstract class DefaultActivity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         init();
         setUp();
     }

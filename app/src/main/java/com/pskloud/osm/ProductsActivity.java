@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.pskloud.osm.adapter.ProductAdapter;
 import com.pskloud.osm.model.Product;
@@ -22,6 +24,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     private RecyclerView mRvProducts;
     private ProductAdapter mProductAdapter;
     private List<Product> mProducts = Functions.getProduct();
+    private boolean isViewWithCatalog = true;
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, ProductsActivity.class));
@@ -35,25 +38,18 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
     @Override
     public void setUp() {
-
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        mRvProducts.setLayoutManager(mLayoutManager);
-        mRvProducts.setItemAnimator(new DefaultItemAnimator());
-
-        mProductAdapter = new ProductAdapter(mProducts);
-        mRvProducts.setAdapter(mProductAdapter);
-        mRvProducts.setHasFixedSize(true);
+        changeView(new LinearLayoutManager(getApplicationContext()), R.layout.item_product);
     }
 
     @Override
     public void init() {
-        mRvProducts = (RecyclerView)findViewById(R.id.rv_products);
+        mRvProducts = (RecyclerView) findViewById(R.id.rv_products);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.search, menu);
+        getMenuInflater().inflate(R.menu.product_menu, menu);
         // Associate searchable configuration with the SearchView
         mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         mSearchView.setOnQueryTextListener(this);
@@ -61,6 +57,29 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_change_view:
+                isViewWithCatalog = !isViewWithCatalog;
+                if(isViewWithCatalog)
+                    changeView(new LinearLayoutManager(this), R.layout.item_product);
+                else
+                    changeView(new GridLayoutManager(this,2), R.layout.item_grid_product);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void changeView(final RecyclerView.LayoutManager layoutManage, final int view) {
+        mRvProducts.setLayoutManager(layoutManage);
+        mRvProducts.setItemAnimator(new DefaultItemAnimator());
+
+        mProductAdapter = new ProductAdapter(mProducts, view);
+        mRvProducts.setAdapter(mProductAdapter);
+        mRvProducts.setHasFixedSize(true);
     }
 
     @Override
@@ -75,7 +94,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
         return false;
     }
 
-    private void filterCustomer(String query){
+    private void filterCustomer(String query) {
         mProductAdapter.getFilter().filter(query.toLowerCase());
     }
 

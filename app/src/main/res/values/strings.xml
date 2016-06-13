@@ -53,6 +53,8 @@
 
     <!-- Products -->
     <string name="title_activity_products">Products</string>
+    <string name="action_change_view">Change view</string>
+
     <!-- End products -->
 
 </resources>

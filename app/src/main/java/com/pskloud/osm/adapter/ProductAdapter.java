@@ -23,9 +23,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
     private List<Product> mProducts;
     private List<Product> mProductsFilter;
+    private final int VIEW;
 
-    public ProductAdapter(List<Product> mProducts) {
+    public ProductAdapter(List<Product> mProducts, final int VIEW) {
         this.mProducts = mProducts;
+        this.VIEW = VIEW;
         mProductsFilter = new ArrayList<>(mProducts);
     }
 
@@ -47,8 +49,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
     @Override
     public ProductHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(VIEW, parent, false);
 
         return new ProductHolder(view);
     }

@@ -22,6 +22,7 @@
     <string name="online">OnLine</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="data_sync">Data Sync</string>
     <string-array name="companies">
         <item>Company 1</item>
         <item>Company 2</item>
@@ -41,7 +42,7 @@
     <string name="prompt_telephone_number">Telephone number</string>
     <string name="prompt_address">Address</string>
     <string name="prompt_identification">Identification</string>
-    <string name="action_done">Donet</string>
+    <string name="action_done">Done</string>
     <string-array name="identifications">
         <item>V</item>
         <item>J</item>

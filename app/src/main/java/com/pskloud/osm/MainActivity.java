@@ -3,15 +3,17 @@ package com.pskloud.osm;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
+
+import org.eazegraph.lib.charts.StackedBarChart;
+import org.eazegraph.lib.models.BarModel;
+import org.eazegraph.lib.models.StackedBarModel;
 
 public class MainActivity extends DefaultActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -19,7 +21,7 @@ public class MainActivity extends DefaultActivity
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
     private NavigationView mNvMain;
-    private WebView mWvChar;
+    private StackedBarChart mStackedBarChart;
 
     public static void show(LoginActivity activity){
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -92,10 +94,22 @@ public class MainActivity extends DefaultActivity
 
         mNvMain.setNavigationItemSelectedListener(this);
 
-        mWvChar.addJavascriptInterface(new WebAppInterface(), "Android");
-        mWvChar.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
-        mWvChar.getSettings().setJavaScriptEnabled(true);
-        mWvChar.loadUrl("file:///android_asset/chart.html");
+        StackedBarModel s1 = new StackedBarModel(getString(R.string.nav_customers));
+
+        int colorSync = ContextCompat.getColor(this, R.color.colorAccent);
+        int colorUnSync = ContextCompat.getColor(this, R.color.colorPrimary);
+
+        s1.addBar(new BarModel(/*98f*/0f, colorSync));
+        s1.addBar(new BarModel(/*2f*/0f, colorUnSync));
+
+        StackedBarModel s2 = new StackedBarModel(getString(R.string.nav_orders));
+        s2.addBar(new BarModel(60f, colorSync));
+        s2.addBar(new BarModel(40f, colorUnSync));
+
+        mStackedBarChart.addBar(s1);
+        mStackedBarChart.addBar(s2);
+
+        mStackedBarChart.startAnimation();
     }
 
     @Override
@@ -103,20 +117,7 @@ public class MainActivity extends DefaultActivity
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mDrawer = (DrawerLayout)findViewById(R.id.drawer_layout);
         mNvMain = (NavigationView)findViewById(R.id.nav_view);
-        mWvChar = (WebView)findViewById(R.id.wv_char);
+        mStackedBarChart = (StackedBarChart) findViewById(R.id.sbc_view);
     }
 
-    public class WebAppInterface {
-
-        @JavascriptInterface
-        public int getNum1() {
-            return 80;
-        }
-
-        @JavascriptInterface
-        public int getNum2() {
-            return 20;
-        }
-
-    }
 }

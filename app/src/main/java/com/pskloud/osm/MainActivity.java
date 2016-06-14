@@ -9,13 +9,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 public class MainActivity extends DefaultActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
-    private NavigationView navigationView;
+    private NavigationView mNvMain;
+    private WebView mWvChar;
 
     public static void show(LoginActivity activity){
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -86,14 +90,33 @@ public class MainActivity extends DefaultActivity
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(this);
+        mNvMain.setNavigationItemSelectedListener(this);
+
+        mWvChar.addJavascriptInterface(new WebAppInterface(), "Android");
+        mWvChar.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+        mWvChar.getSettings().setJavaScriptEnabled(true);
+        mWvChar.loadUrl("file:///android_asset/chart.html");
     }
 
     @Override
     public void init() {
         mToolbar = (Toolbar)findViewById(R.id.toolbar);
         mDrawer = (DrawerLayout)findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        mNvMain = (NavigationView)findViewById(R.id.nav_view);
+        mWvChar = (WebView)findViewById(R.id.wv_char);
+    }
+
+    public class WebAppInterface {
+
+        @JavascriptInterface
+        public int getNum1() {
+            return 80;
+        }
+
+        @JavascriptInterface
+        public int getNum2() {
+            return 20;
+        }
 
     }
 }

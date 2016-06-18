@@ -3,37 +3,41 @@ package com.pskloud.osm.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 /**
  * Created by andres on 08/06/16.
  */
-public class Customer implements Parcelable{
+public class Customer implements Serializable{
 
-    private String identification;
+    String name;
+    String address;
+    List<String> phones = new ArrayList<>();
+    String tin;
+    String identification;//optional
+    String code;//optional
+    int price;//optional
+    String type;//optional
+    String tag;//optional
+    boolean isView;
+    boolean sync;
 
-    private String name;
-
-    private String address;
-
-    private String contactPerson;
-
-    private String telephone;
-
-    private boolean isView;
-
-    public Customer(String identification, String name, String address, String contactPerson, String telephone) {
-        this.identification = identification;
+    public Customer(String name, String address, List<String> phones, String tin,
+                    String identification, String code, int price, String type, String tag,
+                    boolean sync) {
         this.name = name;
         this.address = address;
-        this.contactPerson = contactPerson;
-        this.telephone = telephone;
-    }
-
-    public String getIdentification() {
-        return identification;
-    }
-
-    public void setIdentification(String identification) {
+        this.phones = phones;
+        this.tin = tin;
         this.identification = identification;
+        this.code = code;
+        this.price = price;
+        this.type = type;
+        this.tag = tag;
+        this.sync = sync;
     }
 
     public String getName() {
@@ -52,20 +56,60 @@ public class Customer implements Parcelable{
         this.address = address;
     }
 
-    public String getContactPerson() {
-        return contactPerson;
+    public List<String> getPhones() {
+        return phones;
     }
 
-    public void setContactPerson(String contactPerson) {
-        this.contactPerson = contactPerson;
+    public void setPhones(List<String> phones) {
+        this.phones = phones;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getTin() {
+        return tin;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setTin(String tin) {
+        this.tin = tin;
+    }
+
+    public String getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public boolean isView() {
@@ -76,39 +120,11 @@ public class Customer implements Parcelable{
         isView = view;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public boolean isSync() {
+        return sync;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.identification);
-        dest.writeString(this.name);
-        dest.writeString(this.address);
-        dest.writeString(this.contactPerson);
-        dest.writeString(this.telephone);
+    public void setSync(boolean sync) {
+        this.sync = sync;
     }
-
-    protected Customer(Parcel in) {
-        this.identification = in.readString();
-        this.name = in.readString();
-        this.address = in.readString();
-        this.contactPerson = in.readString();
-        this.telephone = in.readString();
-    }
-
-    public static final Creator<Customer> CREATOR = new Creator<Customer>() {
-        @Override
-        public Customer createFromParcel(Parcel source) {
-            return new Customer(source);
-        }
-
-        @Override
-        public Customer[] newArray(int size) {
-            return new Customer[size];
-        }
-    };
-
-
 }

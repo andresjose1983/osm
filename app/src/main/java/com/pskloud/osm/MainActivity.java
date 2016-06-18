@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pskloud.osm.util.NotificationHelper;
+
 import org.eazegraph.lib.charts.StackedBarChart;
 import org.eazegraph.lib.models.BarModel;
 import org.eazegraph.lib.models.StackedBarModel;
@@ -32,6 +34,12 @@ public class MainActivity extends DefaultActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_CUSTOMER);
     }
 
     @Override
@@ -75,6 +83,9 @@ public class MainActivity extends DefaultActivity
                 break;
             case R.id.nav_products:
                 ProductsActivity.show(this);
+                break;
+            case R.id.nav_settings:
+                SettingsActivity.show(this);
                 break;
         }
 

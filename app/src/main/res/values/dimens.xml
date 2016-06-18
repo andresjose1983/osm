@@ -3,7 +3,7 @@
     <dimen name="elevation">4dp</dimen>
     <dimen name="smallest">5dp</dimen>
     <dimen name="corner_radius">6dp</dimen>
-        <dimen name="image_view_margin">8dp</dimen>
+    <dimen name="image_view_margin">8dp</dimen>
     <dimen name="smaller">10dp</dimen>
     <dimen name="small">15dp</dimen>
     <dimen name="medium">20dp</dimen>

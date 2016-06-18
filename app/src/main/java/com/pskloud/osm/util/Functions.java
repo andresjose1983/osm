@@ -1,7 +1,11 @@
 package com.pskloud.osm.util;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.widget.ImageView;
@@ -25,10 +29,12 @@ import java.util.List;
  */
 public final class Functions {
 
+    private static final String STATUS = "STATUS";
+
     public static void loadImageCircle(ImageView imageView, final String url){
 
         if(imageView != null || url != null)
-            Glide.with(OsmApplication.getInstance())
+            Glide.with(imageView.getContext())
                 .load(url)
                 .asBitmap()
                 .centerCrop()
@@ -121,6 +127,36 @@ public final class Functions {
 
         // formatting
         return format.format(date);
+    }
+
+    public static boolean getStatus(final Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                context.getString(R.string.app_name), Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(STATUS, false);
+    }
+
+
+    public static void setStatus(final Context context, boolean status){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                context.getString(R.string.app_name), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(STATUS, status);
+        editor.commit();
+    }
+
+    public static boolean checkInternetConnection(final Context context){
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo i = connectivityManager.getActiveNetworkInfo();
+        if (i == null)
+            return false;
+        if (!i.isConnected())
+            return false;
+        if (!i.isAvailable())
+            return false;
+        return true;
     }
 
 }

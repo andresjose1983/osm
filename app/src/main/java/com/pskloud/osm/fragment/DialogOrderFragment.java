@@ -43,11 +43,11 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_order, container, false);
         init(view);
-        setpUp(view);
+        setUp(view);
         return view;
     }
 
-    private void setpUp(View view) {
+    private void setUp(View view) {
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         mRvOrders.setLayoutManager(mLayoutManager);
@@ -57,7 +57,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
         mRvOrders.setAdapter(mOrderAdapter);
         mRvOrders.setHasFixedSize(true);
 
-        customer = this.getArguments().getParcelable(CustomersActivity.ARG_CUSTOMER);
+        customer = (Customer) this.getArguments().getSerializable(CustomersActivity.ARG_CUSTOMER);
         if(customer != null)
             mtvTitle.setText(customer.getName());
 

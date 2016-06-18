@@ -17,11 +17,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_customers">Customers</string>
     <string name="nav_orders">Orders</string>
+    <string name="nav_settings">Settings</string>
     <string name="nav_products">Products</string>
     <string name="action_logout">Logout</string>
-    <string name="online">OnLine</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
     <string name="data_sync">Data Sync</string>
     <string-array name="companies">
         <item>Company 1</item>
@@ -50,12 +48,32 @@
         <item>G</item>
         <item>E</item>
     </string-array>
+    <string name="customer_saved">Customer saved</string>
+    <string name="error_identification">The identification is incorrect</string>
+    <string name="error_address">The address cannot be empty</string>
+    <string name="error_phone">The phone is incorrect</string>
+    <string name="error_name">The name cannot be empty</string>
     <!-- End customer -->
 
     <!-- Products -->
     <string name="title_activity_products">Products</string>
     <string name="action_change_view">Change view</string>
-
     <!-- End products -->
+
+    <!-- Settings -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="download_customer">Download customer</string>
+    <string name="notification_text_customer">Downloading Customers...</string>
+    <string name="notification_customer_downloaded">Your customer data was downloaded...</string>
+    <string name="status_connection">Status connection</string>
+    <string name="check_connection">Check your status connection</string>
+    <string name="check_internet_connection">Check your internet connection</string>
+    <string name="error_service_running">The customer\'s service is running</string>
+    <string name="yes">Yes</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="content_sync">All the data will be deleted. Would you like continuing?</string>
+    <string name="no">No</string>
+    <!-- End Settings -->
 
 </resources>

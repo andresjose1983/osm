@@ -52,10 +52,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 Customer customer = mCustomers.get(getAdapterPosition());
                 if (customer.isView()) {
                     customer.setView(false);
-                    //collapse();
                 } else {
                     customer.setView(true);
-                    //expand();
                 }
                 mCustomers.set(getAdapterPosition(), customer);
                 notifyItemChanged(getAdapterPosition());
@@ -151,7 +149,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     public void onBindViewHolder(CustomerHolder holder, int position) {
         Customer customer = mCustomers.get(position);
         holder.mTvName.setText(customer.getName());
-        holder.mTvIdentification.setText(customer.getIdentification());
+        holder.mTvIdentification.setText(customer.getTin());
         if(customer.isView())
             holder.expand();
         else
@@ -191,8 +189,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
                 final String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (final Customer customer : customers) {
-                    if (customer.getName().toLowerCase().contains(filterPattern) ||
-                            customer.getIdentification().toLowerCase().contains(filterPattern)) {
+                    if (customer.getName().toLowerCase().contains(filterPattern)
+                            || customer.getCode().toLowerCase().contains(filterPattern)
+                            || customer.getTin().contains(filterPattern)) {
                         filtersCustomers.add(customer);
                     }
                 }

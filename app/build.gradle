@@ -13,6 +13,10 @@ android {
         jackOptions {
             enabled true
         }
+
+        buildConfigField('String', 'URL', '"http://192.168.1.125:8080/com.osm.server-0.0.1/rest/v1/"')
+
+        buildConfigField('int', 'VERSION_BD', '1')
     }
 
     compileOptions {
@@ -35,6 +39,8 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile 'com.android.support:cardview-v7:24.0.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.blackfizz:eazegraph:1.2.5l@aar'
     compile 'com.nineoldandroids:library:2.4.0'

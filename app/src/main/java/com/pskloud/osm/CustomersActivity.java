@@ -14,6 +14,7 @@ import android.view.Menu;
 import com.pskloud.osm.adapter.CustomerAdapter;
 import com.pskloud.osm.fragment.DialogOrderFragment;
 import com.pskloud.osm.model.Customer;
+import com.pskloud.osm.util.CustomerSqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     private CustomerAdapter mCustomerAdapter;
     private SearchView mSearchView;
     private DialogOrderFragment bsdFragment;
+    private CustomerSqlHelper customerSqlHelper;
     public static final String ARG_CUSTOMER = "CUSTOMER";
 
     List<Customer> mCustomers = new ArrayList<>();
@@ -42,7 +44,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.customer_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_customers, menu);
         // Associate searchable configuration with the SearchView
         mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         mSearchView.setOnQueryTextListener(this);
@@ -59,23 +61,27 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mCustomers = customerSqlHelper.GET_CUSTOMERS.get();
+
+        mCustomerAdapter = new CustomerAdapter(this, mCustomers);
+        mRvCustomers.setAdapter(mCustomerAdapter);
+    }
+
+    @Override
     public void setUp() {
-        for (int i = 0; i < 1000; i++) {
-            mCustomers.add(new Customer(Integer.toOctalString(i), "Andres Mendez", "1", "1", "1"));
-        }
+
+        customerSqlHelper = new CustomerSqlHelper(this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRvCustomers.setLayoutManager(mLayoutManager);
         mRvCustomers.setItemAnimator(new DefaultItemAnimator());
-
-        mCustomerAdapter = new CustomerAdapter(this, mCustomers);
-        mRvCustomers.setAdapter(mCustomerAdapter);
         mRvCustomers.setHasFixedSize(true);
 
         mFabAdd.setOnClickListener(view->goToCustomer(this, null));
 
         bsdFragment = DialogOrderFragment.newInstance();
-
     }
 
     @Override
@@ -100,7 +106,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
 
     public void showOrder(final Customer customer){
         Bundle bundle = new Bundle();
-        bundle.putParcelable(ARG_CUSTOMER, customer);
+        bundle.putSerializable(ARG_CUSTOMER, customer);
         bsdFragment.setArguments(bundle);
         bsdFragment.show(getSupportFragmentManager(), DialogOrderFragment.BOTTON_SHEET_NAME);
     }

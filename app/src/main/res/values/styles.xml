@@ -17,11 +17,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="AppCompatAlertDialogStyle.Child.AlertDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">#000000</item>
-        <item name="android:background">#FFFFFF</item>
+        <item name="android:gravity">start|left</item>
+        <item name="android:layout_gravity">start|left</item>
     </style>
 
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:imageButtonStyle">@style/ImageButton</item>
+        <item name="android:gravity">center</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="alertDialogTheme">@style/AppCompatAlertDialogStyle.Child.AlertDialog</item>
+    </style>
+
+    <style name="ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">@dimen/smallest</item>
+    </style>
 
 </resources>

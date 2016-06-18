@@ -1,10 +1,7 @@
 package com.pskloud.osm;
 
 import android.app.Application;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
-import android.content.Context;
+import android.content.Intent;
 
 import com.pskloud.osm.service.CustomerJobService;
 
@@ -25,14 +22,7 @@ public class OsmApplication extends Application{
         super.onCreate();
         sInstance = this;
 
-        JobInfo job = new JobInfo.Builder(1, new ComponentName(this, CustomerJobService.class))
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .setRequiresCharging(true)
-                .setPeriodic(11250)
-                .build();
-
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        jobScheduler.schedule(job);
+        startService(new Intent(this, CustomerJobService.class));
     }
 
 }

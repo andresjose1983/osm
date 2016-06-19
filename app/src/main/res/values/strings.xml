@@ -71,6 +71,8 @@
     <string name="error_service_running">The customer\'s service is running</string>
     <string name="yes">Yes</string>
     <string name="ok">Ok</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
     <string name="cancel">Cancel</string>
     <string name="content_sync">All the data will be deleted. Would you like continuing?</string>
     <string name="no">No</string>

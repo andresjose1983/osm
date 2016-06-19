@@ -60,6 +60,10 @@ public class SettingsActivity extends DefaultActivity {
                     }
                 }else
                     showSnackBar(mClView, R.string.check_connection);
+            break;
+            case android.R.id.home:
+                super.onBackPressed();
+                break;
         }
         return true;
     }

@@ -4,10 +4,15 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -157,6 +162,76 @@ public final class Functions {
         if (!i.isAvailable())
             return false;
         return true;
+    }
+
+    public static void changeColor(final ImageView imageView, final String letter, final int index){
+        int densityDpi = getDensity(imageView.getContext());
+
+        Bitmap bitmap = Bitmap.createBitmap(densityDpi, densityDpi, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        imageView.setImageBitmap(bitmap);
+
+        // Circle
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor(getColor(index)));
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        paint.setStrokeWidth(1);
+        float x = densityDpi / 2;
+        float y = densityDpi / 2;
+        float radius = densityDpi / 2;
+        canvas.drawCircle(x, y, radius, paint);
+
+        Paint textPaint = new Paint();
+        textPaint.setARGB(255,255,255, 255);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTextSize(densityDpi / 2);
+        canvas.drawText(letter, canvas.getWidth()/2, canvas.getHeight() / 1.5f , textPaint);
+    }
+
+    private static String getColor(final int index){
+        switch (index){
+            case 0:
+                return "#0277bd";
+            case 1:
+                return "#cddc39";
+            case 2:
+                return "#66bb6a";
+            case 3:
+                return "#76ff03";
+            case 4:
+                return "#ef6c00";
+            case 5:
+                return "#ffff00";
+            case 6:
+                return "#d84315";
+            case 7:
+                return "#424242";
+            case 8:
+                return "#607d8b";
+            case 9:
+                return "#039be5";
+        }
+        return "#ff1744";
+    }
+
+    private static int getDensity(final Context context){
+        float density = context.getResources().getDisplayMetrics().density;
+        if (density >= 4.0) {
+            return 180;
+        }
+        if (density >= 3.0) {
+            return 135;
+        }
+        if (density >= 2.0) {
+            return 90;
+        }
+        if (density >= 1.5) {
+            return 68;
+        }
+        if (density >= 1.0) {
+            return 45;
+        }
+        return 35;
     }
 
 }

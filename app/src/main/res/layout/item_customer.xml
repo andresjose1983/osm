@@ -27,17 +27,21 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="false"
+            android:layout_toEndOf="@+id/iv_color"
             android:layout_toStartOf="@+id/ib_edit" />
 
         <TextView
             android:id="@+id/tv_identification"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tv_name"
             android:layout_alignStart="@+id/tv_name"
             android:layout_below="@+id/tv_name"
             android:text="New Text"
-            android:paddingBottom="@dimen/smaller" />
+            android:paddingBottom="@dimen/small"
+            android:layout_toStartOf="@+id/ib_edit" />
 
         <ImageButton
             android:id="@+id/ib_edit"
@@ -83,6 +87,15 @@
                 android:text="@string/nav_orders" />
 
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_color"
+            android:src="@mipmap/ic_mode_edit"
+            android:layout_alignTop="@+id/tv_name"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="@dimen/smaller" />
 
     </RelativeLayout>
 

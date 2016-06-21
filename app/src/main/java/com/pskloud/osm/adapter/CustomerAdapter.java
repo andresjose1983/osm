@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pskloud.osm.CustomersActivity;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Customer;
+import com.pskloud.osm.util.Functions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         private TextView mTvName;
         private TextView mTvIdentification;
+        private ImageView mIvColor;
         private View mIbEdit;
         private View mVActions;
         private View mTvOrder;
@@ -44,6 +47,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             super(itemView);
             mTvName = (TextView) itemView.findViewById(R.id.tv_name);
             mTvIdentification = (TextView) itemView.findViewById(R.id.tv_identification);
+            mIvColor = (ImageView)itemView.findViewById(R.id.iv_color);
+
             mVActions = itemView.findViewById(R.id.v_actions);
             mIbEdit = itemView.findViewById(R.id.ib_edit);
             mTvOrder = itemView.findViewById(R.id.tv_order);
@@ -150,6 +155,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         Customer customer = mCustomers.get(position);
         holder.mTvName.setText(customer.getName());
         holder.mTvIdentification.setText(customer.getTin());
+
+        Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)), position);
+
         if(customer.isView())
             holder.expand();
         else

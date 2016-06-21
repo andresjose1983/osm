@@ -145,6 +145,16 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                             cursor.getInt(9) == 1?true:false));
                     cursor.moveToNext();
                 }
+                customers.add(new Customer("2",
+                        "asdasdas",
+                        null,
+                        "asdasd",
+                        "asdasd",
+                        "asdasd",
+                        2,
+                        "asdasd",
+                        "asdasd",
+                        true));
             }
             cursor.close();
         }

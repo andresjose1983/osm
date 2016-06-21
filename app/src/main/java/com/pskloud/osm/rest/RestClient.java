@@ -2,6 +2,7 @@ package com.pskloud.osm.rest;
 
 import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.model.Customer;
+import com.pskloud.osm.model.Locality;
 
 import java.util.List;
 
@@ -27,11 +28,20 @@ public abstract class RestClient {
     }
 
     public static final GetCustomers GET_CUSTOMERS = (callback) -> {
-        mOsmServices.get(callback);
+        mOsmServices.getCustomers(callback);
+    };
+
+    public static final GetLocalities GET_LOCALITIES = (callback) -> {
+        mOsmServices.getLocalities(callback);
     };
 
     @FunctionalInterface
     public interface GetCustomers{
         void getResponse(Callback<List<Customer>> callback);
+    }
+
+    @FunctionalInterface
+    public interface GetLocalities{
+        void getResponse(Callback<List<Locality>> callback);
     }
 }

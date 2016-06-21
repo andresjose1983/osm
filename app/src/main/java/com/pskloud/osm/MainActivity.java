@@ -40,6 +40,7 @@ public class MainActivity extends DefaultActivity
     protected void onResume() {
         super.onResume();
         NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_CUSTOMER);
+        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY);
     }
 
     @Override

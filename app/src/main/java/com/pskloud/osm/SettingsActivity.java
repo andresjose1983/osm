@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Switch;
 
 import com.pskloud.osm.service.CustomersService;
+import com.pskloud.osm.service.LocalitiesService;
 import com.pskloud.osm.util.DialogHelper;
 import com.pskloud.osm.util.Functions;
 
@@ -55,6 +56,12 @@ public class SettingsActivity extends DefaultActivity {
                                     startService(new Intent(this, CustomersService.class));
                                 }else
                                     showSnackBar(mClView, R.string.error_service_running);
+
+                                if(!LocalitiesService.isRunning(this)) {
+                                    startService(new Intent(this, LocalitiesService.class));
+                                }else
+                                    showSnackBar(mClView, R.string.error_service_running);
+
                             };
                             DialogHelper.confirm(this, R.string.content_sync, onClickListener);
                         }

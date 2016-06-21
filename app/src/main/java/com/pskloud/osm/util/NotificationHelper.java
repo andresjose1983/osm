@@ -9,7 +9,6 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.pskloud.osm.MainActivity;
 import com.pskloud.osm.R;
-import com.pskloud.osm.service.CustomersService;
 
 /**
  * Created by Mendez Fernandez on 17/06/2016.
@@ -20,6 +19,8 @@ public class NotificationHelper {
 
     public static final int NOTIFICATION_DOWNLOADING_CUSTOMER = 1;
     public static final int NOTIFICATION_DOWNLOADED_CUSTOMER = 2;
+    public static final int NOTIFICATION_DOWNLOADING_LOCALITY = 3;
+    public static final int NOTIFICATION_DOWNLOADED_LOCALITY = 2;
     // classes using for creating notification
 
     private static NotificationManagerCompat mNotificationManager;
@@ -47,9 +48,13 @@ public class NotificationHelper {
         mNotificationManager.notify(id, mNotificationBuilder.build());
     }
 
-    public static void close(int id){
-        if(mNotificationManager != null)
-            mNotificationManager.cancel(id);
+    public static void close(int...ids){
+        if(mNotificationManager != null) {
+            if (ids != null && ids.length > 0) {
+                for (int id : ids) {
+                    mNotificationManager.cancel(id);
+                }
+            }
+        }
     }
-
 }

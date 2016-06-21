@@ -65,11 +65,13 @@
     <string name="download_customer">Download customer</string>
     <string name="download_locality">Download locality</string>
     <string name="notification_text_customer">Downloading Customers...</string>
+    <string name="notification_text_localities">Downloading Localities...</string>
     <string name="notification_customer_downloaded">Your customer data was downloaded...</string>
+    <string name="notification_locality_downloaded">Your locality data was downloaded...</string>
     <string name="status_connection">Status connection</string>
     <string name="check_connection">Check your status connection</string>
     <string name="check_internet_connection">Check your internet connection</string>
-    <string name="error_service_running">The customer\'s service is running</string>
+    <string name="error_service_running">Your service is running</string>
     <string name="yes">Yes</string>
     <string name="ok">Ok</string>
     <string name="on">On</string>

@@ -4,13 +4,11 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.Shader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -172,7 +170,6 @@ public final class Functions {
         Bitmap bitmap = Bitmap.createBitmap(densityDpi, densityDpi, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         imageView.setImageBitmap(bitmap);
-        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
         // Circle
         Paint paint = new Paint();
@@ -183,16 +180,18 @@ public final class Functions {
         paint.setAntiAlias(true);
         paint.setFilterBitmap(true);
         paint.setDither(true);
-        float x = densityDpi / 2;
+
+        float measure = densityDpi / 2;
+        /*float x = densityDpi / 2;
         float y = densityDpi / 2;
-        float radius = densityDpi / 2;
-        canvas.drawCircle(x, y, radius, paint);
+        float radius = densityDpi / 2;*/
+        canvas.drawCircle(measure, measure, measure, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
         Paint textPaint = new Paint();
         textPaint.setARGB(255,255,255, 255);
         textPaint.setTextAlign(Paint.Align.CENTER);
-        textPaint.setTextSize(densityDpi / 2);
+        textPaint.setTextSize(measure);
         canvas.drawText(letter, canvas.getWidth()/2, canvas.getHeight() / 1.5f , textPaint);
     }
 

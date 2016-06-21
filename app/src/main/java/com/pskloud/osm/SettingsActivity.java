@@ -21,6 +21,7 @@ public class SettingsActivity extends DefaultActivity {
 
     private Switch mSvCustomer;
     private Switch mSvConnection;
+    private Switch mSvLocality;
     private CoordinatorLayout mClView;
 
     public static void show(final Context context){
@@ -72,6 +73,7 @@ public class SettingsActivity extends DefaultActivity {
     public void init() {
         mSvCustomer = (Switch)findViewById(R.id.sv_customer);
         mSvConnection = (Switch)findViewById(R.id.sv_connection);
+        mSvLocality = (Switch)findViewById(R.id.sv_locality);
         mClView = (CoordinatorLayout) findViewById(R.id.cl_view);
     }
 

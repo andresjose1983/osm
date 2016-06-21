@@ -63,6 +63,7 @@
     <!-- Settings -->
     <string name="title_activity_settings">Settings</string>
     <string name="download_customer">Download customer</string>
+    <string name="download_locality">Download locality</string>
     <string name="notification_text_customer">Downloading Customers...</string>
     <string name="notification_customer_downloaded">Your customer data was downloaded...</string>
     <string name="status_connection">Status connection</string>

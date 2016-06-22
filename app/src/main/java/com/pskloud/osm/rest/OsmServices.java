@@ -20,6 +20,6 @@ public interface OsmServices {
     @GET("/customers/zones")
     void getLocalities(Callback<List<Locality>> listCallback);
 
-    @GET("/customer/tax-types")
+    @GET("/customers/tax-types")
     void getTaxTypes(Callback<Map<String, Integer>> mapCallback);
 }

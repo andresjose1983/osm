@@ -19,15 +19,14 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
 
     public static final String DATABASE_NAME = "osm.db";
     public static final String TABLE_NAME  = "customer";
+    public static final String CODE  = "code";
     public static final String NAME  = "name";
     public static final String ADDRESS  = "address";
-    public static final String PHONE  = "customer";
+    public static final String PHONE  = "phone";
     public static final String TIN  = "tin";
-    public static final String IDENTIFICATION  = "identification";
-    public static final String CODE  = "code";
-    public static final String PRICE  = "price";
-    public static final String TYPE  = "type";
-    public static final String TAG  = "tag";
+    public static final String ZONE  = "zone";
+    public static final String TYPE  = "taxType";
+    public static final String NEW  = "new";
     public static final String SYNC  = "sync";
 
     public CustomerSqlHelper(Context context) {
@@ -40,6 +39,8 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                 .append("create table ")
                 .append(TABLE_NAME)
                 .append(" ( ")
+                .append(CODE)
+                .append(" text, ")
                 .append(NAME)
                 .append(" text, ")
                 .append(ADDRESS)
@@ -48,16 +49,12 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                 .append(" text, ")
                 .append(TIN)
                 .append(" text, ")
-                .append(IDENTIFICATION)
+                .append(ZONE)
                 .append(" text, ")
-                .append(CODE)
-                .append(" text, ")
-                .append(PRICE)
-                .append(" integer, ")
                 .append(TYPE)
-                .append(" text, ")
-                .append(TAG)
-                .append(" text, ")
+                .append(" integer, ")
+                .append(NEW)
+                .append(" integer, ")
                 .append(SYNC)
                 .append(" integer) ")
                 .toString());
@@ -69,22 +66,10 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    final public AddCustomer ADD_CUSTOMER = (customer)->{
+    final public AddCustomer ADD = (customer)->{
         SQLiteDatabase writableDatabase = this.getWritableDatabase();
         if(writableDatabase != null && writableDatabase.isOpen()){
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME, customer.getName().toUpperCase());
-            contentValues.put(ADDRESS, customer.getAddress().toUpperCase());
-            if(customer.getPhones() != null)
-                contentValues.put(PHONE, customer.getPhones().isEmpty()?"":
-                        customer.getPhones().get(0));
-            contentValues.put(TIN, customer.getTin());
-            contentValues.put(IDENTIFICATION, customer.getIdentification());
-            contentValues.put(CODE, customer.getCode());
-            contentValues.put(PRICE, customer.getPrice());
-            contentValues.put(TYPE, customer.getType());
-            contentValues.put(TAG, customer.getTag());
-            contentValues.put(SYNC, 0);
+            ContentValues contentValues = setConteValues(customer);
             writableDatabase.insert(TABLE_NAME, null, contentValues);
             writableDatabase.close();
         }
@@ -92,22 +77,27 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         return true;
     };
 
-    final public AddCustomer UPDATE_CUSTOMER = (customer)->{
+    private ContentValues setConteValues(Customer customer){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CODE, customer.getCode());
+        contentValues.put(NAME, customer.getName().toUpperCase());
+        contentValues.put(ADDRESS, customer.getAddress().toUpperCase());
+        if(customer.getPhones() != null)
+            contentValues.put(PHONE, customer.getPhones().isEmpty()?"":
+                    customer.getPhones().get(0));
+        contentValues.put(TIN, customer.getTin());
+        contentValues.put(ZONE, customer.getZone());
+        contentValues.put(TYPE, customer.getTaxType());
+        contentValues.put(NEW, customer.isNew() == true?1:0);
+        contentValues.put(SYNC, customer.isSync() == true?1:0);
+        return contentValues;
+    }
+
+    final public UpdateCustomer UPDATE = (customer)->{
         SQLiteDatabase writableDatabase = this.getWritableDatabase();
         if(writableDatabase != null && writableDatabase.isOpen()){
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(NAME, customer.getName().toUpperCase());
-            contentValues.put(ADDRESS, customer.getAddress().toUpperCase());
-            if(customer.getPhones() != null)
-                contentValues.put(PHONE, customer.getPhones().isEmpty()?"":
-                        customer.getPhones().get(0));
-            contentValues.put(TIN, customer.getTin());
-            contentValues.put(IDENTIFICATION, customer.getIdentification());
-            contentValues.put(CODE, customer.getCode());
-            contentValues.put(PRICE, customer.getPrice());
-            contentValues.put(TYPE, customer.getType());
-            contentValues.put(TAG, customer.getTag());
-            contentValues.put(SYNC, customer.isSync() == true?1:0);
+            ContentValues contentValues = setConteValues(customer);
+
             writableDatabase.update(TABLE_NAME, contentValues, CODE + " = ?",
                     new String[] { customer.getCode() } );
             writableDatabase.close();
@@ -116,7 +106,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         return true;
     };
 
-    final public GetCustomers GET_CUSTOMERS = () -> {
+    final public GetCustomers GET = () -> {
         List<Customer> customers = new ArrayList<>();
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
@@ -132,29 +122,21 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                 List<String> telephones;
                 while(cursor.isAfterLast() == false){
                     telephones = new ArrayList<>();
-                    telephones.add(cursor.getString(2));
-                    customers.add(new Customer(cursor.getString(0),
-                            cursor.getString(1),
-                            telephones,
-                            cursor.getString(3),
-                            cursor.getString(4),
-                            cursor.getString(5),
-                            cursor.getInt(6),
-                            cursor.getString(7),
-                            cursor.getString(8),
-                            cursor.getInt(9) == 1?true:false));
+                    telephones.add(cursor.getString(3));
+                    customers.add(new Customer
+                            .Builder()
+                    .code(cursor.getString(0))
+                    .name(cursor.getString(1))
+                    .address(cursor.getString(2))
+                    .phones(telephones)
+                    .tin(cursor.getString(4))
+                    .zone(cursor.getString(5))
+                    .taxType(cursor.getInt(6))
+                    .isNew(cursor.getInt(7) == 1? true: false)
+                    .sync(cursor.getInt(8) == 1? true: false)
+                    .isView(false).build());
                     cursor.moveToNext();
                 }
-                customers.add(new Customer("2",
-                        "asdasdas",
-                        null,
-                        "asdasd",
-                        "asdasd",
-                        "asdasd",
-                        2,
-                        "asdasd",
-                        "asdasd",
-                        true));
             }
             cursor.close();
         }
@@ -162,12 +144,12 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         return customers;
     };
 
-    public DeleteCustomers DELETE_CUSTOMER = () -> {
+    public DeleteCustomers DELETE = () -> {
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
-            int delete = sqLiteOpenHelper.delete(TABLE_NAME, null, null);
-            if(delete > 0)
-                return true;
+            sqLiteOpenHelper.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(sqLiteOpenHelper);
+            return true;
         }
         return false;
     };
@@ -179,7 +161,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
 
     @FunctionalInterface
     public interface GetCustomers{
-        List<Customer> get();
+        List<Customer> execute();
     }
 
     @FunctionalInterface

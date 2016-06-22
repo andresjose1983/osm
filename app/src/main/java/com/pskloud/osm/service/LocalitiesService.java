@@ -41,16 +41,15 @@ public class LocalitiesService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
         NotificationHelper.show(this, R.string.notification_text_localities,
                 NotificationHelper.NOTIFICATION_DOWNLOADING_LOCALITY);
         RestClient.GET_LOCALITIES.getResponse(new Callback<List<Locality>>() {
             @Override
             public void success(List<Locality> localities, Response response) {
                 new Thread(() -> {
-                    localitySqlHelper.DELETE_LOCALITY.execute();
+                    localitySqlHelper.DELETE.execute();
                     for (Locality locality: localities) {
-                        if(localitySqlHelper.ADD_LOCALITY.execute(locality))
+                        if(localitySqlHelper.ADD.execute(locality))
                             if(BuildConfig.DEBUG)
                                 Log.i("Inserted",  locality.getName());
                     }

@@ -156,7 +156,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         holder.mTvName.setText(customer.getName());
         holder.mTvIdentification.setText(customer.getTin());
 
-        Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)), position);
+        String index = String.valueOf(position);
+        int lenght = index.length();
+
+        Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)),
+                Integer.valueOf(index.substring(lenght - 1)));
 
         if(customer.isView())
             holder.expand();

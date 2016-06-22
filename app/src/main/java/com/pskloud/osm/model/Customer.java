@@ -1,127 +1,168 @@
 package com.pskloud.osm.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Created by andres on 08/06/16.
  */
 public class Customer implements Serializable{
 
-    String name;
-    String address;
-    List<String> phones = new ArrayList<>();
-    String tin;
-    String identification;//optional
-    String code;//optional
-    int price;//optional
-    String type;//optional
-    String tag;//optional
+    private String code;
+    private String name;
+    private String address;
+    private List<String> phones = new ArrayList<>();
+    private String tin;
+    private String zone;
+    private int taxType;
+    boolean sync = true;
+    boolean isNew;
     boolean isView;
-    boolean sync;
 
-    public Customer(String name, String address, List<String> phones, String tin,
-                    String identification, String code, int price, String type, String tag,
-                    boolean sync) {
-        this.name = name;
-        this.address = address;
-        this.phones = phones;
-        this.tin = tin;
-        this.identification = identification;
+    public Customer(String code, String name, String address, List<String> phones, String tin,
+                    String zone, int taxType, boolean sync, boolean isNew, boolean isView) {
         this.code = code;
-        this.price = price;
-        this.type = type;
-        this.tag = tag;
-        this.sync = sync;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<String> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(List<String> phones) {
         this.phones = phones;
-    }
-
-    public String getTin() {
-        return tin;
-    }
-
-    public void setTin(String tin) {
         this.tin = tin;
+        this.zone = zone;
+        this.taxType = taxType;
+        this.sync = sync;
+        this.isNew = isNew;
+        this.isView = isView;
     }
 
-    public String getIdentification() {
-        return identification;
+    private Customer(Builder builder) {
+        isView = builder.isView;
+        isNew = builder.isNew;
+        sync = builder.sync;
+        taxType = builder.taxType;
+        zone = builder.zone;
+        tin = builder.tin;
+        phones = builder.phones;
+        address = builder.address;
+        name = builder.name;
+        code = builder.code;
     }
 
-    public void setIdentification(String identification) {
-        this.identification = identification;
+    public static final class Builder {
+        private boolean isView;
+        private boolean isNew;
+        private boolean sync;
+        private int taxType;
+        private String zone;
+        private String tin;
+        private List<String> phones;
+        private String address;
+        private String name;
+        private String code;
+
+        public Builder() {
+        }
+
+        public Builder isView(boolean val) {
+            isView = val;
+            return this;
+        }
+
+        public Builder isNew(boolean val) {
+            isNew = val;
+            return this;
+        }
+
+        public Builder sync(boolean val) {
+            sync = val;
+            return this;
+        }
+
+        public Builder taxType(int val) {
+            taxType = val;
+            return this;
+        }
+
+        public Builder zone(String val) {
+            zone = val;
+            return this;
+        }
+
+        public Builder tin(String val) {
+            tin = val;
+            return this;
+        }
+
+        public Builder phones(List<String> val) {
+            phones = val;
+            return this;
+        }
+
+        public Builder address(String val) {
+            address = val;
+            return this;
+        }
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder code(String val) {
+            code = val;
+            return this;
+        }
+
+        public Customer build() {
+            return new Customer(this);
+        }
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public String getName() {
+        return name;
     }
 
-    public int getPrice() {
-        return price;
+    public String getAddress() {
+        return address;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public List<String> getPhones() {
+        return phones;
     }
 
-    public String getType() {
-        return type;
+    public String getTin() {
+        return tin;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getZone() {
+        return zone;
     }
 
-    public String getTag() {
-        return tag;
+    public int getTaxType() {
+        return taxType;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public boolean isSync() {
+        return sync;
+    }
+
+    public boolean isNew() {
+        return isNew;
     }
 
     public boolean isView() {
         return isView;
     }
 
-    public void setView(boolean view) {
-        isView = view;
+    public void setNew(boolean aNew) {
+        isNew = aNew;
     }
 
-    public boolean isSync() {
-        return sync;
+    public void setView(boolean view) {
+        isView = view;
     }
 
     public void setSync(boolean sync) {

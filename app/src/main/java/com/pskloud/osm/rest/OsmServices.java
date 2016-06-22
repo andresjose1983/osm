@@ -4,6 +4,7 @@ import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.model.Locality;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -16,7 +17,9 @@ public interface OsmServices {
     @GET("/customers")
     void getCustomers(Callback<List<Customer>> listCallback);
 
-    // TODO esperar por jonathan
-    @GET("/localities")
+    @GET("/customers/zones")
     void getLocalities(Callback<List<Locality>> listCallback);
+
+    @GET("/customer/tax-types")
+    void getTaxTypes(Callback<Map<String, Integer>> mapCallback);
 }

@@ -5,6 +5,7 @@ import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.model.Locality;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -35,6 +36,10 @@ public abstract class RestClient {
         mOsmServices.getLocalities(callback);
     };
 
+    public static final GetTaxTypes GET_TAX_TYPES = (callback) -> {
+        mOsmServices.getTaxTypes(callback);
+    };
+
     @FunctionalInterface
     public interface GetCustomers{
         void getResponse(Callback<List<Customer>> callback);
@@ -43,5 +48,10 @@ public abstract class RestClient {
     @FunctionalInterface
     public interface GetLocalities{
         void getResponse(Callback<List<Locality>> callback);
+    }
+
+    @FunctionalInterface
+    public interface GetTaxTypes{
+        void getResponse(Callback<Map<String, Integer>> callback);
     }
 }

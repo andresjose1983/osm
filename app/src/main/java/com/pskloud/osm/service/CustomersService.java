@@ -49,9 +49,11 @@ public class CustomersService extends IntentService {
             @Override
             public void success(List<Customer> customers, Response response) {
                 new Thread(() -> {
-                    customerSqlHelper.DELETE_CUSTOMER.execute();
+                    customerSqlHelper.DELETE.execute();
                     for (Customer customer: customers) {
-                        if(customerSqlHelper.ADD_CUSTOMER.execute(customer))
+                        customer.setNew(false);
+                        customer.setSync(true);
+                        if(customerSqlHelper.ADD.execute(customer))
                             if(BuildConfig.DEBUG)
                                 Log.i("Inserted",  customer.getName());
                     }
@@ -63,6 +65,8 @@ public class CustomersService extends IntentService {
 
             @Override
             public void failure(RetrofitError error) {
+                if(BuildConfig.DEBUG)
+                    Log.e(SERVICE_NAME, error.getMessage());
                 NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_CUSTOMER);
             }
         });

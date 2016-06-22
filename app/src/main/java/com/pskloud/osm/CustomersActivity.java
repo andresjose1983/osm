@@ -63,7 +63,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     protected void onResume() {
         super.onResume();
-        mCustomers = customerSqlHelper.GET_CUSTOMERS.get();
+        mCustomers = customerSqlHelper.GET.execute();
 
         mCustomerAdapter = new CustomerAdapter(this, mCustomers);
         mRvCustomers.setAdapter(mCustomerAdapter);

@@ -9,22 +9,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
-import com.pskloud.osm.model.Locality;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Mendez Fernandez on 18/06/2016.
  */
-public class LocalitySqlHelper extends SQLiteOpenHelper{
+public class TaxTypesSqlHelper extends SQLiteOpenHelper{
 
     public static final String DATABASE_NAME = "osm.db";
-    public static final String TABLE_NAME  = "locality";
-    public static final String CODE  = "code";
+    public static final String TABLE_NAME  = "tax";
+    public static final String CODE  = "id";
     public static final String NAME  = "name";
 
-    public LocalitySqlHelper(Context context) {
+    public TaxTypesSqlHelper(Context context) {
         super(context, DATABASE_NAME, null, BuildConfig.VERSION_BD);
     }
 
@@ -35,7 +34,7 @@ public class LocalitySqlHelper extends SQLiteOpenHelper{
                 .append(TABLE_NAME)
                 .append(" ( ")
                 .append(CODE)
-                .append(" text, ")
+                .append(" integer, ")
                 .append(NAME)
                 .append(" text) ")
                 .toString());
@@ -47,12 +46,12 @@ public class LocalitySqlHelper extends SQLiteOpenHelper{
         onCreate(sqLiteDatabase);
     }
 
-    final public AddLocality ADD = (locality)->{
+    final public AddTaxType ADD = (id, description)->{
         SQLiteDatabase writableDatabase = this.getWritableDatabase();
         if(writableDatabase != null && writableDatabase.isOpen()){
             ContentValues contentValues = new ContentValues();
-            contentValues.put(CODE, locality.getCode().toUpperCase());
-            contentValues.put(NAME, locality.getName().toUpperCase());
+            contentValues.put(CODE, id);
+            contentValues.put(NAME, description);
             writableDatabase.insert(TABLE_NAME, null, contentValues);
 
             writableDatabase.close();
@@ -61,8 +60,9 @@ public class LocalitySqlHelper extends SQLiteOpenHelper{
         return true;
     };
 
-    final public GetLocalities GET = () -> {
-        List<Locality> localities = new ArrayList<>();
+    final public GetTaxTypes GET = () -> {
+        Map<String, Integer> map = new HashMap<>();
+
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
             try{
@@ -76,23 +76,21 @@ public class LocalitySqlHelper extends SQLiteOpenHelper{
                 if(cursor != null){
                     cursor.moveToFirst();
                     while(cursor.isAfterLast() == false){
-                        localities.add(new Locality.Builder()
-                                .code(cursor.getString(0))
-                                .name(cursor.getString(1)).build());
+                        map.put(cursor.getString(1), cursor.getInt(0));
                         cursor.moveToNext();
                     }
                 }
                 cursor.close();
             }catch(SQLException e){
                 if(BuildConfig.DEBUG)
-                    Log.e(LocalitySqlHelper.class.getCanonicalName(), e.getMessage());
+                    Log.e(TaxTypesSqlHelper.class.getCanonicalName(), e.getMessage());
             }
         }
         sqLiteOpenHelper.close();
-        return localities;
+        return map;
     };
 
-    public DeleteLocalities DELETE = () -> {
+    public DeleteTaxType DELETE = () -> {
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
             sqLiteOpenHelper.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -103,17 +101,17 @@ public class LocalitySqlHelper extends SQLiteOpenHelper{
     };
 
     @FunctionalInterface
-    public interface AddLocality{
-        boolean execute(Locality locality);
+    public interface AddTaxType{
+        boolean execute(int id, String description);
     }
 
     @FunctionalInterface
-    public interface GetLocalities{
-        List<Locality> execute();
+    public interface GetTaxTypes{
+        Map<String, Integer> execute();
     }
 
     @FunctionalInterface
-    public interface DeleteLocalities{
+    public interface DeleteTaxType{
         boolean execute();
     }
 }

@@ -49,19 +49,22 @@ public class SettingsActivity extends DefaultActivity {
                     if(!Functions.checkInternetConnection(this)){
                         showSnackBar(mClView, R.string.check_internet_connection);
                     }else{
-                        if (mSvCustomer.isChecked()) {
-
+                        if (mSvCustomer.isChecked() || mSvLocality.isChecked()) {
                             DialogInterface.OnClickListener onClickListener =(dialogInterface, i) -> {
-                                if(!CustomersService.isRunning(this)) {
-                                    startService(new Intent(this, CustomersService.class));
-                                }else
-                                    showSnackBar(mClView, R.string.error_service_running);
 
-                                if(!LocalitiesService.isRunning(this)) {
-                                    startService(new Intent(this, LocalitiesService.class));
-                                }else
-                                    showSnackBar(mClView, R.string.error_service_running);
+                                if(mSvCustomer.isChecked()){
+                                    if(CustomersService.isRunning(this))
+                                        stopService(new Intent(this, CustomersService.class));
+                                    else
+                                        startService(new Intent(this, CustomersService.class));
+                                }
 
+                                if (mSvLocality.isChecked() ) {
+                                    if(LocalitiesService.isRunning(this)) {
+                                        stopService(new Intent(this, LocalitiesService.class));
+                                    }else
+                                        startService(new Intent(this, LocalitiesService.class));
+                                }
                             };
                             DialogHelper.confirm(this, R.string.content_sync, onClickListener);
                         }

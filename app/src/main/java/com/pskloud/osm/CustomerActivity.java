@@ -5,13 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.pskloud.osm.model.Customer;
+import com.pskloud.osm.model.Locality;
+import com.pskloud.osm.model.Tax;
 import com.pskloud.osm.util.CustomerSqlHelper;
+import com.pskloud.osm.util.LocalitySqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,8 @@ public class CustomerActivity extends DefaultActivity {
     private EditText mEtName;
     private EditText mEtTelephone;
     private EditText mEtAddress;
+    private Spinner mSpLocality;
+    private Spinner mSpTax;
     private TextInputLayout mTilIdentification;
     private TextInputLayout mTilName;
     private TextInputLayout mTilPhone;
@@ -30,9 +37,11 @@ public class CustomerActivity extends DefaultActivity {
     private CoordinatorLayout mClCustomer;
 
     private CustomerSqlHelper customerSqlHelper;
+    private LocalitySqlHelper localitySqlHelper;
 
     private static final String CUSTOMER = "com.pskloud.osm.intent.CUSTOMER";
     private Customer customer;
+    private List<Locality> localities;
 
     public static void show(Context context, final Customer customer){
         context.startActivity(new Intent(context, CustomerActivity.class)
@@ -60,7 +69,7 @@ public class CustomerActivity extends DefaultActivity {
                     customer = getCustomer();
                     validateCustomer();
                     if(!isErrorEnable()){
-                        if (customerSqlHelper.ADD_CUSTOMER.execute(customer))
+                        if (customerSqlHelper.ADD.execute(customer))
                             super.showSnackBar(mClCustomer, R.string.customer_saved);
                     }else
                         customer = null;
@@ -68,7 +77,7 @@ public class CustomerActivity extends DefaultActivity {
                     customer = getCustomer();
                     validateCustomer();
                     if(!isErrorEnable()) {
-                        if (customerSqlHelper.UPDATE_CUSTOMER.execute(customer))
+                        if (customerSqlHelper.UPDATE.execute(customer))
                             super.showSnackBar(mClCustomer, R.string.customer_saved);
                     }
                 }
@@ -130,12 +139,32 @@ public class CustomerActivity extends DefaultActivity {
         mTilPhone = (TextInputLayout)findViewById(R.id.til_phone);
         mTilAddress = (TextInputLayout)findViewById(R.id.til_address);
 
+        mSpLocality = (Spinner)findViewById(R.id.sp_locality);
+        mSpTax = (Spinner)findViewById(R.id.sp_tax);
+
         customerSqlHelper = new CustomerSqlHelper(this);
+        localitySqlHelper = new LocalitySqlHelper(this);
     }
 
     @Override
     public void setUp() {
+
+        localities = localitySqlHelper.GET.execute();
+        if(localities != null){
+            String[] strings = new String[localities.size()];
+            int index = 0;
+            for (Locality locality: localities) {
+                strings[index] = locality.getName();
+                ++index;
+            }
+            ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, strings);
+            mSpLocality.setAdapter(stringArrayAdapter);
+        }
+        mSpTax.setAdapter(new ArrayAdapter<Tax>(this, android.R.layout.simple_list_item_1, Tax.values()));
+
         customer = (Customer) getIntent().getExtras().getSerializable(CUSTOMER);
+
         if(customer != null){
             mSpIdentification.setSelection(getIdentificationSelected());
             mEtIdentification.setText(customer.getTin().substring(2));
@@ -143,6 +172,9 @@ public class CustomerActivity extends DefaultActivity {
             mEtAddress.setText(customer.getAddress());
             if(customer.getPhones() != null && !customer.getPhones().isEmpty())
                 mEtTelephone.setText(customer.getPhones().get(0));
+            mSpLocality.setSelection(getLocalitySelection(customer.getZone()), true);
+            mSpTax.setSelection(getTaxSelection(customer.getTaxType()));
+
         }
     }
 
@@ -171,15 +203,43 @@ public class CustomerActivity extends DefaultActivity {
 
         String code = mSpIdentification.getSelectedItem().toString()+"-"+
                 getText(mEtIdentification);
-        List<String> strings = new ArrayList<>();
-        strings.add(getText(mEtTelephone));
+        List<String> telephones = new ArrayList<>();
+        telephones.add(getText(mEtTelephone));
 
-        return customer = new Customer(getText(mEtName),
-                getText(mEtAddress),
-                strings,
-                code ,
-                code,
-                customer == null?code:customer.getCode(),
-                1, "01", "01", false);
+        return new Customer.Builder().code(customer == null?code.replace("-", ""):customer.getCode())
+                .name( getText(mEtName))
+                .phones(telephones)
+                .address(getText(mEtAddress))
+                .isNew(customer == null?true:customer.isNew())
+                .sync(customer == null?false: customer.isSync())
+                .tin(code)
+                .zone(localities.get(mSpLocality.getSelectedItemPosition()).getCode())
+                .taxType(Tax.values()[mSpTax.getSelectedItemPosition()].getId())
+                .build();
+    }
+
+    private int getLocalitySelection(String code){
+        int index = 0;
+        Log.e("codigo ", code);
+        for (Locality locality : localities) {
+            Log.e("hola", locality.getCode());
+            if(code.equals(locality.getCode())){
+                Log.e("codigo ", "entro ");
+                return index;
+            }
+            ++index;
+        }
+        return 0;
+    }
+
+    private int getTaxSelection(int id){
+        int index = 0;
+        for (Tax tax : Tax.values()) {
+            if(id == tax.getId()){
+                return index;
+            }
+            ++index;
+        }
+        return 0;
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Switch;
 
 import com.pskloud.osm.service.CustomersService;
 import com.pskloud.osm.service.LocalitiesService;
+import com.pskloud.osm.service.TaxTypesService;
 import com.pskloud.osm.util.DialogHelper;
 import com.pskloud.osm.util.Functions;
 
@@ -23,6 +24,7 @@ public class SettingsActivity extends DefaultActivity {
     private Switch mSvCustomer;
     private Switch mSvConnection;
     private Switch mSvLocality;
+    private Switch mSvTaxTypes;
     private CoordinatorLayout mClView;
 
     public static void show(final Context context){
@@ -49,7 +51,7 @@ public class SettingsActivity extends DefaultActivity {
                     if(!Functions.checkInternetConnection(this)){
                         showSnackBar(mClView, R.string.check_internet_connection);
                     }else{
-                        if (mSvCustomer.isChecked() || mSvLocality.isChecked()) {
+                        if (mSvCustomer.isChecked() || mSvLocality.isChecked() || mSvTaxTypes.isChecked()) {
                             DialogInterface.OnClickListener onClickListener =(dialogInterface, i) -> {
 
                                 if(mSvCustomer.isChecked()){
@@ -64,6 +66,13 @@ public class SettingsActivity extends DefaultActivity {
                                         stopService(new Intent(this, LocalitiesService.class));
                                     }else
                                         startService(new Intent(this, LocalitiesService.class));
+                                }
+
+                                if (mSvTaxTypes.isChecked() ) {
+                                    if(TaxTypesService.isRunning(this)) {
+                                        stopService(new Intent(this, TaxTypesService.class));
+                                    }else
+                                        startService(new Intent(this, TaxTypesService.class));
                                 }
                             };
                             DialogHelper.confirm(this, R.string.content_sync, onClickListener);
@@ -84,6 +93,7 @@ public class SettingsActivity extends DefaultActivity {
         mSvCustomer = (Switch)findViewById(R.id.sv_customer);
         mSvConnection = (Switch)findViewById(R.id.sv_connection);
         mSvLocality = (Switch)findViewById(R.id.sv_locality);
+        mSvTaxTypes = (Switch)findViewById(R.id.sv_tax_types);
         mClView = (CoordinatorLayout) findViewById(R.id.cl_view);
     }
 

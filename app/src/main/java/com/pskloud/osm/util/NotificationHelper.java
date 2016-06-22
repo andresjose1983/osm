@@ -20,7 +20,10 @@ public class NotificationHelper {
     public static final int NOTIFICATION_DOWNLOADING_CUSTOMER = 1;
     public static final int NOTIFICATION_DOWNLOADED_CUSTOMER = 2;
     public static final int NOTIFICATION_DOWNLOADING_LOCALITY = 3;
-    public static final int NOTIFICATION_DOWNLOADED_LOCALITY = 2;
+    public static final int NOTIFICATION_DOWNLOADED_LOCALITY = 4;
+    public static final int NOTIFICATION_DOWNLOADING_TAX_TYPES = 5;
+    public static final int NOTIFICATION_DOWNLOADED_TAX_TYPES = 6;
+
     // classes using for creating notification
 
     private static NotificationManagerCompat mNotificationManager;

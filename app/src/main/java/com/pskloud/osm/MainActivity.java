@@ -41,6 +41,7 @@ public class MainActivity extends DefaultActivity
         super.onResume();
         NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_CUSTOMER);
         NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY);
+        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPES);
     }
 
     @Override

@@ -66,10 +66,13 @@
     <string name="title_activity_settings">Settings</string>
     <string name="download_customer">Download customer</string>
     <string name="download_locality">Download locality</string>
+    <string name="download_tax_types">Download tax types</string>
     <string name="notification_text_customer">Downloading Customers...</string>
     <string name="notification_text_localities">Downloading Localities...</string>
+    <string name="notification_text_tax_types">Downloading tax types...</string>
     <string name="notification_customer_downloaded">Your customer data was downloaded...</string>
     <string name="notification_locality_downloaded">Your locality data was downloaded...</string>
+    <string name="notification_locality_tax_types">Your tax types data was downloaded...</string>
     <string name="status_connection">Status connection</string>
     <string name="check_connection">Check your status connection</string>
     <string name="check_internet_connection">Check your internet connection</string>

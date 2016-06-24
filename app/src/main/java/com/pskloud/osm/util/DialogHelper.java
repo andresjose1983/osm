@@ -3,6 +3,7 @@ package com.pskloud.osm.util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 
 import com.pskloud.osm.R;
 
@@ -11,25 +12,48 @@ import com.pskloud.osm.R;
  */
 public final class DialogHelper {
 
+    private static AlertDialog builder;
+
     public static void confirm(final Context context, final int content,
                                final DialogInterface.OnClickListener positive){
 
-        AlertDialog.Builder builder = get(context);
-        builder.setMessage(content);
-                builder.setPositiveButton(R.string.ok, positive);
-        builder.setNegativeButton(R.string.cancel, null);
+        if(builder == null)
+            builder = get(context);
+        else {
+            builder.dismiss();
+            builder = null;
+            builder = get(context);
+        }
+        builder.setMessage(context.getString(content));
+
+        builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.ok), positive );
+        builder.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        } );
+
         builder.show();
     }
 
     public static void ok(final Context context, final int content){
 
-        AlertDialog.Builder builder = get(context);
-        builder.setMessage(content);
-        builder.setPositiveButton(R.string.ok, null);
+        if(builder == null)
+            builder = get(context);
+        else {
+            builder.dismiss();
+            builder = null;
+            builder = get(context);
+        }
+        builder.setMessage(context.getString(content));
+        builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.ok), (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        });
         builder.show();
     }
 
-    private static AlertDialog.Builder get(final Context context){
-        return  new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+    private static AlertDialog get(final Context context){
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
+            return  new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle).create();
+        else
+            return  new AlertDialog.Builder(context).create();
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.MainActivity;
+import com.pskloud.osm.OsmApplication;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.rest.RestClient;
@@ -66,9 +67,8 @@ public class CustomersService extends IntentService {
 
             @Override
             public void failure(RetrofitError error) {
-                if(BuildConfig.DEBUG)
-                    Log.e(SERVICE_NAME, error.getMessage());
                 NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_CUSTOMER);
+                NotificationHelper.sendBroadcastError(OsmApplication.getInstance(), error);
             }
         });
     }

@@ -10,13 +10,10 @@ import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.MainActivity;
 import com.pskloud.osm.OsmApplication;
 import com.pskloud.osm.R;
-import com.pskloud.osm.model.Locality;
 import com.pskloud.osm.rest.RestClient;
-import com.pskloud.osm.util.LocalitySqlHelper;
 import com.pskloud.osm.util.NotificationHelper;
 import com.pskloud.osm.util.TaxTypesSqlHelper;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
@@ -67,6 +64,7 @@ public class TaxTypesService extends IntentService {
             @Override
             public void failure(RetrofitError error) {
                 NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPE);
+                NotificationHelper.sendBroadcastError(OsmApplication.getInstance(), error);
             }
         });
     }

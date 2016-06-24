@@ -8,11 +8,10 @@ import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.MainActivity;
+import com.pskloud.osm.OsmApplication;
 import com.pskloud.osm.R;
-import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.model.Product;
 import com.pskloud.osm.rest.RestClient;
-import com.pskloud.osm.util.CustomerSqlHelper;
 import com.pskloud.osm.util.NotificationHelper;
 import com.pskloud.osm.util.ProductsSqlHelper;
 
@@ -65,9 +64,8 @@ public class ProductsService extends IntentService {
 
             @Override
             public void failure(RetrofitError error) {
-                if(BuildConfig.DEBUG)
-                    Log.e(SERVICE_NAME, error.getMessage());
                 NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_PRODUCT);
+                NotificationHelper.sendBroadcastError(OsmApplication.getInstance(), error);
             }
         });
     }

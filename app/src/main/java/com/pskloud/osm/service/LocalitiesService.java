@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.MainActivity;
+import com.pskloud.osm.OsmApplication;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Locality;
 import com.pskloud.osm.rest.RestClient;
@@ -63,6 +64,7 @@ public class LocalitiesService extends IntentService {
             @Override
             public void failure(RetrofitError error) {
                 NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_LOCALITY);
+                NotificationHelper.sendBroadcastError(OsmApplication.getInstance(), error);
             }
         });
     }

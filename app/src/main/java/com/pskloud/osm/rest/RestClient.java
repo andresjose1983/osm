@@ -1,6 +1,5 @@
 package com.pskloud.osm.rest;
 
-import android.os.Build;
 import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
@@ -11,7 +10,6 @@ import com.pskloud.osm.model.Product;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import retrofit.Callback;
 import retrofit.ErrorHandler;
@@ -32,8 +30,7 @@ public abstract class RestClient {
                 .setErrorHandler(new ErrorHandler() {
                     @Override
                     public Throwable handleError(RetrofitError cause) {
-                        Log.e(RestClient.class.getCanonicalName(), cause.getResponse().getReason());
-                        return null;
+                        return cause;
                     }
                 })
                 .setLogLevel(BuildConfig.DEBUG?RestAdapter.LogLevel.FULL: RestAdapter.LogLevel.NONE)
@@ -61,16 +58,20 @@ public abstract class RestClient {
         try {
             return mOsmServices.createCustomer(customerResponse);
         }catch (Exception e){
-            return null;
+            if(BuildConfig.DEBUG)
+                Log.e(RestClient.class.getCanonicalName(), e.getMessage());
         }
+        return null;
     };
 
     public static final UpdateCustomer UPDATE = (customerResponse) -> {
         try {
             return mOsmServices.updateCustomer(customerResponse);
         }catch (Exception e){
-            return null;
+            if(BuildConfig.DEBUG)
+                Log.e(RestClient.class.getCanonicalName(), e.toString());
         }
+        return null;
     };
 
     public static final GetProducts GET_PRODUCTS = (callback) -> {

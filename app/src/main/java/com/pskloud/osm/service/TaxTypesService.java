@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
+import com.pskloud.osm.MainActivity;
 import com.pskloud.osm.OsmApplication;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Locality;
@@ -43,9 +44,9 @@ public class TaxTypesService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        NotificationHelper.show(this, R.string.notification_text_tax_types,
-                NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES);
-        RestClient.GET_TAX_TYPES.getResponse(new Callback<Map<String, Integer>>() {
+        NotificationHelper.show(this, MainActivity.class, R.string.notification_text_tax_types,
+                NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES, true);
+        RestClient.GET_TAX_TYPES.execute(new Callback<Map<String, Integer>>() {
             @Override
             public void success(Map<String, Integer> map, Response response) {
                 new Thread(() -> {
@@ -56,15 +57,15 @@ public class TaxTypesService extends IntentService {
                                 Log.i("Inserted", entry.getKey());
                     }
                     NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES);
-                    NotificationHelper.show(OsmApplication.getInstance(),
-                            R.string.notification_locality_tax_types, NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPES);
+                    NotificationHelper.show(TaxTypesService.this, MainActivity.class,
+                            R.string.notification_locality_tax_types,
+                            NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPES,
+                            true);
                 }).start();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                if(BuildConfig.DEBUG)
-                    Log.e("Se jodio", error.getMessage());
                 NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES);
             }
         });

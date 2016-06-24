@@ -168,4 +168,5 @@ public class Customer implements Serializable{
     public void setSync(boolean sync) {
         this.sync = sync;
     }
+
 }

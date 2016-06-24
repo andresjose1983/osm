@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -14,9 +13,12 @@ import android.widget.Spinner;
 
 import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.model.Locality;
-import com.pskloud.osm.model.Tax;
+import com.pskloud.osm.model.TypesOfTax;
 import com.pskloud.osm.util.CustomerSqlHelper;
+import com.pskloud.osm.util.DialogHelper;
 import com.pskloud.osm.util.LocalitySqlHelper;
+import com.pskloud.osm.util.NotificationHelper;
+import com.pskloud.osm.util.TaxTypesSqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +40,12 @@ public class CustomerActivity extends DefaultActivity {
 
     private CustomerSqlHelper customerSqlHelper;
     private LocalitySqlHelper localitySqlHelper;
+    private TaxTypesSqlHelper taxTypesSqlHelper;
 
     private static final String CUSTOMER = "com.pskloud.osm.intent.CUSTOMER";
     private Customer customer;
     private List<Locality> localities;
+    private List<TypesOfTax> typesOfTaxes;
 
     public static void show(Context context, final Customer customer){
         context.startActivity(new Intent(context, CustomerActivity.class)
@@ -69,8 +73,13 @@ public class CustomerActivity extends DefaultActivity {
                     customer = getCustomer();
                     validateCustomer();
                     if(!isErrorEnable()){
-                        if (customerSqlHelper.ADD.execute(customer))
+                        long result = customerSqlHelper.ADD.execute(customer);
+                        if (result > 0)
                             super.showSnackBar(mClCustomer, R.string.customer_saved);
+                        else if(result == -1){
+                            DialogHelper.ok(this, R.string.error_customer_exists);
+                            customer = null;
+                        }
                     }else
                         customer = null;
                 }else{
@@ -127,6 +136,7 @@ public class CustomerActivity extends DefaultActivity {
 
     @Override
     public void init() {
+
         mSpIdentification = (Spinner)findViewById(R.id.sp_identification);
         mEtIdentification = (EditText)findViewById(R.id.et_identification);
         mEtName = (EditText)findViewById(R.id.et_name);
@@ -144,6 +154,7 @@ public class CustomerActivity extends DefaultActivity {
 
         customerSqlHelper = new CustomerSqlHelper(this);
         localitySqlHelper = new LocalitySqlHelper(this);
+        taxTypesSqlHelper = new TaxTypesSqlHelper(this);
     }
 
     @Override
@@ -161,7 +172,19 @@ public class CustomerActivity extends DefaultActivity {
                     android.R.layout.simple_list_item_1, strings);
             mSpLocality.setAdapter(stringArrayAdapter);
         }
-        mSpTax.setAdapter(new ArrayAdapter<Tax>(this, android.R.layout.simple_list_item_1, Tax.values()));
+
+        typesOfTaxes = taxTypesSqlHelper.GET.execute();
+        if(typesOfTaxes != null){
+            String[] strings = new String[typesOfTaxes.size()];
+            int index = 0;
+            for (TypesOfTax typesOfTax: typesOfTaxes) {
+                strings[index] = typesOfTax.getName();
+                ++index;
+            }
+            ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1, strings);
+            mSpTax.setAdapter(stringArrayAdapter);
+        }
 
         customer = (Customer) getIntent().getExtras().getSerializable(CUSTOMER);
 
@@ -173,7 +196,7 @@ public class CustomerActivity extends DefaultActivity {
             if(customer.getPhones() != null && !customer.getPhones().isEmpty())
                 mEtTelephone.setText(customer.getPhones().get(0));
             mSpLocality.setSelection(getLocalitySelection(customer.getZone()), true);
-            mSpTax.setSelection(getTaxSelection(customer.getTaxType()));
+            mSpTax.setSelection(getTypeOfTax(customer.getTaxType()));
 
         }
     }
@@ -210,21 +233,18 @@ public class CustomerActivity extends DefaultActivity {
                 .name( getText(mEtName))
                 .phones(telephones)
                 .address(getText(mEtAddress))
-                .isNew(customer == null?true:customer.isNew())
-                .sync(customer == null?false: customer.isSync())
+                .isNew(customer == null)
+                .sync(false)
                 .tin(code)
                 .zone(localities.get(mSpLocality.getSelectedItemPosition()).getCode())
-                .taxType(Tax.values()[mSpTax.getSelectedItemPosition()].getId())
+                .taxType(typesOfTaxes.get(mSpTax.getSelectedItemPosition()).getCode())
                 .build();
     }
 
     private int getLocalitySelection(String code){
         int index = 0;
-        Log.e("codigo ", code);
         for (Locality locality : localities) {
-            Log.e("hola", locality.getCode());
             if(code.equals(locality.getCode())){
-                Log.e("codigo ", "entro ");
                 return index;
             }
             ++index;
@@ -232,10 +252,10 @@ public class CustomerActivity extends DefaultActivity {
         return 0;
     }
 
-    private int getTaxSelection(int id){
+    private int getTypeOfTax(int code){
         int index = 0;
-        for (Tax tax : Tax.values()) {
-            if(id == tax.getId()){
+        for (TypesOfTax typesOfTax : typesOfTaxes) {
+            if(code == typesOfTax.getCode()){
                 return index;
             }
             ++index;

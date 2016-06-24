@@ -1,15 +1,22 @@
 package com.pskloud.osm.rest;
 
+import android.os.Build;
+import android.util.Log;
+
 import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.model.Customer;
+import com.pskloud.osm.model.CustomerResponse;
 import com.pskloud.osm.model.Locality;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import retrofit.Callback;
+import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
-
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by Mendez Fernandez on 17/06/2016.
@@ -20,7 +27,16 @@ public abstract class RestClient {
 
     private static OsmServices mOsmServices;
     static{
-        mRestAdapter =new RestAdapter.Builder().setEndpoint(BuildConfig.URL).build();
+        mRestAdapter =new RestAdapter.Builder()
+                .setErrorHandler(new ErrorHandler() {
+                    @Override
+                    public Throwable handleError(RetrofitError cause) {
+                        Log.e(RestClient.class.getCanonicalName(), cause.getResponse().getReason());
+                        return null;
+                    }
+                })
+                .setLogLevel(BuildConfig.DEBUG?RestAdapter.LogLevel.FULL: RestAdapter.LogLevel.NONE)
+                .setEndpoint(BuildConfig.URL).build();
         init();
     }
 
@@ -40,18 +56,44 @@ public abstract class RestClient {
         mOsmServices.getTaxTypes(callback);
     };
 
+    public static final CreateCustomer CREATE = (customerResponse) -> {
+        try {
+            return mOsmServices.createCustomer(customerResponse);
+        }catch (Exception e){
+            return null;
+        }
+    };
+
+    public static final UpdateCustomer UPDATE = (customerResponse) -> {
+        try {
+            return mOsmServices.updateCustomer(customerResponse);
+        }catch (Exception e){
+            return null;
+        }
+    };
+
     @FunctionalInterface
     public interface GetCustomers{
-        void getResponse(Callback<List<Customer>> callback);
+        void execute(Callback<List<Customer>> callback);
     }
 
     @FunctionalInterface
     public interface GetLocalities{
-        void getResponse(Callback<List<Locality>> callback);
+        void execute(Callback<List<Locality>> callback);
     }
 
     @FunctionalInterface
     public interface GetTaxTypes{
-        void getResponse(Callback<Map<String, Integer>> callback);
+        void execute(Callback<Map<String, Integer>> callback);
+    }
+
+    @FunctionalInterface
+    public interface CreateCustomer{
+        Response execute(CustomerResponse customerResponse);
+    }
+
+    @FunctionalInterface
+    public interface UpdateCustomer{
+        Response execute(CustomerResponse customerResponse);
     }
 }

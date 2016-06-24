@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.model.Customer;
@@ -40,7 +41,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                 .append(TABLE_NAME)
                 .append(" ( ")
                 .append(CODE)
-                .append(" text, ")
+                .append(" text primary key, ")
                 .append(NAME)
                 .append(" text, ")
                 .append(ADDRESS)
@@ -70,11 +71,14 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         SQLiteDatabase writableDatabase = this.getWritableDatabase();
         if(writableDatabase != null && writableDatabase.isOpen()){
             ContentValues contentValues = setConteValues(customer);
-            writableDatabase.insert(TABLE_NAME, null, contentValues);
+            long result = writableDatabase.insert(TABLE_NAME, null, contentValues);
             writableDatabase.close();
+            if(BuildConfig.DEBUG)
+                Log.i(CustomerSqlHelper.class.getCanonicalName(), "" + result);
+            return result;
         }
 
-        return true;
+        return -1;
     };
 
     private ContentValues setConteValues(Customer customer){
@@ -107,16 +111,34 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
     };
 
     final public GetCustomers GET = () -> {
+        return get(new StringBuilder()
+                .append("select * from ")
+                .append(TABLE_NAME)
+                .append(" order by ")
+                .append(NAME)
+                .append(" asc")
+                .toString());
+    };
+
+    final public GetCustomers GET_PENDING = () -> {
+        return get(new StringBuilder()
+                .append("select * from ")
+                .append(TABLE_NAME)
+                .append(" where ")
+                .append(SYNC)
+                .append("=")
+                .append(0)
+                .append(" order by ")
+                .append(NAME)
+                .append(" asc")
+                .toString());
+    };
+
+    private List<Customer> get(final String sql) {
         List<Customer> customers = new ArrayList<>();
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
-            Cursor cursor = sqLiteOpenHelper.rawQuery(new StringBuilder()
-                    .append("select * from ")
-                    .append(TABLE_NAME)
-                    .append(" order by ")
-                    .append(NAME)
-                    .append(" asc")
-                    .toString(), null);
+            Cursor cursor = sqLiteOpenHelper.rawQuery(sql, null);
             if(cursor != null){
                 cursor.moveToFirst();
                 List<String> telephones;
@@ -125,16 +147,16 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                     telephones.add(cursor.getString(3));
                     customers.add(new Customer
                             .Builder()
-                    .code(cursor.getString(0))
-                    .name(cursor.getString(1))
-                    .address(cursor.getString(2))
-                    .phones(telephones)
-                    .tin(cursor.getString(4))
-                    .zone(cursor.getString(5))
-                    .taxType(cursor.getInt(6))
-                    .isNew(cursor.getInt(7) == 1? true: false)
-                    .sync(cursor.getInt(8) == 1? true: false)
-                    .isView(false).build());
+                            .code(cursor.getString(0))
+                            .name(cursor.getString(1))
+                            .address(cursor.getString(2))
+                            .phones(telephones)
+                            .tin(cursor.getString(4))
+                            .zone(cursor.getString(5))
+                            .taxType(cursor.getInt(6))
+                            .isNew(cursor.getInt(7) == 1? true: false)
+                            .sync(cursor.getInt(8) == 1? true: false)
+                            .isView(false).build());
                     cursor.moveToNext();
                 }
             }
@@ -142,7 +164,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         }
         sqLiteOpenHelper.close();
         return customers;
-    };
+    }
 
     public DeleteCustomers DELETE = () -> {
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
@@ -156,7 +178,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
 
     @FunctionalInterface
     public interface AddCustomer{
-        boolean execute(Customer customer);
+        long execute(Customer customer);
     }
 
     @FunctionalInterface

@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
-import com.pskloud.osm.OsmApplication;
+import com.pskloud.osm.MainActivity;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Locality;
 import com.pskloud.osm.rest.RestClient;
@@ -41,9 +41,9 @@ public class LocalitiesService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        NotificationHelper.show(this, R.string.notification_text_localities,
-                NotificationHelper.NOTIFICATION_DOWNLOADING_LOCALITY);
-        RestClient.GET_LOCALITIES.getResponse(new Callback<List<Locality>>() {
+        NotificationHelper.show(this, MainActivity.class,  R.string.notification_text_localities,
+                NotificationHelper.NOTIFICATION_DOWNLOADING_LOCALITY, true);
+        RestClient.GET_LOCALITIES.execute(new Callback<List<Locality>>() {
             @Override
             public void success(List<Locality> localities, Response response) {
                 new Thread(() -> {
@@ -54,8 +54,9 @@ public class LocalitiesService extends IntentService {
                                 Log.i("Inserted",  locality.getName());
                     }
                     NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_LOCALITY);
-                    NotificationHelper.show(OsmApplication.getInstance(),
-                            R.string.notification_locality_downloaded, NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY);
+                    NotificationHelper.show(LocalitiesService.this, MainActivity.class,
+                            R.string.notification_locality_downloaded,
+                            NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY, true);
                 }).start();
             }
 

@@ -29,9 +29,10 @@ public class NotificationHelper {
     private static NotificationManagerCompat mNotificationManager;
     private static NotificationCompat.Builder mNotificationBuilder;
 
-    public static void show(final Context context, final int content, final int id){
+    public static void show(final Context context, final Class aClass, final int content, final int id,
+                            final boolean ongoing){
 
-        Intent open_activity_intent = new Intent(context, MainActivity.class);
+        Intent open_activity_intent = new Intent(context, aClass);
 
         open_activity_intent.putExtra(NOTIFICATION_NAME, id);
 
@@ -44,7 +45,7 @@ public class NotificationHelper {
                 .setContentText(context.getString(content))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(false)
-                .setOngoing(true)
+                .setOngoing(ongoing)
                 .setContentIntent(pending_intent);
         mNotificationManager = NotificationManagerCompat.from(context);
 

@@ -51,6 +51,7 @@
         <item>E</item>
     </string-array>
     <string name="customer_saved">Customer saved</string>
+    <string name="error_customer_exists">This customer already exists</string>
     <string name="error_identification">The identification is incorrect</string>
     <string name="error_address">The address cannot be empty</string>
     <string name="error_phone">The phone is incorrect</string>
@@ -69,10 +70,10 @@
     <string name="download_tax_types">Download tax types</string>
     <string name="notification_text_customer">Downloading Customers...</string>
     <string name="notification_text_localities">Downloading Localities...</string>
-    <string name="notification_text_tax_types">Downloading tax types...</string>
+    <string name="notification_text_tax_types">Downloading types of tax...</string>
     <string name="notification_customer_downloaded">Your customer data was downloaded...</string>
     <string name="notification_locality_downloaded">Your locality data was downloaded...</string>
-    <string name="notification_locality_tax_types">Your tax types data was downloaded...</string>
+    <string name="notification_locality_tax_types">Your types of tax were downloaded...</string>
     <string name="status_connection">Status connection</string>
     <string name="check_connection">Check your status connection</string>
     <string name="check_internet_connection">Check your internet connection</string>

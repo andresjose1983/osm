@@ -9,8 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.pskloud.osm.BuildConfig;
+import com.pskloud.osm.model.TypesOfTax;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,7 +64,7 @@ public class TaxTypesSqlHelper extends SQLiteOpenHelper{
     };
 
     final public GetTaxTypes GET = () -> {
-        Map<String, Integer> map = new HashMap<>();
+        List<TypesOfTax> typesOfTaxes = new ArrayList<>();
 
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
@@ -76,7 +79,8 @@ public class TaxTypesSqlHelper extends SQLiteOpenHelper{
                 if(cursor != null){
                     cursor.moveToFirst();
                     while(cursor.isAfterLast() == false){
-                        map.put(cursor.getString(1), cursor.getInt(0));
+                        typesOfTaxes.add(new TypesOfTax.Builder().code(cursor.getInt(0))
+                        .name(cursor.getString(1)).build());
                         cursor.moveToNext();
                     }
                 }
@@ -87,7 +91,7 @@ public class TaxTypesSqlHelper extends SQLiteOpenHelper{
             }
         }
         sqLiteOpenHelper.close();
-        return map;
+        return typesOfTaxes;
     };
 
     public DeleteTaxType DELETE = () -> {
@@ -107,7 +111,7 @@ public class TaxTypesSqlHelper extends SQLiteOpenHelper{
 
     @FunctionalInterface
     public interface GetTaxTypes{
-        Map<String, Integer> execute();
+        List<TypesOfTax> execute();
     }
 
     @FunctionalInterface

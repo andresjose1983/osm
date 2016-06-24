@@ -14,7 +14,7 @@ android {
             enabled true
         }
 
-        buildConfigField('String', 'URL', '"http://192.168.1.125:8080/com.osm.server-0.0.1/rest/v1/"')
+        buildConfigField('String', 'URL', '"http://192.168.1.141:8080/com.osm.server-0.0.1/rest/v1/"')
 
         buildConfigField('int', 'VERSION_BD', '1')
     }
@@ -25,6 +25,7 @@ android {
     }
 
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

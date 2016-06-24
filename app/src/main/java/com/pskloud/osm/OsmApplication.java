@@ -22,7 +22,7 @@ public class OsmApplication extends Application{
         super.onCreate();
         sInstance = this;
 
-        //startService(new Intent(this, CustomerJobService.class));
+        startService(new Intent(this, CustomerJobService.class));
     }
 
 }

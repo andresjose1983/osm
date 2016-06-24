@@ -3,9 +3,12 @@ package com.pskloud.osm;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.transition.Fade;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -20,6 +23,11 @@ public class LoginActivity extends DefaultActivity {
     private EditText mPassword;
     private View mProgress;
     private View mLoginFormView;
+
+    public static void show(final SplashActivity splashActivity){
+        splashActivity.startActivity(new Intent(splashActivity, LoginActivity.class));
+        splashActivity.finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

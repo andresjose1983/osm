@@ -94,20 +94,25 @@ public class ProductsSqlHelper extends SQLiteOpenHelper{
         List<Product> products = new ArrayList<>();
         SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
-            Cursor cursor = sqLiteOpenHelper.rawQuery(sql, null);
-            if(cursor != null){
-                cursor.moveToFirst();
-                while(cursor.isAfterLast() == false){
-                    products.add(new Product.Builder()
-                            .code(cursor.getString(0))
-                            .name(cursor.getString(1))
-                            .group(cursor.getString(2))
-                            .price(cursor.getDouble(3))
-                            .stock(cursor.getInt(4)).build());
-                    cursor.moveToNext();
+            try{
+                Cursor cursor = sqLiteOpenHelper.rawQuery(sql, null);
+                if(cursor != null){
+                    cursor.moveToFirst();
+                    while(cursor.isAfterLast() == false){
+                        products.add(new Product.Builder()
+                                .code(cursor.getString(0))
+                                .name(cursor.getString(1))
+                                .group(cursor.getString(2))
+                                .price(cursor.getDouble(3))
+                                .stock(cursor.getInt(4)).build());
+                        cursor.moveToNext();
+                    }
                 }
+                cursor.close();
+            }catch(Exception e){
+                if(BuildConfig.DEBUG)
+                    Log.e(ProductsSqlHelper.class.getCanonicalName(), e.getMessage());
             }
-            cursor.close();
         }
         sqLiteOpenHelper.close();
         return products;

@@ -19,11 +19,11 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/iv_product"
-            android:layout_width="@dimen/item_image_size"
-            android:layout_height="@dimen/item_image_size"
-            android:src="@mipmap/ic_file_download_black_48dp"
-            android:layout_marginLeft="@dimen/image_view_margin" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_color"
+            android:src="@mipmap/ic_mode_edit"
+            android:layout_marginLeft="@dimen/small" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,10 +37,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/tv_quantity"
-                android:singleLine="true"
+                android:singleLine="false"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginRight="@dimen/smallest" />
 
             <TextView
                 android:id="@+id/tv_code"
@@ -60,6 +61,14 @@
                 android:layout_alignParentTop="true"
                 android:text="Small Text"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:layout_below="@+id/tv_code"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 

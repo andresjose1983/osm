@@ -97,7 +97,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     }
 
     private void filterCustomer(String query){
-        mCustomerAdapter.getFilter().filter(query.toLowerCase());
+        mCustomerAdapter.getFilter().filter(query.toUpperCase());
     }
 
     public static void goToCustomer(final Context context, final Customer customer){

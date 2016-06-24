@@ -3,6 +3,7 @@ package com.pskloud.osm.rest;
 import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.model.CustomerResponse;
 import com.pskloud.osm.model.Locality;
+import com.pskloud.osm.model.Product;
 
 import java.util.List;
 import java.util.Map;
@@ -33,4 +34,7 @@ public interface OsmServices {
 
     @PUT("/customers")
     retrofit.client.Response updateCustomer(@Body CustomerResponse customerResponse);
+
+    @GET("/items")
+    void getProducts(Callback<List<Product>> callback);
 }

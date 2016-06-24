@@ -39,9 +39,10 @@ public class MainActivity extends DefaultActivity
     @Override
     protected void onResume() {
         super.onResume();
-        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_CUSTOMER);
-        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY);
-        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPES);
+        NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADED_CUSTOMER,
+                NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY,
+                NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPE,
+                NotificationHelper.NOTIFICATION_DOWNLOADED_PRODUCT);
     }
 
     @Override

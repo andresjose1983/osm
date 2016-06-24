@@ -36,14 +36,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         private TextView mTvCode;
         private TextView mTvDescription;
         private TextView mTvPrice;
-        private ImageView mIvPicture;
+        private TextView mtvQuantity;
+        private ImageView mIvColor;
 
         public ProductHolder(View itemView) {
             super(itemView);
             mTvCode = (TextView) itemView.findViewById(R.id.tv_code);
             mTvDescription = (TextView) itemView.findViewById(R.id.tv_number);
-            mTvPrice = (TextView) itemView.findViewById(R.id.tv_quantity);
-            mIvPicture = (ImageView)itemView.findViewById(R.id.iv_product);
+            mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
+            mtvQuantity = (TextView)itemView.findViewById(R.id.tv_quantity);
+            mIvColor = (ImageView)itemView.findViewById(R.id.iv_color);
+
         }
     }
 
@@ -60,10 +63,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         Product product = mProducts.get(position);
 
         holder.mTvCode.setText(product.getCode());
-        holder.mTvDescription.setText(product.getDescription());
-        holder.mTvPrice.setText(String.valueOf(product.getPrice()));
+        holder.mTvDescription.setText(product.getName());
+        holder.mTvPrice.setText("Bs. " + Functions.format(product.getPrice()));
+        holder.mtvQuantity.setText(String.valueOf(product.getStock()));
 
-        Functions.loadImageCircle(holder.mIvPicture, product.getPicture());
+        String index = String.valueOf(position);
+        Functions.changeColor(holder.mIvColor, String.valueOf(product.getName().charAt(0)),
+                Integer.valueOf(index.substring(index.length() - 1)));
     }
 
     @Override
@@ -73,7 +79,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
     @Override
     public Filter getFilter() {
-        return new ProductFilter(this, mProducts);
+        return new ProductFilter(this, mProductsFilter);
     }
 
     private static class ProductFilter extends Filter{
@@ -96,11 +102,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             if (constraint.length() == 0) {
                 filtersProduct.addAll(products);
             } else {
-                final String filterPattern = constraint.toString().toLowerCase().trim();
+                final String filterPattern = constraint.toString().toUpperCase().trim();
 
                 for (final Product product : products) {
-                    if (product.getCode().toLowerCase().contains(filterPattern) ||
-                            product.getDescription().toLowerCase().contains(filterPattern)) {
+                    if (product.getCode().toUpperCase().contains(filterPattern) ||
+                            product.getName().toUpperCase().contains(filterPattern)) {
                         filtersProduct.add(product);
                     }
                 }

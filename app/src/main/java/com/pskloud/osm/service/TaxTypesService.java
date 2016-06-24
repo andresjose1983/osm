@@ -45,7 +45,7 @@ public class TaxTypesService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         NotificationHelper.show(this, MainActivity.class, R.string.notification_text_tax_types,
-                NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES, true);
+                NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPE, true);
         RestClient.GET_TAX_TYPES.execute(new Callback<Map<String, Integer>>() {
             @Override
             public void success(Map<String, Integer> map, Response response) {
@@ -56,17 +56,17 @@ public class TaxTypesService extends IntentService {
                             if(BuildConfig.DEBUG)
                                 Log.i("Inserted", entry.getKey());
                     }
-                    NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES);
+                    NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPE);
                     NotificationHelper.show(TaxTypesService.this, MainActivity.class,
                             R.string.notification_locality_tax_types,
-                            NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPES,
+                            NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPE,
                             true);
                 }).start();
             }
 
             @Override
             public void failure(RetrofitError error) {
-                NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPES);
+                NotificationHelper.close(NotificationHelper.NOTIFICATION_DOWNLOADING_TAX_TYPE);
             }
         });
     }

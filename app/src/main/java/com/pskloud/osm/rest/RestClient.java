@@ -7,6 +7,7 @@ import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.model.Customer;
 import com.pskloud.osm.model.CustomerResponse;
 import com.pskloud.osm.model.Locality;
+import com.pskloud.osm.model.Product;
 
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,10 @@ public abstract class RestClient {
         }
     };
 
+    public static final GetProducts GET_PRODUCTS = (callback) -> {
+        mOsmServices.getProducts(callback);
+    };
+
     @FunctionalInterface
     public interface GetCustomers{
         void execute(Callback<List<Customer>> callback);
@@ -95,5 +100,10 @@ public abstract class RestClient {
     @FunctionalInterface
     public interface UpdateCustomer{
         Response execute(CustomerResponse customerResponse);
+    }
+
+    @FunctionalInterface
+    public interface GetProducts{
+        void execute(Callback<List<Product>> callback);
     }
 }

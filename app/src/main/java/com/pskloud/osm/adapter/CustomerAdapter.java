@@ -198,11 +198,11 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             if (constraint.length() == 0) {
                 filtersCustomers.addAll(customers);
             } else {
-                final String filterPattern = constraint.toString().toLowerCase().trim();
+                final String filterPattern = constraint.toString().toUpperCase().trim();
 
                 for (final Customer customer : customers) {
-                    if (customer.getName().toLowerCase().contains(filterPattern)
-                            || customer.getCode().toLowerCase().contains(filterPattern)
+                    if (customer.getName().toUpperCase().contains(filterPattern)
+                            || customer.getCode().toUpperCase().contains(filterPattern)
                             || customer.getTin().contains(filterPattern)) {
                         filtersCustomers.add(customer);
                     }

@@ -3,80 +3,92 @@ package com.pskloud.osm.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by andres on 09/06/16.
  */
-public class Product implements Parcelable{
+public class Product implements Serializable{
 
     private String code;
-
-    private String description;
-
+    private String name;
+    private String group;
     private double price;
+    private int stock;
 
-    private int quantity;
-
-    private String picture;
-
-    public Product(String code, String description, double price, int quantity, String picture) {
+    public Product(String code, String name, String group, double price, int stock) {
         this.code = code;
-        this.description = description;
+        this.name = name;
+        this.group = group;
         this.price = price;
-        this.quantity = quantity;
-        this.picture = picture;
+        this.stock = stock;
+    }
+
+    private Product(Builder builder) {
+        code = builder.code;
+        name = builder.name;
+        group = builder.group;
+        price = builder.price;
+        stock = builder.stock;
     }
 
     public String getCode() {
         return code;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
+    }
+
+    public String getGroup() {
+        return group;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getStock() {
+        return stock;
     }
 
-    public String getPicture() {
-        return picture;
-    }
+    public static final class Builder {
+        private String code;
+        private String name;
+        private String group;
+        private double price;
+        private int stock;
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.code);
-        dest.writeString(this.description);
-        dest.writeDouble(this.price);
-        dest.writeInt(this.quantity);
-        dest.writeString(this.picture);
-    }
-
-    protected Product(Parcel in) {
-        this.code = in.readString();
-        this.description = in.readString();
-        this.price = in.readDouble();
-        this.quantity = in.readInt();
-        this.picture = in.readString();
-    }
-
-    public static final Creator<Product> CREATOR = new Creator<Product>() {
-        @Override
-        public Product createFromParcel(Parcel source) {
-            return new Product(source);
+        public Builder() {
         }
 
-        @Override
-        public Product[] newArray(int size) {
-            return new Product[size];
+        public Builder code(String val) {
+            code = val;
+            return this;
         }
-    };
+
+        public Builder name(String val) {
+            name = val;
+            return this;
+        }
+
+        public Builder group(String val) {
+            group = val;
+            return this;
+        }
+
+        public Builder price(double val) {
+            price = val;
+            return this;
+        }
+
+        public Builder stock(int val) {
+            stock = val;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this);
+        }
+    }
 }

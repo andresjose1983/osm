@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.pskloud.osm.adapter.ProductAdapter;
 import com.pskloud.osm.model.Product;
 import com.pskloud.osm.util.Functions;
+import com.pskloud.osm.util.ProductsSqlHelper;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     private SearchView mSearchView;
     private RecyclerView mRvProducts;
     private ProductAdapter mProductAdapter;
-    private List<Product> mProducts = Functions.getProduct();
+    private ProductsSqlHelper productsSqlHelper;
+    private List<Product> mProducts;
     private boolean isViewWithCatalog = true;
 
     public static void show(Context context) {
@@ -43,6 +45,8 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
     @Override
     public void init() {
+        productsSqlHelper = new ProductsSqlHelper(this);
+
         mRvProducts = (RecyclerView) findViewById(R.id.rv_products);
     }
 
@@ -74,6 +78,9 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     }
 
     private void changeView(final RecyclerView.LayoutManager layoutManage, final int view) {
+
+        mProducts = productsSqlHelper.GET.execute();
+
         mRvProducts.setLayoutManager(layoutManage);
         mRvProducts.setItemAnimator(new DefaultItemAnimator());
 
@@ -84,18 +91,18 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        filterCustomer(query);
+        filterProduct(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        filterCustomer(newText);
+        filterProduct(newText);
         return false;
     }
 
-    private void filterCustomer(String query) {
-        mProductAdapter.getFilter().filter(query.toLowerCase());
+    private void filterProduct(String query) {
+        mProductAdapter.getFilter().filter(query.toUpperCase());
     }
 
 }

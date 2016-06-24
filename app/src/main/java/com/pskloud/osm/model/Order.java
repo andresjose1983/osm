@@ -21,7 +21,7 @@ public class Order implements Parcelable{
 
     private boolean isView;
 
-    private List<Product> products = Functions.getProduct();
+    private List<Product> products;
 
     public Order(String number, Date date, int totalItem) {
         this.number = number;
@@ -81,7 +81,7 @@ public class Order implements Parcelable{
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
         dest.writeInt(this.totalItem);
         dest.writeByte(this.isView ? (byte) 1 : (byte) 0);
-        dest.writeTypedList(this.products);
+        //dest.writeTypedList(this.products);
     }
 
     protected Order(Parcel in) {
@@ -90,7 +90,7 @@ public class Order implements Parcelable{
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
         this.totalItem = in.readInt();
         this.isView = in.readByte() != 0;
-        this.products = in.createTypedArrayList(Product.CREATOR);
+        //this.products = in.createTypedArrayList(Product.CREATOR);
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {

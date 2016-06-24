@@ -62,14 +62,19 @@ public class CustomerJobService extends Service {
             mHandler.post(() -> {
                 if(Functions.getStatus(OsmApplication.getInstance()) &&
                         Functions.checkInternetConnection(OsmApplication.getInstance())){
-                    List<Customer> customers = customerSqlHelper.GET_PENDING.execute();
-                    for (Customer customer : customers) {
-                        Log.i(CustomerJobService.class.getCanonicalName(),
-                                customer.getCode() + " " + customer.isNew() + " " + customer.isSync());
-                        if(customer.isNew())
-                            create(customer);
-                        else
-                            update(customer);
+                    if(!ProductsService.isRunning(CustomerJobService.this) &&
+                            !CustomersService.isRunning(CustomerJobService.this) &&
+                            !TaxTypesService.isRunning(CustomerJobService.this) &&
+                            !LocalitiesService.isRunning(CustomerJobService.this)){
+                        List<Customer> customers = customerSqlHelper.GET_PENDING.execute();
+                        for (Customer customer : customers) {
+                            Log.i(CustomerJobService.class.getCanonicalName(),
+                                    customer.getCode() + " " + customer.isNew() + " " + customer.isSync());
+                            if(customer.isNew())
+                                create(customer);
+                            else
+                                update(customer);
+                        }
                     }
                 }
             });

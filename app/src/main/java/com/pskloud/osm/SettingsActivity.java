@@ -15,6 +15,7 @@ import android.widget.Switch;
 
 import com.pskloud.osm.service.CustomersService;
 import com.pskloud.osm.service.LocalitiesService;
+import com.pskloud.osm.service.ProductsService;
 import com.pskloud.osm.service.TaxTypesService;
 import com.pskloud.osm.util.DialogHelper;
 import com.pskloud.osm.util.Functions;
@@ -25,6 +26,7 @@ public class SettingsActivity extends DefaultActivity {
     private Switch mSvConnection;
     private Switch mSvLocality;
     private Switch mSvTaxTypes;
+    private Switch mSvProducts;
     private CoordinatorLayout mClView;
 
     public static void show(final Context context){
@@ -74,6 +76,13 @@ public class SettingsActivity extends DefaultActivity {
                                     }else
                                         startService(new Intent(this, TaxTypesService.class));
                                 }
+
+                                if (mSvProducts.isChecked() ) {
+                                    if(ProductsService.isRunning(this)) {
+                                        stopService(new Intent(this, ProductsService.class));
+                                    }else
+                                        startService(new Intent(this, ProductsService.class));
+                                }
                             };
                             DialogHelper.confirm(this, R.string.content_sync, onClickListener);
                         }
@@ -94,6 +103,7 @@ public class SettingsActivity extends DefaultActivity {
         mSvConnection = (Switch)findViewById(R.id.sv_connection);
         mSvLocality = (Switch)findViewById(R.id.sv_locality);
         mSvTaxTypes = (Switch)findViewById(R.id.sv_tax_types);
+        mSvProducts = (Switch)findViewById(R.id.sv_products);
         mClView = (CoordinatorLayout) findViewById(R.id.cl_view);
     }
 

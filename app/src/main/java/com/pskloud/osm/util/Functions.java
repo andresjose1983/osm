@@ -24,6 +24,8 @@ import com.pskloud.osm.R;
 import com.pskloud.osm.model.Order;
 import com.pskloud.osm.model.Product;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,46 +70,6 @@ public final class Functions {
             fadeAnim.setDuration( 2500 );
             fadeAnim.start();
     };
-
-    public static List<Product> getProduct(){
-        List<Product> mProducts = new ArrayList<>();
-
-        mProducts.add(new Product("70240216", "1K TEMPSISTOR 1% P/CS-800S", 4400, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("8A-14X ", "8A-14X CABLE DIM-DIM 8 CONTACTOS", 3400, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("Z-ML024-036", "ACCESORIOS DE LUZ MYSTIC LED", 4500, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("TAC-MP3M", "ADAPTADOR ENTRADA USB-MP3 PARA CONSOLAS", 21500, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("PN-USB-BLUE", "ADAPTADOR USB BLUETOOTH PARA CORNETAS", 1850, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("222012", "AGARRADERA DE GOMA NEGRA TIRADOR", 1050, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-        mProducts.add(new Product("44-2035", "AGARRADERA NEGRA PARA CORNETA 44-2035", 1650, 0,
-                "http://api.androidhive.info/images/glide/medium/deadpool.jpg"));
-
-        return mProducts;
-
-    }
 
     public static List<Order> getOrder(){
 
@@ -239,6 +201,14 @@ public final class Functions {
             return 45;
         }
         return 35;
+    }
+
+    public static String format(double value){
+        DecimalFormatSymbols simbolo=new DecimalFormatSymbols();
+        simbolo.setDecimalSeparator(',');
+        simbolo.setGroupingSeparator('.');
+        DecimalFormat formateador = new DecimalFormat("###,###.##",simbolo);
+        return formateador.format(value);
     }
 
 }

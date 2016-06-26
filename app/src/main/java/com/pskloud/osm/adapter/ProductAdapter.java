@@ -24,10 +24,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
     private List<Product> mProducts;
     private List<Product> mProductsFilter;
     private final int VIEW;
+    private final int DPI;
 
-    public ProductAdapter(List<Product> mProducts, final int VIEW) {
+    public ProductAdapter(List<Product> mProducts, final int VIEW, final int DPI) {
         this.mProducts = mProducts;
         this.VIEW = VIEW;
+        this.DPI = DPI;
         mProductsFilter = new ArrayList<>(mProducts);
     }
 
@@ -46,7 +48,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             mtvQuantity = (TextView)itemView.findViewById(R.id.tv_quantity);
             mIvColor = (ImageView)itemView.findViewById(R.id.iv_color);
-
         }
     }
 
@@ -69,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
         String index = String.valueOf(position);
         Functions.changeColor(holder.mIvColor, String.valueOf(product.getName().charAt(0)),
-                Integer.valueOf(index.substring(index.length() - 1)));
+                Integer.valueOf(index.substring(index.length() - 1)), DPI);
     }
 
     @Override

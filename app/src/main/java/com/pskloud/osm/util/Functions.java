@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -22,7 +20,6 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.pskloud.osm.OsmApplication;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Order;
-import com.pskloud.osm.model.Product;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -126,33 +123,36 @@ public final class Functions {
         return true;
     }
 
-    public static void changeColor(final ImageView imageView, final String letter, final int index){
-        int densityDpi = getDensity(imageView.getContext());
+    public static void changeColor(final ImageView imageView, final String letter, final int index, final int TYPE){
+        float densityDpi = 0;
+        if(imageView.getContext().getResources().getBoolean(R.bool.isTable)){
+            if (TYPE < 0)
+                densityDpi = imageView.getContext().getResources().getDisplayMetrics().densityDpi / 2.75f;
+            else
+                densityDpi = imageView.getContext().getResources().getDisplayMetrics().densityDpi;
+        }else {
+            if (TYPE < 0)
+                densityDpi = imageView.getContext().getResources().getDisplayMetrics().densityDpi / 3.5f;
+            else
+                densityDpi = imageView.getContext().getResources().getDisplayMetrics().densityDpi;
+        }
 
-        Bitmap bitmap = Bitmap.createBitmap(densityDpi, densityDpi, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap((int)densityDpi, (int)densityDpi, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         imageView.setImageBitmap(bitmap);
 
         // Circle
         Paint paint = new Paint();
         paint.setColor(Color.parseColor(getColor(index)));
-        paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        paint.setStrokeWidth(1);
-        paint.setShader(null);
         paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setDither(true);
-
+        paint.setStyle(Paint.Style.FILL);
         float measure = densityDpi / 2;
-        /*float x = densityDpi / 2;
-        float y = densityDpi / 2;
-        float radius = densityDpi / 2;*/
         canvas.drawCircle(measure, measure, measure, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
 
         Paint textPaint = new Paint();
         textPaint.setARGB(255,255,255, 255);
         textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setAntiAlias(true);
         textPaint.setTextSize(measure);
         canvas.drawText(letter, canvas.getWidth()/2, canvas.getHeight() / 1.5f , textPaint);
     }

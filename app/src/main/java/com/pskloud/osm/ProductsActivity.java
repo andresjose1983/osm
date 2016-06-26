@@ -40,7 +40,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
     @Override
     public void setUp() {
-        changeView(new LinearLayoutManager(getApplicationContext()), R.layout.item_product);
+        changeView(new LinearLayoutManager(getApplicationContext()), R.layout.item_product, -1);
     }
 
     @Override
@@ -69,22 +69,24 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
             case R.id.action_change_view:
                 isViewWithCatalog = !isViewWithCatalog;
                 if(isViewWithCatalog)
-                    changeView(new LinearLayoutManager(this), R.layout.item_product);
+                    changeView(new LinearLayoutManager(this), R.layout.item_product, -1);
                 else
-                    changeView(new GridLayoutManager(this,2), R.layout.item_grid_product);
+                    changeView(new GridLayoutManager(this,2), R.layout.item_grid_product,
+                            getResources().getDisplayMetrics().densityDpi);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void changeView(final RecyclerView.LayoutManager layoutManage, final int view) {
+    private void changeView(final RecyclerView.LayoutManager layoutManage, final int view,
+                            final int dpi) {
 
         mProducts = productsSqlHelper.GET.execute();
 
         mRvProducts.setLayoutManager(layoutManage);
         mRvProducts.setItemAnimator(new DefaultItemAnimator());
 
-        mProductAdapter = new ProductAdapter(mProducts, view);
+        mProductAdapter = new ProductAdapter(mProducts, view, dpi);
         mRvProducts.setAdapter(mProductAdapter);
         mRvProducts.setHasFixedSize(true);
     }

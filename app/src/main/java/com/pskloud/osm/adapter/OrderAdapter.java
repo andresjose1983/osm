@@ -151,7 +151,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         holder.mTvNumber.setText(order.getNumber());
         holder.mTvDate.setText(Functions.format(order.getDate()));
 
-        holder.mProductAdapter = new ProductAdapter(order.getProducts(), R.layout.item_product);
+        holder.mProductAdapter = new ProductAdapter(order.getProducts(), R.layout.item_product,-1);
         holder.mRvProducts.setAdapter(holder.mProductAdapter);
 
         if(order.isView())

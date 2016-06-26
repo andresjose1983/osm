@@ -95,7 +95,8 @@
             android:src="@mipmap/ic_mode_edit"
             android:layout_alignTop="@+id/tv_name"
             android:layout_alignParentStart="true"
-            android:layout_marginRight="@dimen/smaller" />
+            android:layout_marginRight="@dimen/smaller"
+            android:paddingBottom="@dimen/small" />
 
     </RelativeLayout>
 

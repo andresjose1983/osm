@@ -160,7 +160,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         int lenght = index.length();
 
         Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)),
-                Integer.valueOf(index.substring(lenght - 1)));
+                Integer.valueOf(index.substring(lenght - 1)), -1);
 
         if(customer.isView())
             holder.expand();

@@ -55,8 +55,8 @@
 
             <ImageView
                 android:id="@+id/iv_color"
-                android:layout_width="@dimen/item_image_size_big"
-                android:layout_height="@dimen/item_image_size_big"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:src="@mipmap/ic_file_download_black_48dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true" />

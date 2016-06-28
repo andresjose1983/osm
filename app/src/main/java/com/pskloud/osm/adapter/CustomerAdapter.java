@@ -2,7 +2,9 @@ package com.pskloud.osm.adapter;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.CustomersActivity;
 import com.pskloud.osm.R;
 import com.pskloud.osm.model.Customer;
@@ -39,6 +42,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         private TextView mTvName;
         private TextView mTvIdentification;
         private ImageView mIvColor;
+        private ImageView mIvSync;
         private View mIbEdit;
         private View mVActions;
         private View mTvOrder;
@@ -48,10 +52,17 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             mTvName = (TextView) itemView.findViewById(R.id.tv_name);
             mTvIdentification = (TextView) itemView.findViewById(R.id.tv_identification);
             mIvColor = (ImageView)itemView.findViewById(R.id.iv_color);
+            mIvSync = (ImageView)itemView.findViewById(R.id.iv_sync);
 
             mVActions = itemView.findViewById(R.id.v_actions);
             mIbEdit = itemView.findViewById(R.id.ib_edit);
             mTvOrder = itemView.findViewById(R.id.tv_order);
+
+            TypedValue outValue = new TypedValue();
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
+                mIbEdit.getContext().getTheme().resolveAttribute(
+                        android.R.attr.selectableItemBackgroundBorderless, outValue, true);
+            mIbEdit.setBackgroundResource(outValue.resourceId);
 
             itemView.setOnClickListener(v -> {
                 Customer customer = mCustomers.get(getAdapterPosition());
@@ -155,6 +166,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         Customer customer = mCustomers.get(position);
         holder.mTvName.setText(customer.getName());
         holder.mTvIdentification.setText(customer.getTin());
+        if(customer.isSync())
+            holder.mIvSync.setVisibility(View.INVISIBLE);
+        else
+            holder.mIvSync.setVisibility(View.VISIBLE);
 
         String index = String.valueOf(position);
         int lenght = index.length();

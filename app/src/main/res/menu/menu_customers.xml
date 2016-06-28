@@ -9,4 +9,22 @@
         android:title="@string/search_title"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+
+    <item android:id="@+id/action_filter"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/action_filter"
+        android:icon="@android:drawable/ic_menu_agenda">
+        <menu>
+            <group android:id="@+id/grupo1">
+
+                <item android:id="@+id/action_filter_synced"
+                    android:title="@string/action_change_filter_synced" />
+                <item android:id="@+id/action_filter_unsynced"
+                    android:title="@string/action_change_filter_notsynced" />
+                <item android:id="@+id/action_filter_all"
+                    android:title="@string/action_change_filter_all" />
+            </group>
+        </menu>
+    </item>
 </menu>

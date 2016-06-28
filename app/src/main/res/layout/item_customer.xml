@@ -16,9 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/small"
-        android:paddingTop="@dimen/small"
-        android:paddingRight="@dimen/small">
+        android:paddingLeft="@dimen/small">
 
         <TextView
             android:id="@+id/tv_name"
@@ -30,7 +28,8 @@
             android:layout_alignParentTop="false"
             android:layout_alignParentBottom="false"
             android:layout_toEndOf="@+id/iv_color"
-            android:layout_toStartOf="@+id/ib_edit" />
+            android:layout_toStartOf="@+id/ib_edit"
+            android:layout_marginTop="@dimen/small" />
 
         <TextView
             android:id="@+id/tv_identification"
@@ -52,8 +51,10 @@
             android:layout_alignTop="@+id/tv_name"
             android:background="@null"
             android:foreground="?android:selectableItemBackground"
-            android:padding="@dimen/smallest"
-            android:src="@mipmap/ic_mode_edit" />
+            android:src="@mipmap/ic_mode_edit"
+            android:paddingLeft="@dimen/smallest"
+            android:paddingRight="@dimen/small"
+            android:paddingBottom="@dimen/smallest" />
 
         <LinearLayout
             android:id="@+id/v_actions"
@@ -97,6 +98,15 @@
             android:layout_alignParentStart="true"
             android:layout_marginRight="@dimen/smaller"
             android:paddingBottom="@dimen/small" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_autorenew"
+            android:id="@+id/iv_sync"
+            android:layout_alignParentBottom="false"
+            android:layout_alignEnd="@+id/ib_edit"
+            android:layout_alignParentTop="true" />
 
     </RelativeLayout>
 

@@ -58,6 +58,10 @@
     <string name="error_address">The address cannot be empty</string>
     <string name="error_phone">The phone is incorrect</string>
     <string name="error_name">The name cannot be empty</string>
+    <string name="action_filter">Filters</string>
+    <string name="action_change_filter_synced">Filter by synced</string>
+    <string name="action_change_filter_notsynced">Filter by not synced</string>
+    <string name="action_change_filter_all">Filter by all</string>
     <!-- End customer -->
 
     <!-- Products -->

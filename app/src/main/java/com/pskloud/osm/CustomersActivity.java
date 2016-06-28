@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.pskloud.osm.adapter.CustomerAdapter;
 import com.pskloud.osm.fragment.DialogOrderFragment;
@@ -24,6 +25,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     private FloatingActionButton mFabAdd;
     private RecyclerView mRvCustomers;
     private CustomerAdapter mCustomerAdapter;
+    private MenuItem mMenu;
     private SearchView mSearchView;
     private DialogOrderFragment bsdFragment;
     private CustomerSqlHelper customerSqlHelper;
@@ -45,6 +47,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_customers, menu);
+        mMenu = menu.findItem(R.id.action_search);
         // Associate searchable configuration with the SearchView
         mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         mSearchView.setOnQueryTextListener(this);
@@ -52,6 +55,33 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        List<Customer> customers = new ArrayList<>();
+        switch (item.getItemId()){
+            case R.id.action_filter_all:
+                reset(mCustomers);
+                break;
+            case R.id.action_filter_synced:
+                customers.clear();
+                for (Customer customer : mCustomers) {
+                    if(customer.isSync())
+                        customers.add(customer);
+                }
+                reset(customers);
+                break;
+            case R.id.action_filter_unsynced:
+                customers.clear();
+                for (Customer customer : mCustomers) {
+                    if(!customer.isSync())
+                        customers.add(customer);
+                }
+                reset(customers);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -64,8 +94,21 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     protected void onResume() {
         super.onResume();
         mCustomers = customerSqlHelper.GET.execute();
+        reset(mCustomers);
 
-        mCustomerAdapter = new CustomerAdapter(this, mCustomers);
+        if(mSearchView != null) {
+            mSearchView.clearFocus();
+            mSearchView.setQuery("", false);
+
+            //Collapse the action view
+            mSearchView.onActionViewCollapsed();
+            if(mMenu != null)
+                mMenu.collapseActionView();
+        }
+    }
+
+    private void reset(final List<Customer> customers){
+        mCustomerAdapter = new CustomerAdapter(this, customers);
         mRvCustomers.setAdapter(mCustomerAdapter);
     }
 

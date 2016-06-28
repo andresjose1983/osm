@@ -11,6 +11,7 @@ import com.pskloud.osm.BuildConfig;
 import com.pskloud.osm.model.Product;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class ProductsSqlHelper extends SQLiteOpenHelper{
                 .append(GROUP)
                 .append(" text, ")
                 .append(PRICE)
-                .append(" numeric, ")
+                .append(" text, ")
                 .append(STOCK)
                 .append(" integer) ")
                 .toString());
@@ -74,8 +75,8 @@ public class ProductsSqlHelper extends SQLiteOpenHelper{
         contentValues.put(CODE, product.getCode());
         contentValues.put(NAME, product.getName().toUpperCase());
         contentValues.put(GROUP, product.getGroup());
-
-        contentValues.put(PRICE, product.getPrice());
+        Log.i("PRoducts" , android.text.TextUtils.join(",", product.getPrice()));
+        contentValues.put(PRICE, android.text.TextUtils.join(",", product.getPrice()));
         contentValues.put(STOCK, product.getStock());
         return contentValues;
     }
@@ -103,7 +104,7 @@ public class ProductsSqlHelper extends SQLiteOpenHelper{
                                 .code(cursor.getString(0))
                                 .name(cursor.getString(1))
                                 .group(cursor.getString(2))
-                                .price(cursor.getDouble(3))
+                                .price(Arrays.asList(cursor.getString(3).split(",")))
                                 .stock(cursor.getInt(4)).build());
                         cursor.moveToNext();
                     }

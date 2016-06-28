@@ -65,7 +65,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
         holder.mTvCode.setText(product.getCode());
         holder.mTvDescription.setText(product.getName());
-        holder.mTvPrice.setText("Bs. " + Functions.format(product.getPrice()));
+        //holder.mTvPrice.setText("Bs. " + Functions.format(product.getPrice()));
+        holder.mTvPrice.setVisibility(View.INVISIBLE);
         holder.mtvQuantity.setText(String.valueOf(product.getStock()));
 
         String index = String.valueOf(position);

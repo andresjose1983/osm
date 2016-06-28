@@ -29,6 +29,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
     public static final String TYPE  = "taxType";
     public static final String NEW  = "new";
     public static final String SYNC  = "sync";
+    public static final String PRICE  = "price";
 
     public CustomerSqlHelper(Context context) {
         super(context, DATABASE_NAME, null, BuildConfig.VERSION_BD);
@@ -57,7 +58,9 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                 .append(NEW)
                 .append(" integer, ")
                 .append(SYNC)
-                .append(" integer) ")
+                .append(" integer, ")
+                .append(PRICE)
+                .append(" integer)")
                 .toString());
     }
 
@@ -71,6 +74,8 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         SQLiteDatabase writableDatabase = this.getWritableDatabase();
         if(writableDatabase != null && writableDatabase.isOpen()){
             ContentValues contentValues = setConteValues(customer);
+            contentValues.put(PRICE, 1);
+
             long result = writableDatabase.insert(TABLE_NAME, null, contentValues);
             writableDatabase.close();
             if(BuildConfig.DEBUG)
@@ -94,6 +99,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         contentValues.put(TYPE, customer.getTaxType());
         contentValues.put(NEW, customer.isNew() == true?1:0);
         contentValues.put(SYNC, customer.isSync() == true?1:0);
+
         return contentValues;
     }
 
@@ -101,7 +107,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         SQLiteDatabase writableDatabase = this.getWritableDatabase();
         if(writableDatabase != null && writableDatabase.isOpen()){
             ContentValues contentValues = setConteValues(customer);
-
+            contentValues.put(PRICE, customer.getPrice());
             writableDatabase.update(TABLE_NAME, contentValues, CODE + " = ?",
                     new String[] { customer.getCode() } );
             writableDatabase.close();
@@ -110,18 +116,15 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         return true;
     };
 
-    final public GetCustomers GET = () -> {
-        return get(new StringBuilder()
-                .append("select * from ")
-                .append(TABLE_NAME)
-                .append(" order by ")
-                .append(NAME)
-                .append(" asc")
-                .toString());
-    };
+    final public GetCustomers GET = () -> get(new StringBuilder()
+            .append("select * from ")
+            .append(TABLE_NAME)
+            .append(" order by ")
+            .append(NAME)
+            .append(" asc")
+            .toString());
 
-    final public GetCustomers GET_PENDING = () -> {
-        return get(new StringBuilder()
+    final public GetCustomers GET_PENDING = () -> get(new StringBuilder()
                 .append("select * from ")
                 .append(TABLE_NAME)
                 .append(" where ")
@@ -132,7 +135,6 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                 .append(NAME)
                 .append(" asc")
                 .toString());
-    };
 
     private List<Customer> get(final String sql) {
         List<Customer> customers = new ArrayList<>();
@@ -142,7 +144,7 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
             if(cursor != null){
                 cursor.moveToFirst();
                 List<String> telephones;
-                while(cursor.isAfterLast() == false){
+                while(!cursor.isAfterLast()){
                     telephones = new ArrayList<>();
                     telephones.add(cursor.getString(3));
                     customers.add(new Customer
@@ -154,15 +156,19 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
                             .tin(cursor.getString(4))
                             .zone(cursor.getString(5))
                             .taxType(cursor.getInt(6))
-                            .isNew(cursor.getInt(7) == 1? true: false)
-                            .sync(cursor.getInt(8) == 1? true: false)
-                            .isView(false).build());
+                            .isNew(cursor.getInt(7) == 1)
+                            .sync(cursor.getInt(8) == 1)
+                            .isView(false)
+                            .price(cursor.getInt(9))
+                            .build());
                     cursor.moveToNext();
                 }
             }
-            cursor.close();
+            if(cursor != null)
+                cursor.close();
         }
-        sqLiteOpenHelper.close();
+        if(sqLiteOpenHelper != null)
+            sqLiteOpenHelper.close();
         return customers;
     }
 

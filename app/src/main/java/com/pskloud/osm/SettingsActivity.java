@@ -53,7 +53,8 @@ public class SettingsActivity extends DefaultActivity {
                     if(!Functions.checkInternetConnection(this)){
                         showSnackBar(mClView, R.string.check_internet_connection);
                     }else{
-                        if (mSvCustomer.isChecked() || mSvLocality.isChecked() || mSvTaxTypes.isChecked()) {
+                        if (mSvCustomer.isChecked() || mSvLocality.isChecked() || mSvTaxTypes.isChecked()
+                                || mSvProducts.isChecked()) {
                             DialogInterface.OnClickListener onClickListener =(dialogInterface, i) -> {
 
                                 if(mSvCustomer.isChecked()){

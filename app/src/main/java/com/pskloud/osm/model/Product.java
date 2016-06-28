@@ -1,9 +1,7 @@
 package com.pskloud.osm.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by andres on 09/06/16.
@@ -13,10 +11,10 @@ public class Product implements Serializable{
     private String code;
     private String name;
     private String group;
-    private double price;
+    private List<String> price;
     private int stock;
 
-    public Product(String code, String name, String group, double price, int stock) {
+    public Product(String code, String name, String group, List<String> price, int stock) {
         this.code = code;
         this.name = name;
         this.group = group;
@@ -44,7 +42,7 @@ public class Product implements Serializable{
         return group;
     }
 
-    public double getPrice() {
+    public List<String> getPrice() {
         return price;
     }
 
@@ -56,7 +54,7 @@ public class Product implements Serializable{
         private String code;
         private String name;
         private String group;
-        private double price;
+        private List<String> price;
         private int stock;
 
         public Builder() {
@@ -77,7 +75,7 @@ public class Product implements Serializable{
             return this;
         }
 
-        public Builder price(double val) {
+        public Builder price(List<String> val) {
             price = val;
             return this;
         }

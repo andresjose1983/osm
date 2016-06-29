@@ -14,9 +14,7 @@ public final class DialogHelper {
 
     private static AlertDialog builder;
 
-    public static void confirm(final Context context, final int content,
-                               final DialogInterface.OnClickListener positive){
-
+    public static void init(final Context context, final int content) {
         if(builder == null)
             builder = get(context);
         else {
@@ -24,7 +22,15 @@ public final class DialogHelper {
             builder = null;
             builder = get(context);
         }
+
         builder.setMessage(context.getString(content));
+
+    }
+
+    public static void confirm(final Context context, final int content,
+                               final DialogInterface.OnClickListener positive){
+
+        init(context, content);
 
         builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.ok), positive );
         builder.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (dialogInterface, i) -> {
@@ -36,14 +42,8 @@ public final class DialogHelper {
 
     public static void ok(final Context context, final int content){
 
-        if(builder == null)
-            builder = get(context);
-        else {
-            builder.dismiss();
-            builder = null;
-            builder = get(context);
-        }
-        builder.setMessage(context.getString(content));
+        init(context, content);
+
         builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.ok), (dialogInterface, i) -> {
             dialogInterface.dismiss();
         });

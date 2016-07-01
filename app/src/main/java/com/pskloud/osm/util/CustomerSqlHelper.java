@@ -177,9 +177,59 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
             sqLiteOpenHelper.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(sqLiteOpenHelper);
+            if(sqLiteOpenHelper != null)
+                sqLiteOpenHelper.close();
             return true;
         }
+        if(sqLiteOpenHelper != null)
+            sqLiteOpenHelper.close();
         return false;
+    };
+
+    public GetCustomerGraph GET_GRAPH = ()->{
+        Integer[] total = new Integer[3];
+        SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
+        if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            Cursor cursor = sqLiteOpenHelper.rawQuery(new StringBuilder()
+                    .append("select ")
+                    .append("count( ")
+                    .append(SYNC)
+                    .append(") ")
+                    .append(" from ")
+                    .append(TABLE_NAME)
+                    .append(" union all ")
+                    .append("select ")
+                    .append("count( ")
+                    .append(SYNC)
+                    .append(") ")
+                    .append(" from ")
+                    .append(TABLE_NAME)
+                    .append(" where ")
+                    .append(SYNC)
+                    .append(" = 1")
+                    .append(" union all ")
+                    .append("select ")
+                    .append("count( ")
+                    .append(SYNC)
+                    .append(") ")
+                    .append(" from ")
+                    .append(TABLE_NAME)
+                    .append(" where ")
+                    .append(SYNC)
+                    .append(" = 0").toString(), null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()){
+                    total[cursor.getPosition()] = cursor.getInt(0);
+                    cursor.moveToNext();
+                }
+            }
+            if(cursor != null)
+                cursor.close();
+        }
+        if(sqLiteOpenHelper != null)
+            sqLiteOpenHelper.close();
+        return total;
     };
 
     @FunctionalInterface
@@ -200,5 +250,10 @@ public class CustomerSqlHelper extends SQLiteOpenHelper{
     @FunctionalInterface
     public interface DeleteCustomers{
         boolean execute();
+    }
+
+    @FunctionalInterface
+    public interface GetCustomerGraph{
+        Integer[] execute();
     }
 }

@@ -14,7 +14,7 @@ android {
             enabled true
         }
 
-        buildConfigField('String', 'URL', '"http://192.168.1.122:8080/osm-server/rest/v1/"')
+        buildConfigField('String', 'URL', '"http://192.168.1.118:8080/osm-server/rest/v1/"')
 
         buildConfigField('int', 'VERSION_BD', '1')
     }

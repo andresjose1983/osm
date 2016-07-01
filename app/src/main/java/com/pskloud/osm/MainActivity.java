@@ -2,20 +2,25 @@ package com.pskloud.osm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.pskloud.osm.util.CustomerSqlHelper;
 import com.pskloud.osm.util.NotificationHelper;
 
 import org.eazegraph.lib.charts.StackedBarChart;
 import org.eazegraph.lib.models.BarModel;
 import org.eazegraph.lib.models.StackedBarModel;
+
+import java.text.DecimalFormat;
 
 public class MainActivity extends DefaultActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,6 +29,8 @@ public class MainActivity extends DefaultActivity
     private DrawerLayout mDrawer;
     private NavigationView mNvMain;
     private StackedBarChart mStackedBarChart;
+    private StackedBarModel mSGraphCustomer;
+    private StackedBarModel mSsGraphOrder;
 
     public static void show(LoginActivity activity){
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -43,6 +50,41 @@ public class MainActivity extends DefaultActivity
                 NotificationHelper.NOTIFICATION_DOWNLOADED_LOCALITY,
                 NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPE,
                 NotificationHelper.NOTIFICATION_DOWNLOADED_PRODUCT);
+        new Handler().post(() -> {
+            CustomerSqlHelper customerSqlHelper = new CustomerSqlHelper(this);
+            Integer[] customerGraphs = customerSqlHelper.GET_GRAPH.execute();
+            if(customerGraphs != null){
+                float updated = 0.0f;
+                float notUpdated = 0.0f;
+                DecimalFormat decimalFormat = new DecimalFormat("##.00");
+                if(customerGraphs[0] != null){
+                    if(customerGraphs[1] != null){
+                        updated = Float.valueOf(customerGraphs[1] * 100) / customerGraphs[0];
+                    }
+                    if(customerGraphs[2] != null){
+                        notUpdated = Float.valueOf(customerGraphs[2] * 100) / customerGraphs[0];
+                    }
+
+                    int colorSync = ContextCompat.getColor(this, R.color.colorAccent);
+                    int colorUnSync = ContextCompat.getColor(this, R.color.colorPrimary);
+
+                    mSGraphCustomer.getBars().clear();
+                    mSGraphCustomer.addBar(new BarModel(Float.valueOf(decimalFormat.format(updated)), colorSync));
+                    mSGraphCustomer.addBar(new BarModel(Float.valueOf(decimalFormat.format(notUpdated)), colorUnSync));
+
+                    mSsGraphOrder.getBars().clear();
+                    mSsGraphOrder.addBar(new BarModel(60f, colorSync));
+                    mSsGraphOrder.addBar(new BarModel(40f, colorUnSync));
+
+                    mStackedBarChart.clearChart();
+                    mStackedBarChart.addBar(mSGraphCustomer);
+                    mStackedBarChart.addBar(mSsGraphOrder);
+
+                    mStackedBarChart.startAnimation();
+                }
+            }
+
+        });
     }
 
     @Override
@@ -108,22 +150,8 @@ public class MainActivity extends DefaultActivity
 
         mNvMain.setNavigationItemSelectedListener(this);
 
-        StackedBarModel s1 = new StackedBarModel(getString(R.string.nav_customers));
-
-        int colorSync = ContextCompat.getColor(this, R.color.colorAccent);
-        int colorUnSync = ContextCompat.getColor(this, R.color.colorPrimary);
-
-        s1.addBar(new BarModel(/*98f*/0f, colorSync));
-        s1.addBar(new BarModel(/*2f*/0f, colorUnSync));
-
-        StackedBarModel s2 = new StackedBarModel(getString(R.string.nav_orders));
-        s2.addBar(new BarModel(60f, colorSync));
-        s2.addBar(new BarModel(40f, colorUnSync));
-
-        mStackedBarChart.addBar(s1);
-        mStackedBarChart.addBar(s2);
-
-        mStackedBarChart.startAnimation();
+        mSGraphCustomer = new StackedBarModel(getString(R.string.nav_customers));
+        mSsGraphOrder = new StackedBarModel(getString(R.string.nav_orders));
     }
 
     @Override

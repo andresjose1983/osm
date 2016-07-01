@@ -50,11 +50,11 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/tv_name"
             android:background="@null"
-            android:foreground="?android:selectableItemBackground"
             android:src="@mipmap/ic_mode_edit"
-            android:paddingLeft="@dimen/smallest"
-            android:paddingRight="@dimen/small"
-            android:paddingBottom="@dimen/smallest" />
+            android:paddingLeft="@dimen/smaller"
+            android:paddingRight="@dimen/smaller"
+            android:paddingBottom="@dimen/smallest"
+            android:layout_marginRight="@dimen/smallest" />
 
         <LinearLayout
             android:id="@+id/v_actions"

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rv_products"
     android:fitsSystemWindows="true"
-    tools:context="com.pskloud.osm.ProductsActivity">
+    tools:context="com.osm.soft.sf.ProductsActivity">
 
 
 </android.support.v7.widget.RecyclerView>

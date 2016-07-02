@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OSM Soft</string>
+    <string name="app_name">OSM FS</string>
     <string name="error_server_unavailable">Server unavailable</string>
     <string name="error_service_unavailable">Service unavailable</string>
     <!-- Login -->

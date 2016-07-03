@@ -27,7 +27,7 @@
             android:textStyle="bold"
             android:layout_alignParentTop="false"
             android:layout_alignParentBottom="false"
-            android:layout_toEndOf="@+id/iv_color"
+            android:layout_toEndOf="@+id/v_shape"
             android:layout_toStartOf="@+id/ib_edit"
             android:layout_marginTop="@dimen/small" />
 
@@ -89,24 +89,33 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/iv_color"
-            android:src="@mipmap/ic_mode_edit"
+        <RelativeLayout
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:id="@+id/v_shape"
             android:layout_alignTop="@+id/tv_name"
             android:layout_alignParentStart="true"
             android:layout_marginRight="@dimen/smaller"
-            android:paddingBottom="@dimen/small" />
+            android:layout_marginTop="@dimen/smallest">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_autorenew"
-            android:id="@+id/iv_sync"
-            android:layout_alignParentBottom="false"
-            android:layout_alignEnd="@+id/ib_edit"
-            android:layout_alignParentTop="true" />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_color"
+                android:background="@drawable/circle"
+                android:layout_alignTop="@+id/tv_name"
+                android:layout_alignParentStart="true" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_autorenew"
+                android:tint="@color/red"
+                android:id="@+id/iv_sync"
+                android:layout_alignBottom="@+id/iv_color"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

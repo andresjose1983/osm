@@ -12,11 +12,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".com.osm.soft.sf.service.CustomersService" />
-        <service android:name="com.osm.soft.sf.service.LocalitiesService" />
-        <service android:name="com.osm.soft.sfservice.TaxTypesService" />
-        <service android:name="com.osm.soft.sfservice.CustomerJobService" />
-        <service android:name="com.osm.soft.sfservice.ProductsService" />
+        <service android:name=".service.CustomersService" />
+        <service android:name=".service.LocalitiesService" />
+        <service android:name=".service.TaxTypesService" />
+        <service android:name=".service.CustomerJobService" />
+        <service android:name=".service.ProductsService" />
 
         <activity
             android:name=".LoginActivity"

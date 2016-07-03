@@ -2,6 +2,8 @@ package com.osm.soft.sf.adapter;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -173,8 +175,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         String index = String.valueOf(position);
         int lenght = index.length();
 
-        Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)),
-                Integer.valueOf(index.substring(lenght - 1)), -1);
+        /*Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)),
+                Integer.valueOf(index.substring(lenght - 1)), -1);*/
+        GradientDrawable bgShape = (GradientDrawable) holder.mIvColor.getBackground();
+        bgShape.setColor(Color.parseColor(Functions.getColor(Integer.valueOf(index.substring(lenght - 1)))));
 
         if(customer.isView())
             holder.expand();

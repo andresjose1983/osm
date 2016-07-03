@@ -64,8 +64,8 @@ public class MainActivity extends DefaultActivity
                         notUpdated = Float.valueOf(customerGraphs[2] * 100) / customerGraphs[0];
                     }
 
-                    int colorSync = ContextCompat.getColor(this, R.color.colorAccent);
-                    int colorUnSync = ContextCompat.getColor(this, R.color.colorPrimary);
+                    int colorSync = ContextCompat.getColor(this, R.color.colorPrimary);
+                    int colorUnSync = ContextCompat.getColor(this, R.color.red);
 
                     mSGraphCustomer.getBars().clear();
                     mSGraphCustomer.addBar(new BarModel(Float.valueOf(decimalFormat.format(updated)), colorSync));

@@ -157,30 +157,30 @@ public final class Functions {
         canvas.drawText(letter, canvas.getWidth()/2, canvas.getHeight() / 1.5f , textPaint);
     }
 
-    private static String getColor(final int index){
+    public static String getColor(final int index){
         switch (index){
             case 0:
-                return "#0277bd";
+                return "#E040FB";
             case 1:
-                return "#cddc39";
+                return "#EDE7F6";
             case 2:
-                return "#66bb6a";
+                return "#9FA8DA";
             case 3:
-                return "#76ff03";
+                return "#7C4DFF";
             case 4:
-                return "#ef6c00";
+                return "#4DD0E1";
             case 5:
-                return "#ffff00";
+                return "#AED581";
             case 6:
-                return "#d84315";
+                return "#D4E157";
             case 7:
-                return "#424242";
+                return "#FFD54F";
             case 8:
-                return "#607d8b";
+                return "#9E9E9E";
             case 9:
-                return "#039be5";
+                return "#8D6E63";
         }
-        return "#ff1744";
+        return "#78909C";
     }
 
     private static int getDensity(final Context context){

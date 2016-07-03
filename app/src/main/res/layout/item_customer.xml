@@ -89,22 +89,20 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="45dp"
+        <FrameLayout
+            android:layout_width="55dp"
             android:layout_height="45dp"
             android:id="@+id/v_shape"
             android:layout_alignTop="@+id/tv_name"
             android:layout_alignParentStart="true"
-            android:layout_marginRight="@dimen/smaller"
-            android:layout_marginTop="@dimen/smallest">
+            android:layout_marginRight="@dimen/smaller">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:id="@+id/iv_color"
                 android:background="@drawable/circle"
-                android:layout_alignTop="@+id/tv_name"
-                android:layout_alignParentStart="true" />
+                android:layout_gravity="center" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -112,10 +110,19 @@
                 android:src="@mipmap/ic_autorenew"
                 android:tint="@color/red"
                 android:id="@+id/iv_sync"
-                android:layout_alignBottom="@+id/iv_color"
-                android:layout_alignParentEnd="true" />
+                android:layout_gravity="right|bottom" />
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="T"
+                android:textSize="@dimen/letter"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:id="@+id/tv_letter"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
     </RelativeLayout>
 

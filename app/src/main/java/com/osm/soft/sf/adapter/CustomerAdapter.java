@@ -42,6 +42,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         private TextView mTvName;
         private TextView mTvIdentification;
+        private TextView mTvLetter;
         private ImageView mIvColor;
         private ImageView mIvSync;
         private View mIbEdit;
@@ -52,6 +53,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             super(itemView);
             mTvName = (TextView) itemView.findViewById(R.id.tv_name);
             mTvIdentification = (TextView) itemView.findViewById(R.id.tv_identification);
+            mTvLetter = (TextView) itemView.findViewById(R.id.tv_letter);
             mIvColor = (ImageView)itemView.findViewById(R.id.iv_color);
             mIvSync = (ImageView)itemView.findViewById(R.id.iv_sync);
 
@@ -173,12 +175,13 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             holder.mIvSync.setVisibility(View.VISIBLE);
 
         String index = String.valueOf(position);
-        int lenght = index.length();
 
         /*Functions.changeColor(holder.mIvColor, String.valueOf(customer.getName().charAt(0)),
                 Integer.valueOf(index.substring(lenght - 1)), -1);*/
         GradientDrawable bgShape = (GradientDrawable) holder.mIvColor.getBackground();
-        bgShape.setColor(Color.parseColor(Functions.getColor(Integer.valueOf(index.substring(lenght - 1)))));
+        bgShape.setColor(Color.parseColor(Functions.getColor(Integer.valueOf(
+                index.substring(index.length() - 1)))));
+        holder.mTvLetter.setText(String.valueOf(customer.getName().charAt(0)));
 
         if(customer.isView())
             holder.expand();

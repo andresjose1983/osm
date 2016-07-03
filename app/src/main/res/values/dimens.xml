@@ -17,4 +17,5 @@
     <dimen name="item_image_size">48dp</dimen>
     <dimen name="item_image_size_big">150dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="letter">30sp</dimen>
 </resources>

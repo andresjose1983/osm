@@ -1,105 +1,129 @@
 package com.osm.soft.sf.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by andres on 09/06/16.
  */
-public class Order implements Parcelable{
+public class Order implements Serializable{
 
+    private int id;
     private String number;
-
     private Date date;
-
     private int totalItem;
-
     private boolean isView;
+    private boolean isSynced;
+    private List<ProductOrder> products;
+    private Customer customer;
 
-    private List<Product> products;
+    private Order(Builder builder) {
+        id = builder.id;
+        number = builder.number;
+        date = builder.date;
+        totalItem = builder.totalItem;
+        setView(builder.isView);
+        setSynced(builder.isSynced);
+        products = builder.products;
+        customer = builder.customer;
+    }
 
-    public Order(String number, Date date, int totalItem) {
-        this.number = number;
-        this.date = date;
-        this.totalItem = totalItem;
+    public int getId() {
+        return id;
     }
 
     public String getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public Date getDate() {
         return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public int getTotalItem() {
         return totalItem;
     }
 
-    public void setTotalItem(int totalItem) {
-        this.totalItem = totalItem;
-    }
-
     public boolean isView() {
         return isView;
+    }
+
+    public boolean isSynced() {
+        return isSynced;
+    }
+
+    public List<ProductOrder> getProducts() {
+        return products;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 
     public void setView(boolean view) {
         isView = view;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public void setSynced(boolean synced) {
+        isSynced = synced;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+    public static final class Builder {
+        private int id;
+        private String number;
+        private Date date;
+        private int totalItem;
+        private boolean isView;
+        private boolean isSynced;
+        private List<ProductOrder> products;
+        private Customer customer;
 
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.number);
-        dest.writeLong(this.date != null ? this.date.getTime() : -1);
-        dest.writeInt(this.totalItem);
-        dest.writeByte(this.isView ? (byte) 1 : (byte) 0);
-        //dest.writeTypedList(this.products);
-    }
-
-    protected Order(Parcel in) {
-        this.number = in.readString();
-        long tmpDate = in.readLong();
-        this.date = tmpDate == -1 ? null : new Date(tmpDate);
-        this.totalItem = in.readInt();
-        this.isView = in.readByte() != 0;
-        //this.products = in.createTypedArrayList(Product.CREATOR);
-    }
-
-    public static final Creator<Order> CREATOR = new Creator<Order>() {
-        @Override
-        public Order createFromParcel(Parcel source) {
-            return new Order(source);
+        public Builder() {
         }
 
-        @Override
-        public Order[] newArray(int size) {
-            return new Order[size];
+        public Builder id(int val) {
+            id = val;
+            return this;
         }
-    };
+
+        public Builder number(String val) {
+            number = val;
+            return this;
+        }
+
+        public Builder date(Date val) {
+            date = val;
+            return this;
+        }
+
+        public Builder totalItem(int val) {
+            totalItem = val;
+            return this;
+        }
+
+        public Builder isView(boolean val) {
+            isView = val;
+            return this;
+        }
+
+        public Builder isSynced(boolean val) {
+            isSynced = val;
+            return this;
+        }
+
+        public Builder products(List<ProductOrder> val) {
+            products = val;
+            return this;
+        }
+
+        public Builder customer(Customer val) {
+            customer = val;
+            return this;
+        }
+
+        public Order build() {
+            return new Order(this);
+        }
+    }
 }

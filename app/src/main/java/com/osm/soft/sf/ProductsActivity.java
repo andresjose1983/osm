@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.osm.soft.sf.adapter.ProductAdapter;
+import com.osm.soft.sf.model.Customer;
 import com.osm.soft.sf.model.Product;
 import com.osm.soft.sf.util.ProductsSqlHelper;
 
@@ -27,8 +29,16 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     private List<Product> mProducts;
     private boolean isViewWithCatalog = true;
 
+    private Customer mCustomer;
+    public static final String DATA_INTENT_CUSTOMER = "com.osm.soft.sf.DATA_INTENT_CUSTOMER";
+
     public static void show(Context context) {
         context.startActivity(new Intent(context, ProductsActivity.class));
+    }
+
+    public static void show(DefaultActivity defaultActivity, Customer customer) {
+        defaultActivity.startActivity(new Intent(defaultActivity, ProductsActivity.class)
+                .putExtra(DATA_INTENT_CUSTOMER, customer));
     }
 
     @Override
@@ -40,6 +50,10 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     @Override
     public void setUp() {
         changeView(new LinearLayoutManager(getApplicationContext()), R.layout.item_product, -1);
+
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar != null)
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -47,6 +61,10 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
         productsSqlHelper = new ProductsSqlHelper(this);
 
         mRvProducts = (RecyclerView) findViewById(R.id.rv_products);
+
+        if(getIntent().hasExtra(DATA_INTENT_CUSTOMER)){
+            mCustomer = (Customer) getIntent().getExtras().getSerializable(DATA_INTENT_CUSTOMER);
+        }
     }
 
     @Override
@@ -72,6 +90,12 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
                 else
                     changeView(new GridLayoutManager(this,2), R.layout.item_grid_product,
                             getResources().getDisplayMetrics().densityDpi);
+                break;
+            case android.R.id.home:
+                if(mCustomer != null){
+
+                }
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

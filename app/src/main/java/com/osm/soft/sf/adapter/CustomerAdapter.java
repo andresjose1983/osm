@@ -61,11 +61,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             mIbEdit = itemView.findViewById(R.id.ib_edit);
             mTvOrder = itemView.findViewById(R.id.tv_order);
 
-            TypedValue outValue = new TypedValue();
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
-                mIbEdit.getContext().getTheme().resolveAttribute(
-                        android.R.attr.selectableItemBackgroundBorderless, outValue, true);
-            mIbEdit.setBackgroundResource(outValue.resourceId);
+            Functions.setViewSelected(mIbEdit);
 
             itemView.setOnClickListener(v -> {
                 Customer customer = mCustomers.get(getAdapterPosition());

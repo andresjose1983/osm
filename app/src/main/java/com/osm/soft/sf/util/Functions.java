@@ -9,8 +9,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -67,23 +70,6 @@ public final class Functions {
             fadeAnim.setDuration( 2500 );
             fadeAnim.start();
     };
-
-    public static List<Order> getOrder(){
-
-        List<Order> orders = new ArrayList<>();
-        orders.add(new Order("001", new Date(), 5));
-        /*orders.add(new Order("002", new Date(), 15));
-        orders.add(new Order("003", new Date(), 3));
-        orders.add(new Order("004", new Date(), 4));
-        orders.add(new Order("005", new Date(), 2));
-        orders.add(new Order("006", new Date(), 1));
-        orders.add(new Order("007", new Date(), 10));
-        orders.add(new Order("008", new Date(), 12));
-        orders.add(new Order("009", new Date(), 6));
-        orders.add(new Order("010", new Date(), 8));*/
-
-        return orders;
-    }
 
     public static String format(final Date date){
         String pattern = "MM/dd/yyyy";
@@ -211,4 +197,15 @@ public final class Functions {
         return formateador.format(value);
     }
 
+    public static void setViewSelected(View view){
+        TypedValue outValue = new TypedValue();
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP)
+            view.getContext().getTheme().resolveAttribute(
+                    android.R.attr.selectableItemBackgroundBorderless, outValue, true);
+        else
+            view.getContext().getTheme().resolveAttribute(
+                    android.R.attr.selectableItemBackground, outValue, true);
+
+        view.setBackgroundResource(outValue.resourceId);
+    }
 }

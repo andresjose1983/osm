@@ -6,18 +6,22 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.osm.soft.sf.CustomersActivity;
+import com.osm.soft.sf.DefaultActivity;
+import com.osm.soft.sf.ProductsActivity;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.adapter.OrderAdapter;
 import com.osm.soft.sf.model.Customer;
 import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.util.Functions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +36,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
     private Customer customer;
     public static String BOTTON_SHEET_NAME = "BSDialog";
 
-    private List<Order> mOrders = Functions.getOrder();
+    private List<Order> mOrders = new ArrayList<>();
 
     static public DialogOrderFragment newInstance() {
         return new DialogOrderFragment();
@@ -45,6 +49,12 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
         init(view);
         setUp(view);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Hoa", "asdas");
     }
 
     private void setUp(View view) {
@@ -60,6 +70,11 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
         customer = (Customer) this.getArguments().getSerializable(CustomersActivity.ARG_CUSTOMER);
         if(customer != null)
             mtvTitle.setText(customer.getName());
+
+        View viewAddOrder = view.findViewById(R.id.iv_add_order);
+        viewAddOrder.setOnClickListener(view1 -> ProductsActivity.show((DefaultActivity) getActivity(), customer));
+
+        Functions.setViewSelected(viewAddOrder);
 
     }
 

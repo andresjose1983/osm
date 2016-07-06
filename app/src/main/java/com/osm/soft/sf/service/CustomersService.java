@@ -14,6 +14,9 @@ import com.osm.soft.sf.model.Customer;
 import com.osm.soft.sf.rest.RestClient;
 import com.osm.soft.sf.util.CustomerSqlHelper;
 import com.osm.soft.sf.util.NotificationHelper;
+import com.osm.soft.sf.util.OrderSqlHelper;
+import com.osm.soft.sf.util.ProductOrderSqlHelper;
+import com.osm.soft.sf.util.ProductsSqlHelper;
 
 import java.util.List;
 
@@ -38,7 +41,8 @@ public class CustomersService extends IntentService {
     public void onCreate() {
         super.onCreate();
         customerSqlHelper = new CustomerSqlHelper(this);
-
+        new OrderSqlHelper(this).init();
+        new ProductOrderSqlHelper(this).init();
     }
 
     @Override

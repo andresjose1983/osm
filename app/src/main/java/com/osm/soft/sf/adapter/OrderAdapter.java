@@ -33,7 +33,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         private TextView mTvDate;
         private RecyclerView mRvProducts;
         private RecyclerView.LayoutManager mLayoutManager;
-        private ProductAdapter mProductAdapter;
+        private ProductOrderAdapter mProductAdapter;
         private View mvProducts;
 
 
@@ -148,11 +148,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
 
         Order order = mOrders.get(position);
 
-        holder.mTvNumber.setText(order.getNumber());
+        holder.mTvNumber.setText(String.valueOf(order.getId()));
         holder.mTvDate.setText(Functions.format(order.getDate()));
 
-        //holder.mProductAdapter = new ProductAdapter(order.getProducts(), R.layout.item_product,-1);
-        //holder.mRvProducts.setAdapter(holder.mProductAdapter);
+        holder.mProductAdapter = new ProductOrderAdapter(order.getProducts(), R.layout.item_product,-1);
+        holder.mRvProducts.setAdapter(holder.mProductAdapter);
 
         if(order.isView())
             holder.expand();

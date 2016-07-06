@@ -12,17 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.osm.soft.sf.BuildConfig;
 import com.osm.soft.sf.CustomersActivity;
 import com.osm.soft.sf.DefaultActivity;
+import com.osm.soft.sf.OsmApplication;
 import com.osm.soft.sf.ProductsActivity;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.adapter.OrderAdapter;
 import com.osm.soft.sf.model.Customer;
-import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.util.Functions;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.osm.soft.sf.util.OrderSqlHelper;
 
 /**
  * Created by andres on 09/06/16.
@@ -35,8 +34,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
 
     private Customer customer;
     public static String BOTTON_SHEET_NAME = "BSDialog";
-
-    private List<Order> mOrders = new ArrayList<>();
+    private OrderSqlHelper orderSqlHelper;
 
     static public DialogOrderFragment newInstance() {
         return new DialogOrderFragment();
@@ -54,7 +52,19 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("Hoa", "asdas");
+        if(BuildConfig.DEBUG)
+            Log.d(DialogOrderFragment.class.getCanonicalName(), customer.getCode());
+
+        try {
+            mOrderAdapter = new OrderAdapter(orderSqlHelper.GET.execute(customer));
+            mRvOrders.setAdapter(mOrderAdapter);
+            mRvOrders.setHasFixedSize(true);
+        }catch (Exception e){
+            if(BuildConfig.DEBUG) {
+                Log.d(DialogOrderFragment.class.getCanonicalName(), e.getMessage());
+
+            }
+        }
     }
 
     private void setUp(View view) {
@@ -62,10 +72,6 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(view.getContext());
         mRvOrders.setLayoutManager(mLayoutManager);
         mRvOrders.setItemAnimator(new DefaultItemAnimator());
-
-        mOrderAdapter = new OrderAdapter(mOrders);
-        mRvOrders.setAdapter(mOrderAdapter);
-        mRvOrders.setHasFixedSize(true);
 
         customer = (Customer) this.getArguments().getSerializable(CustomersActivity.ARG_CUSTOMER);
         if(customer != null)
@@ -76,11 +82,14 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
 
         Functions.setViewSelected(viewAddOrder);
 
+
     }
 
     private void init(View view) {
         mRvOrders = (RecyclerView) view.findViewById(R.id.rv_orders);
         mtvTitle = (TextView)view.findViewById(R.id.tv_title);
+
+        orderSqlHelper = new OrderSqlHelper(OsmApplication.getInstance());
     }
 
 }

@@ -88,6 +88,9 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     public void init() {
         mFabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
         mRvCustomers = (RecyclerView) findViewById(R.id.rv_customers);
+
+        customerSqlHelper = new CustomerSqlHelper(this);
+        bsdFragment = DialogOrderFragment.newInstance();
     }
 
     @Override
@@ -115,16 +118,12 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     public void setUp() {
 
-        customerSqlHelper = new CustomerSqlHelper(this);
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRvCustomers.setLayoutManager(mLayoutManager);
         mRvCustomers.setItemAnimator(new DefaultItemAnimator());
         mRvCustomers.setHasFixedSize(true);
 
         mFabAdd.setOnClickListener(view->goToCustomer(this, null));
-
-        bsdFragment = DialogOrderFragment.newInstance();
     }
 
     @Override
@@ -148,6 +147,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     }
 
     public void showOrder(final Customer customer){
+        hideKeyboard();
         Bundle bundle = new Bundle();
         bundle.putSerializable(ARG_CUSTOMER, customer);
         bsdFragment.setArguments(bundle);

@@ -10,9 +10,7 @@ import java.util.List;
 public class Order implements Serializable{
 
     private int id;
-    private String number;
     private Date date;
-    private int totalItem;
     private boolean isView;
     private boolean isSynced;
     private List<ProductOrder> products;
@@ -20,9 +18,7 @@ public class Order implements Serializable{
 
     private Order(Builder builder) {
         id = builder.id;
-        number = builder.number;
         date = builder.date;
-        totalItem = builder.totalItem;
         setView(builder.isView);
         setSynced(builder.isSynced);
         products = builder.products;
@@ -33,16 +29,8 @@ public class Order implements Serializable{
         return id;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
     public Date getDate() {
         return date;
-    }
-
-    public int getTotalItem() {
-        return totalItem;
     }
 
     public boolean isView() {
@@ -69,11 +57,13 @@ public class Order implements Serializable{
         isSynced = synced;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public static final class Builder {
         private int id;
-        private String number;
         private Date date;
-        private int totalItem;
         private boolean isView;
         private boolean isSynced;
         private List<ProductOrder> products;
@@ -88,7 +78,6 @@ public class Order implements Serializable{
         }
 
         public Builder number(String val) {
-            number = val;
             return this;
         }
 
@@ -98,7 +87,6 @@ public class Order implements Serializable{
         }
 
         public Builder totalItem(int val) {
-            totalItem = val;
             return this;
         }
 
@@ -125,5 +113,9 @@ public class Order implements Serializable{
         public Order build() {
             return new Order(this);
         }
+    }
+
+    public void setProducts(List<ProductOrder> products) {
+        this.products = products;
     }
 }

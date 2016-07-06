@@ -3,6 +3,7 @@ package com.osm.soft.sf;
 import android.app.Application;
 import android.content.Intent;
 
+import com.facebook.stetho.Stetho;
 import com.osm.soft.sf.service.CustomerJobService;
 
 /**
@@ -23,6 +24,9 @@ public class OsmApplication extends Application{
         sInstance = this;
 
         startService(new Intent(this, CustomerJobService.class));
+
+        if(BuildConfig.DEBUG)
+            Stetho.initializeWithDefaults(this);
     }
 
 }

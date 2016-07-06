@@ -14,7 +14,7 @@ android {
             enabled true
         }
 
-        buildConfigField('String', 'URL', '"http://192.168.1.123:8080/osm-server/rest/v1/"')
+        buildConfigField('String', 'URL', '"http://192.168.1.124:8080/osm-server/rest/v1/"')
 
         buildConfigField('int', 'VERSION_BD', '1')
     }
@@ -45,4 +45,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.blackfizz:eazegraph:1.2.5l@aar'
     compile 'com.nineoldandroids:library:2.4.0'
+    debugCompile 'com.facebook.stetho:stetho:1.3.1'
+
 }

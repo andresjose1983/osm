@@ -72,7 +72,7 @@ public final class Functions {
     };
 
     public static String format(final Date date){
-        String pattern = "MM/dd/yyyy";
+        String pattern = "dd/MMM/yyyy hh:mm aaa";
         SimpleDateFormat format = new SimpleDateFormat(pattern);
 
         // formatting

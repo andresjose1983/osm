@@ -42,6 +42,9 @@ public class ProductOrder implements Serializable {
         return quantity;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public static final class Builder {
         private int quantity;

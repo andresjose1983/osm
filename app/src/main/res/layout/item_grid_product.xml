@@ -29,12 +29,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="false"
-                android:text="Medium Text"
+                android:text="Medium Text Medium Text  Medium Text  Medium Text  Medium Text "
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
                 android:layout_below="@+id/iv_color"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:gravity="left|center|right" />
 
             <TextView
                 android:id="@+id/tv_code"

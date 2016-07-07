@@ -1,6 +1,8 @@
 package com.osm.soft.sf.util;
 
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -14,7 +16,9 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -22,14 +26,11 @@ import com.bumptech.glide.request.animation.ViewPropertyAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.osm.soft.sf.OsmApplication;
 import com.osm.soft.sf.R;
-import com.osm.soft.sf.model.Order;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by andres on 09/06/16.
@@ -207,5 +208,22 @@ public final class Functions {
                     android.R.attr.selectableItemBackground, outValue, true);
 
         view.setBackgroundResource(outValue.resourceId);
+    }
+
+    public static void showWithCustomView(final Context context, final EditText editText,
+                                          Dialog.OnClickListener positive,
+                                          Dialog.OnClickListener negative){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(R.string.change_quantiy);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        editText.setLayoutParams(lp);
+        alertDialog.setView(editText);
+        alertDialog.setPositiveButton(context.getString(R.string.ok),  positive);
+        alertDialog.setNegativeButton(context.getString(R.string.cancel), negative);
+        alertDialog.show();
     }
 }

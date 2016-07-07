@@ -5,17 +5,17 @@ import android.animation.ValueAnimator;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.osm.soft.sf.DefaultActivity;
+import com.osm.soft.sf.ProductsActivity;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.util.Functions;
-import com.osm.soft.sf.util.ProductOrderSqlHelper;
 
 import java.util.List;
 
@@ -25,8 +25,10 @@ import java.util.List;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>{
 
     private List<Order> mOrders;
+    private DefaultActivity mDefaultActivity;
 
-    public OrderAdapter(List<Order> mOrders) {
+    public OrderAdapter(final DefaultActivity defaultActivity, List<Order> mOrders) {
+        mDefaultActivity = defaultActivity;
         this.mOrders = mOrders;
     }
 
@@ -38,6 +40,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         private RecyclerView.LayoutManager mLayoutManager;
         private ProductOrderAdapter mProductAdapter;
         private View mvProducts;
+        private ImageView mIvEditOrder;
 
         public OrderHolder(View itemView) {
             super(itemView);
@@ -45,6 +48,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             mTvDate = (TextView) itemView.findViewById(R.id.tv_date);
             mRvProducts = (RecyclerView) itemView.findViewById(R.id.rv_products);
             mvProducts = itemView.findViewById(R.id.v_products);
+            mIvEditOrder = (ImageView) itemView.findViewById(R.id.iv_edit_order);
 
             itemView.setOnClickListener(v -> {
                 Order order = mOrders.get(getAdapterPosition());
@@ -56,6 +60,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                 mOrders.set(getAdapterPosition(), order);
                 notifyItemChanged(getAdapterPosition());
             });
+
+            mIvEditOrder.setOnClickListener(view -> ProductsActivity.show(mDefaultActivity,
+                    mOrders.get(getAdapterPosition())));
 
             mLayoutManager = new LinearLayoutManager(mRvProducts.getContext());
             mRvProducts.setLayoutManager(mLayoutManager);

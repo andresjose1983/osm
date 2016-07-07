@@ -1,30 +1,23 @@
 package com.osm.soft.sf.adapter;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.osm.soft.sf.R;
-import com.osm.soft.sf.model.Order;
-import com.osm.soft.sf.model.Product;
 import com.osm.soft.sf.model.ProductOrder;
 import com.osm.soft.sf.util.DialogHelper;
 import com.osm.soft.sf.util.Functions;
 import com.osm.soft.sf.util.ProductOrderSqlHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,27 +78,16 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
             contextMenu.add(R.string.change_quantiy).setOnMenuItemClickListener(menuItem -> {
                 ProductOrder productOrder = get(getLayoutPosition());
                 if(!productOrder.getOrder().isSynced()){
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-                    alertDialog.setTitle(R.string.change_quantiy);
-
                     final EditText input = new EditText(view.getContext());
                     input.setInputType(InputType.TYPE_CLASS_NUMBER);
                     input.setText(String.valueOf(productOrder.getQuantity()));
-                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT);
-                    input.setLayoutParams(lp);
-                    alertDialog.setView(input);
-                    alertDialog.setPositiveButton(view.getContext().getString(R.string.ok),  (dialogInterface, i) -> {
-                        if(input.getText().length() > 0){
-                            productOrder.setQuantity(Integer.valueOf(input.getText().toString()));
-                            mProductOrderSqlHelper.UPDATE.execute(productOrder);
-                            notifyDataSetChanged();
-                        }
-                    });
-                    alertDialog.setNegativeButton(view.getContext().getString(R.string.cancel),
-                            (dialogInterface, i) -> dialogInterface.dismiss());
-                    alertDialog.show();
+                    Functions.showWithCustomView(view.getContext(), input, (dialogInterface, i) -> {
+                                if(input.getText().length() > 0){
+                                    productOrder.setQuantity(Integer.valueOf(input.getText().toString()));
+                                    mProductOrderSqlHelper.UPDATE.execute(productOrder);
+                                    notifyDataSetChanged();
+                                }
+                            }, (dialogInterface, i) -> dialogInterface.dismiss());
                 }
                 else{
                     DialogHelper.ok(view.getContext(), R.string.order_synced);

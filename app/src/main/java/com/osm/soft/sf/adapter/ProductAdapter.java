@@ -1,17 +1,24 @@
 package com.osm.soft.sf.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.osm.soft.sf.R;
+import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.model.Product;
+import com.osm.soft.sf.model.ProductOrder;
 import com.osm.soft.sf.util.Functions;
+import com.osm.soft.sf.util.OrderSqlHelper;
+import com.osm.soft.sf.util.ProductOrderSqlHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +30,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
 
     private List<Product> mProducts;
     private List<Product> mProductsFilter;
+    private Order mOrder;
     private final int VIEW;
     private final int DPI;
+    private ProductOrderSqlHelper mProductOrderSqlHelper;
+    private OrderSqlHelper mOrderSqlHelper;
 
     public ProductAdapter(List<Product> mProducts, final int VIEW, final int DPI) {
         this.mProducts = mProducts;
@@ -33,7 +43,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
         mProductsFilter = new ArrayList<>(mProducts);
     }
 
-    public class ProductHolder extends RecyclerView.ViewHolder {
+    public ProductAdapter(final Context context, List<Product> mProducts, Order order, final int VIEW, final int DPI) {
+        this.mProducts = mProducts;
+        this.VIEW = VIEW;
+        this.DPI = DPI;
+        mProductsFilter = new ArrayList<>(mProducts);
+        mOrder = order;
+        mProductOrderSqlHelper = new ProductOrderSqlHelper(context);
+        mOrderSqlHelper = new OrderSqlHelper(context);
+    }
+
+    public class ProductHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTvCode;
         private TextView mTvDescription;
@@ -48,6 +68,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
             mTvPrice = (TextView) itemView.findViewById(R.id.tv_price);
             mtvQuantity = (TextView)itemView.findViewById(R.id.tv_quantity);
             mIvColor = (ImageView)itemView.findViewById(R.id.iv_color);
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            if(mOrder != null){
+                final EditText input = new EditText(view.getContext());
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                input.setText(String.valueOf(0));
+                Functions.showWithCustomView(view.getContext(), input, (dialogInterface, i) -> {
+                    if(input.getText().length() > 0){
+
+                        if(mOrder.getId() == 0)
+                            mOrder = mOrderSqlHelper.ADD.execute(mOrder);
+
+                        mProductOrderSqlHelper.ADD.execute(new ProductOrder.Builder().product(mProductsFilter.get(getAdapterPosition()))
+                                .quantity(Integer.valueOf(input.getText().toString()))
+                                .order(mOrder).build());
+                    }
+                }, (dialogInterface, i) -> dialogInterface.dismiss());
+            }
         }
     }
 

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import com.osm.soft.sf.adapter.ProductAdapter;
 import com.osm.soft.sf.model.Customer;
+import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.model.Product;
 import com.osm.soft.sf.util.ProductsSqlHelper;
 
@@ -29,16 +30,16 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     private List<Product> mProducts;
     private boolean isViewWithCatalog = true;
 
-    private Customer mCustomer;
-    public static final String DATA_INTENT_CUSTOMER = "com.osm.soft.sf.DATA_INTENT_CUSTOMER";
+    private Order mOrder;
+    public static final String DATA_INTENT_ORDER = "com.osm.soft.sf.DATA_INTENT_ORDER";
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, ProductsActivity.class));
     }
 
-    public static void show(DefaultActivity defaultActivity, Customer customer) {
+    public static void show(DefaultActivity defaultActivity, Order order) {
         defaultActivity.startActivity(new Intent(defaultActivity, ProductsActivity.class)
-                .putExtra(DATA_INTENT_CUSTOMER, customer));
+                .putExtra(DATA_INTENT_ORDER, order));
     }
 
     @Override
@@ -54,6 +55,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
         ActionBar supportActionBar = getSupportActionBar();
         if(supportActionBar != null)
             supportActionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -62,8 +64,8 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
 
         mRvProducts = (RecyclerView) findViewById(R.id.rv_products);
 
-        if(getIntent().hasExtra(DATA_INTENT_CUSTOMER)){
-            mCustomer = (Customer) getIntent().getExtras().getSerializable(DATA_INTENT_CUSTOMER);
+        if(getIntent().hasExtra(DATA_INTENT_ORDER)){
+            mOrder = (Order) getIntent().getExtras().getSerializable(DATA_INTENT_ORDER);
         }
     }
 
@@ -92,7 +94,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
                             getResources().getDisplayMetrics().densityDpi);
                 break;
             case android.R.id.home:
-                if(mCustomer != null){
+                if(mOrder != null){
 
                 }
                 finish();
@@ -109,7 +111,10 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
         mRvProducts.setLayoutManager(layoutManage);
         mRvProducts.setItemAnimator(new DefaultItemAnimator());
 
-        mProductAdapter = new ProductAdapter(mProducts, view, dpi);
+        if(mOrder == null)
+            mProductAdapter = new ProductAdapter(mProducts, view, dpi);
+        else
+            mProductAdapter = new ProductAdapter(this, mProducts, mOrder, view, dpi);
         mRvProducts.setAdapter(mProductAdapter);
         mRvProducts.setHasFixedSize(true);
     }

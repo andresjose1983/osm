@@ -27,6 +27,8 @@ import com.osm.soft.sf.util.DialogHelper;
 import com.osm.soft.sf.util.Functions;
 import com.osm.soft.sf.util.OrderSqlHelper;
 
+import java.util.Date;
+
 /**
  * Created by andres on 09/06/16.
  */
@@ -60,7 +62,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
             Log.d(DialogOrderFragment.class.getCanonicalName(), customer.getCode());
 
         try {
-            mOrderAdapter = new OrderAdapter(orderSqlHelper.GET.execute(customer));
+            mOrderAdapter = new OrderAdapter((DefaultActivity) getActivity(), orderSqlHelper.GET.execute(customer));
             mRvOrders.setAdapter(mOrderAdapter);
             mRvOrders.setHasFixedSize(true);
         }catch (Exception e){
@@ -82,7 +84,13 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
             mtvTitle.setText(customer.getName());
 
         View viewAddOrder = view.findViewById(R.id.iv_add_order);
-        viewAddOrder.setOnClickListener(view1 -> ProductsActivity.show((DefaultActivity) getActivity(), customer));
+        viewAddOrder.setOnClickListener(view1 ->{
+
+            ProductsActivity.show((DefaultActivity) getActivity(), new Order.Builder().id(0)
+                    .customer(customer)
+                    .date(new Date())
+                    .isSynced(false).build());
+        });
 
         Functions.setViewSelected(viewAddOrder);
 

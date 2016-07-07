@@ -41,6 +41,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         private ProductOrderAdapter mProductAdapter;
         private View mvProducts;
         private ImageView mIvEditOrder;
+        private ImageView mIvSync;
 
         public OrderHolder(View itemView) {
             super(itemView);
@@ -49,6 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             mRvProducts = (RecyclerView) itemView.findViewById(R.id.rv_products);
             mvProducts = itemView.findViewById(R.id.v_products);
             mIvEditOrder = (ImageView) itemView.findViewById(R.id.iv_edit_order);
+            mIvSync = (ImageView) itemView.findViewById(R.id.iv_sync);
 
             itemView.setOnClickListener(v -> {
                 Order order = mOrders.get(getAdapterPosition());
@@ -166,6 +168,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             holder.expand();
         else
             holder.collapse();
+
+        if(order.isSynced())
+            holder.mIvSync.setVisibility(View.GONE);
+        else
+            holder.mIvSync.setVisibility(View.VISIBLE);
     }
 
     @Override

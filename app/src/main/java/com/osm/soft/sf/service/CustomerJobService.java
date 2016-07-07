@@ -83,7 +83,7 @@ public class CustomerJobService extends Service {
 
     private void create(Customer customer){
         new Thread(() -> {
-            Response execute = RestClient.CREATE.execute(new CustomerResponse(customer));
+            Response execute = RestClient.CREATE_CUSTOMER.execute(new CustomerResponse(customer));
             if(execute != null) {
                 if(BuildConfig.DEBUG)
                     Log.e(CustomerJobService.class.getCanonicalName(), "Code " + execute.getStatus());

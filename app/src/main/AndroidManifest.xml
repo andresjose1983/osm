@@ -16,6 +16,7 @@
         <service android:name=".service.LocalitiesService" />
         <service android:name=".service.TaxTypesService" />
         <service android:name=".service.CustomerJobService" />
+        <service android:name=".service.OrderJobService" />
         <service android:name=".service.ProductsService" />
 
         <activity

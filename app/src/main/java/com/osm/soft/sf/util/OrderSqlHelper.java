@@ -81,11 +81,21 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
         return order;
     };
 
+    public UpdateOrder UPDATE = order->{
+        SQLiteDatabase sqLiteOpenHelper = this.getWritableDatabase();
+        if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(SYNC, 1);
+            sqLiteOpenHelper.update(TABLE_NAME, contentValues,ID + "=" + order.getId() , null);
+            sqLiteOpenHelper.close();
+        }
+    };
+
     public DeleteOrder DELETE = order->{
         SQLiteDatabase sqLiteOpenHelper = this.getWritableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
             int delete = 0;
-            if(order != null && !order.isSynced()) {
+            if(order != null && !order.isSync()) {
                 delete = sqLiteOpenHelper.delete(TABLE_NAME, ID + " = " + order.getId(), null);
                 if(delete > 0)
                     mProductOrderSqlHelper.DELETE_BY_ORDER.execute(order);
@@ -119,7 +129,7 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
                     Order order = new Order.Builder().isView(false)
                             .customer(customer)
                             .id(cursor.getInt(0))
-                            .isSynced(cursor.getInt(2)==1)
+                            .sync(cursor.getInt(2)==1)
                             .date(instance.getTime()).build();
                     order.setProducts(ProductOrderSqlHelper.getProductsOrder(order, sqLiteOpenHelper));
                     orders.add(order);
@@ -130,6 +140,49 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
         }
         return orders;
     };
+
+    public GetPending GET_PENDING = ()->{
+        List<Order> orders = new ArrayList<>();
+        SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
+        if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("select * from ");
+            stringBuilder.append(TABLE_NAME);
+            stringBuilder.append(" where ");
+            stringBuilder.append(SYNC);
+            stringBuilder.append( "=");
+            stringBuilder.append(0);
+            Cursor cursor = sqLiteOpenHelper.rawQuery(stringBuilder.toString(), null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()){
+
+                    Calendar instance = Calendar.getInstance();
+                    instance.setTimeInMillis(cursor.getLong(3));
+                    Order order = new Order.Builder().isView(false)
+                            .customer(new Customer.Builder().code(cursor.getString(1)).build())
+                            .id(cursor.getInt(0))
+                            .sync(cursor.getInt(2)==1)
+                            .date(instance.getTime()).build();
+                    order.setProducts(ProductOrderSqlHelper.getProductsOrder(order, sqLiteOpenHelper));
+                    orders.add(order);
+                    cursor.moveToNext();
+                }
+            }
+            sqLiteOpenHelper.close();
+        }
+        return orders;
+    };
+
+    @FunctionalInterface
+    public interface GetPending{
+        List<Order> execute();
+    }
+
+    @FunctionalInterface
+    public interface UpdateOrder{
+        void execute(Order order);
+    }
 
     @FunctionalInterface
     public interface AddOrder{

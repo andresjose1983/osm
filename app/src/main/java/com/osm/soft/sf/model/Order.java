@@ -12,17 +12,17 @@ public class Order implements Serializable{
     private int id;
     private Date date;
     private boolean isView;
-    private boolean isSynced;
+    private boolean sync;
     private List<ProductOrder> products;
     private Customer customer;
 
     private Order(Builder builder) {
-        id = builder.id;
-        date = builder.date;
-        setView(builder.isView);
-        setSynced(builder.isSynced);
-        products = builder.products;
         customer = builder.customer;
+        products = builder.products;
+        setSync(builder.sync);
+        setView(builder.isView);
+        date = builder.date;
+        id = builder.id;
     }
 
     public int getId() {
@@ -37,8 +37,8 @@ public class Order implements Serializable{
         return isView;
     }
 
-    public boolean isSynced() {
-        return isSynced;
+    public boolean isSync() {
+        return sync;
     }
 
     public List<ProductOrder> getProducts() {
@@ -53,50 +53,23 @@ public class Order implements Serializable{
         isView = view;
     }
 
-    public void setSynced(boolean synced) {
-        isSynced = synced;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setSync(boolean sync) {
+        this.sync = sync;
     }
 
     public static final class Builder {
-        private int id;
-        private Date date;
-        private boolean isView;
-        private boolean isSynced;
-        private List<ProductOrder> products;
         private Customer customer;
+        private List<ProductOrder> products;
+        private boolean sync;
+        private boolean isView;
+        private Date date;
+        private int id;
 
         public Builder() {
         }
 
-        public Builder id(int val) {
-            id = val;
-            return this;
-        }
-
-        public Builder number(String val) {
-            return this;
-        }
-
-        public Builder date(Date val) {
-            date = val;
-            return this;
-        }
-
-        public Builder totalItem(int val) {
-            return this;
-        }
-
-        public Builder isView(boolean val) {
-            isView = val;
-            return this;
-        }
-
-        public Builder isSynced(boolean val) {
-            isSynced = val;
+        public Builder customer(Customer val) {
+            customer = val;
             return this;
         }
 
@@ -105,8 +78,23 @@ public class Order implements Serializable{
             return this;
         }
 
-        public Builder customer(Customer val) {
-            customer = val;
+        public Builder sync(boolean val) {
+            sync = val;
+            return this;
+        }
+
+        public Builder isView(boolean val) {
+            isView = val;
+            return this;
+        }
+
+        public Builder date(Date val) {
+            date = val;
+            return this;
+        }
+
+        public Builder id(int val) {
+            id = val;
             return this;
         }
 
@@ -117,5 +105,9 @@ public class Order implements Serializable{
 
     public void setProducts(List<ProductOrder> products) {
         this.products = products;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

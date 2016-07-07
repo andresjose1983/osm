@@ -6,6 +6,7 @@ import com.osm.soft.sf.BuildConfig;
 import com.osm.soft.sf.model.Customer;
 import com.osm.soft.sf.model.CustomerResponse;
 import com.osm.soft.sf.model.Locality;
+import com.osm.soft.sf.model.OrderResponse;
 import com.osm.soft.sf.model.Product;
 
 import java.util.List;
@@ -54,9 +55,19 @@ public abstract class RestClient {
         mOsmServices.getTaxTypes(callback);
     };
 
-    public static final CreateCustomer CREATE = (customerResponse) -> {
+    public static final CreateCustomer CREATE_CUSTOMER = (customerResponse) -> {
         try {
             return mOsmServices.createCustomer(customerResponse);
+        }catch (Exception e){
+            if(BuildConfig.DEBUG)
+                Log.e(RestClient.class.getCanonicalName(), e.getMessage());
+        }
+        return null;
+    };
+
+    public static final CreateOrder CREATE_ORDER = (orderResponse) -> {
+        try {
+            return mOsmServices.createOrder(orderResponse);
         }catch (Exception e){
             if(BuildConfig.DEBUG)
                 Log.e(RestClient.class.getCanonicalName(), e.getMessage());
@@ -96,6 +107,11 @@ public abstract class RestClient {
     @FunctionalInterface
     public interface CreateCustomer{
         Response execute(CustomerResponse customerResponse);
+    }
+
+    @FunctionalInterface
+    public interface CreateOrder{
+        Response execute(OrderResponse orderResponse);
     }
 
     @FunctionalInterface

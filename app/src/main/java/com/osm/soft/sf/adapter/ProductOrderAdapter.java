@@ -60,7 +60,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
             contextMenu.add(R.string.delete).setOnMenuItemClickListener(menuItem -> {
                 ProductOrder productOrder = get(getLayoutPosition());
-                if(!productOrder.getOrder().isSynced())
+                if(!productOrder.getOrder().isSync())
                     DialogHelper.confirm(view.getContext(), R.string.message_delete_product,
                             (dialogInterface, i) -> {
                                 if(productOrder != null){
@@ -78,7 +78,7 @@ public class ProductOrderAdapter extends RecyclerView.Adapter<ProductOrderAdapte
             });
             contextMenu.add(R.string.change_quantiy).setOnMenuItemClickListener(menuItem -> {
                 ProductOrder productOrder = get(getLayoutPosition());
-                if(!productOrder.getOrder().isSynced()){
+                if(!productOrder.getOrder().isSync()){
                     final EditText input = new EditText(view.getContext());
                     input.setInputType(InputType.TYPE_CLASS_NUMBER);
                     input.setText(String.valueOf(productOrder.getQuantity()));

@@ -87,7 +87,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         holder.mRvProducts.setHasFixedSize(false);
         holder.mRvProducts.setAdapter(holder.mProductAdapter);
 
-        if(order.isSynced())
+        if(order.isSync())
             holder.mIvSync.setVisibility(View.GONE);
         else
             holder.mIvSync.setVisibility(View.VISIBLE);

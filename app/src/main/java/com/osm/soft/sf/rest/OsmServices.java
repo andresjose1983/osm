@@ -3,6 +3,7 @@ package com.osm.soft.sf.rest;
 import com.osm.soft.sf.model.Customer;
 import com.osm.soft.sf.model.CustomerResponse;
 import com.osm.soft.sf.model.Locality;
+import com.osm.soft.sf.model.OrderResponse;
 import com.osm.soft.sf.model.Product;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public interface OsmServices {
 
     @POST("/customers")
     retrofit.client.Response createCustomer(@Body CustomerResponse customerResponse);
+
+    @POST("/orders")
+    retrofit.client.Response createOrder(@Body OrderResponse orderResponse);
 
     @PUT("/customers")
     retrofit.client.Response updateCustomer(@Body CustomerResponse customerResponse);

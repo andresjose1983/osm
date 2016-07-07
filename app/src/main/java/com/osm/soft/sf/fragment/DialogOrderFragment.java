@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.osm.soft.sf.BuildConfig;
 import com.osm.soft.sf.CustomersActivity;
@@ -91,7 +90,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
             ProductsActivity.show((DefaultActivity) getActivity(), new Order.Builder().id(0)
                     .customer(customer)
                     .date(new Date())
-                    .isSynced(false).build());
+                    .sync(false).build());
         });
 
         Functions.setViewSelected(viewAddOrder);
@@ -120,7 +119,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
                     @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 Order order = mOrderAdapter.get(viewHolder.getLayoutPosition());
-                if(!order.isSynced())
+                if(!order.isSync())
                     DialogHelper.confirm(getActivity(), R.string.message_delete_order,
                             (dialogInterface, i) -> {
                                 if(order != null){

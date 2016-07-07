@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.facebook.stetho.Stetho;
 import com.osm.soft.sf.service.CustomerJobService;
+import com.osm.soft.sf.service.OrderJobService;
 
 /**
  * Created by andres on 08/06/16.
@@ -24,6 +25,7 @@ public class OsmApplication extends Application{
         sInstance = this;
 
         startService(new Intent(this, CustomerJobService.class));
+        startService(new Intent(this, OrderJobService.class));
 
         if(BuildConfig.DEBUG)
             Stetho.initializeWithDefaults(this);

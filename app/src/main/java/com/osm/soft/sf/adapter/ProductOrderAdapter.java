@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.osm.soft.sf.CustomersActivity;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.model.ProductOrder;
 import com.osm.soft.sf.util.DialogHelper;

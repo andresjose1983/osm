@@ -60,7 +60,7 @@ public abstract class DefaultActivity extends AppCompatActivity {
 
     protected abstract void setUp();
 
-    protected void showSnackBar(View view, int message) {
+    public void showSnackBar(View view, int message) {
         Snackbar snackbar = Snackbar.make(view, getString(message), Snackbar.LENGTH_LONG);
 
         snackbar.show();

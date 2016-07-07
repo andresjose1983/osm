@@ -3,6 +3,7 @@ package com.osm.soft.sf.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
     private RecyclerView mRvOrders;
     private OrderAdapter mOrderAdapter;
     private TextView mtvTitle;
+    private CoordinatorLayout mClOrder;
 
     private Customer customer;
     public static String BOTTON_SHEET_NAME = "BSDialog";
@@ -100,6 +102,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
     private void init(View view) {
         mRvOrders = (RecyclerView) view.findViewById(R.id.rv_orders);
         mtvTitle = (TextView)view.findViewById(R.id.tv_title);
+        mClOrder = (CoordinatorLayout) view.findViewById(R.id.cl_order);
 
         orderSqlHelper = new OrderSqlHelper(OsmApplication.getInstance());
     }
@@ -123,6 +126,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
                                 if(order != null){
                                     if(orderSqlHelper.DELETE.execute(order)) {
                                         mOrderAdapter.remove(viewHolder.getLayoutPosition());
+                                        ((CustomersActivity)getActivity()).showSnackBar(mClOrder, R.string.order_deleted);
                                     }
                                 }
                             },
@@ -130,7 +134,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
                     );
                 else{
                     mOrderAdapter.notifyDataSetChanged();
-                    Toast.makeText(OsmApplication.getInstance(), R.string.order_synced, Toast.LENGTH_LONG);
+                    ((CustomersActivity)getActivity()).showSnackBar(mClOrder, R.string.order_synced);
                 }
             }
         };

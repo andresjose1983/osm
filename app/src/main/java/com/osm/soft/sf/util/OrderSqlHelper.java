@@ -23,6 +23,7 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME  = "orders";
     private static final String ID  = "id";
     private static final String CUSTOMER_CODE  = "id_customer";
+    private static final String CUSTOMER_NAME  = "name";
     private static final String DATE  = "order_date";
     private static final String SYNC  = "sync";
     private ProductOrderSqlHelper mProductOrderSqlHelper;
@@ -45,7 +46,9 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
                 .append(SYNC)
                 .append(" integer, ")
                 .append(DATE)
-                .append(" integer)")
+                .append(" integer, ")
+                .append(CUSTOMER_NAME)
+                .append(" text)")
                 .toString());
     }
 
@@ -72,6 +75,7 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
             ContentValues contentValues = new ContentValues();
             contentValues.put(CUSTOMER_CODE, order.getCustomer().getCode());
+            contentValues.put(CUSTOMER_NAME, order.getCustomer().getName());
             contentValues.put(SYNC, 0);
             contentValues.put(DATE, Calendar.getInstance().getTimeInMillis());
             long id = sqLiteOpenHelper.insert(TABLE_NAME, null, contentValues);
@@ -123,16 +127,7 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
             if(cursor != null){
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()){
-
-                    Calendar instance = Calendar.getInstance();
-                    instance.setTimeInMillis(cursor.getLong(3));
-                    Order order = new Order.Builder().isView(false)
-                            .customer(customer)
-                            .id(cursor.getInt(0))
-                            .sync(cursor.getInt(2)==1)
-                            .date(instance.getTime()).build();
-                    order.setProducts(ProductOrderSqlHelper.getProductsOrder(order, sqLiteOpenHelper));
-                    orders.add(order);
+                    orders.add(add(cursor, sqLiteOpenHelper));
                     cursor.moveToNext();
                 }
             }
@@ -156,16 +151,39 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
             if(cursor != null){
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()){
+                    orders.add(add(cursor, sqLiteOpenHelper));
+                    cursor.moveToNext();
+                }
+            }
+            sqLiteOpenHelper.close();
+        }
+        return orders;
+    };
 
-                    Calendar instance = Calendar.getInstance();
-                    instance.setTimeInMillis(cursor.getLong(3));
-                    Order order = new Order.Builder().isView(false)
-                            .customer(new Customer.Builder().code(cursor.getString(1)).build())
-                            .id(cursor.getInt(0))
-                            .sync(cursor.getInt(2)==1)
-                            .date(instance.getTime()).build();
-                    order.setProducts(ProductOrderSqlHelper.getProductsOrder(order, sqLiteOpenHelper));
-                    orders.add(order);
+    private Order add(Cursor cursor, SQLiteDatabase sqLiteOpenHelper){
+        Calendar instance = Calendar.getInstance();
+        instance.setTimeInMillis(cursor.getLong(3));
+        Order order = new Order.Builder().isView(false)
+                .customer(new Customer.Builder().code(cursor.getString(1)).name(cursor.getString(4)).build())
+                .id(cursor.getInt(0))
+                .sync(cursor.getInt(2)==1)
+                .date(instance.getTime()).build();
+        order.setProducts(ProductOrderSqlHelper.getProductsOrder(order, sqLiteOpenHelper));
+        return order;
+    }
+
+    public GetPending GET_ALL = ()->{
+        List<Order> orders = new ArrayList<>();
+        SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
+        if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("select * from ");
+            stringBuilder.append(TABLE_NAME);
+            Cursor cursor = sqLiteOpenHelper.rawQuery(stringBuilder.toString(), null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()){
+                    orders.add(add(cursor, sqLiteOpenHelper));
                     cursor.moveToNext();
                 }
             }

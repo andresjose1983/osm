@@ -59,18 +59,13 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(BuildConfig.DEBUG)
-            Log.d(DialogOrderFragment.class.getCanonicalName(), customer.getCode());
-
         try {
-            mOrderAdapter = new OrderAdapter((DefaultActivity) getActivity(), orderSqlHelper.GET.execute(customer));
+            mOrderAdapter = new OrderAdapter((DefaultActivity) getActivity(), orderSqlHelper.GET.execute(customer), false);
             mRvOrders.setAdapter(mOrderAdapter);
             mRvOrders.setHasFixedSize(true);
-        }catch (Exception e){
-            if(BuildConfig.DEBUG) {
+        }catch(Exception e){
+            if(BuildConfig.DEBUG)
                 Log.d(DialogOrderFragment.class.getCanonicalName(), e.getMessage());
-
-            }
         }
     }
 

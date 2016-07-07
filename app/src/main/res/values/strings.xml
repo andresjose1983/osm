@@ -97,6 +97,7 @@
     <!-- End Settings -->
 
     <!-- Order -->
+    <string name="title_activity_order">@string/nav_orders</string>
     <string name="message_delete_order">Would you like deleting this order?</string>
     <string name="order_synced">This order is synced</string>
     <string name="order_deleted">This order has been deleted</string>

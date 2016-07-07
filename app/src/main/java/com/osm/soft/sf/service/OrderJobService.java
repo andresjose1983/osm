@@ -67,10 +67,15 @@ public class OrderJobService extends Service {
                             !TaxTypesService.isRunning(OrderJobService.this) &&
                             !LocalitiesService.isRunning(OrderJobService.this)){
 
-                        List<Order> orders = mOrderSqlHelper.GET_PENDING.execute();
-                        for (Order order : orders) {
-                            Log.i(OrderJobService.class.getCanonicalName(), order.getId() + "");
-                            update(order);
+                        try {
+                            List<Order> orders = mOrderSqlHelper.GET_PENDING.execute();
+                            for (Order order : orders) {
+                                Log.i(OrderJobService.class.getCanonicalName(), order.getId() + "");
+                                update(order);
+                            }
+                        }catch (Exception e){
+                            if(BuildConfig.DEBUG)
+                                Log.d(OrderJobService.class.getCanonicalName(), e.getMessage());
                         }
                     }
                 }

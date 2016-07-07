@@ -131,6 +131,9 @@ public class MainActivity extends DefaultActivity
             case R.id.nav_settings:
                 SettingsActivity.show(this);
                 break;
+            case R.id.nav_order:
+                OrdersActivity.show(this);
+                break;
         }
 
         mDrawer.closeDrawer(GravityCompat.START);

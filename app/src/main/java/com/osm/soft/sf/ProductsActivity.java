@@ -94,9 +94,6 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
                             getResources().getDisplayMetrics().densityDpi);
                 break;
             case android.R.id.home:
-                if(mOrder != null){
-
-                }
                 finish();
                 break;
         }

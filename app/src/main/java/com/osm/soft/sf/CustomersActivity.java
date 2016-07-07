@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -80,6 +81,9 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
                 }
                 reset(customers);
                 break;
+            case android.R.id.home:
+                finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -124,6 +128,10 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
         mRvCustomers.setHasFixedSize(true);
 
         mFabAdd.setOnClickListener(view->goToCustomer(this, null));
+
+        ActionBar supportActionBar = getSupportActionBar();
+        if(supportActionBar != null)
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

@@ -96,4 +96,13 @@
     <string name="no">No</string>
     <!-- End Settings -->
 
+    <!-- Order -->
+    <string name="message_delete_order">Would you like deleting this order?</string>
+    <string name="order_synced">This order is synced</string>
+    <string name="order_deleted">This order has been deleted</string>
+    <string name="delete">Delete</string>
+    <string name="message_delete_product">Would you like deleting this product?</string>
+    <string name="change_quantiy">Change quantity</string>
+    <!-- End Order -->
+
 </resources>

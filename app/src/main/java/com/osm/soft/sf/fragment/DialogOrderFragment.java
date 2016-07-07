@@ -6,11 +6,13 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.osm.soft.sf.BuildConfig;
 import com.osm.soft.sf.CustomersActivity;
@@ -20,6 +22,8 @@ import com.osm.soft.sf.ProductsActivity;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.adapter.OrderAdapter;
 import com.osm.soft.sf.model.Customer;
+import com.osm.soft.sf.model.Order;
+import com.osm.soft.sf.util.DialogHelper;
 import com.osm.soft.sf.util.Functions;
 import com.osm.soft.sf.util.OrderSqlHelper;
 
@@ -82,7 +86,7 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
 
         Functions.setViewSelected(viewAddOrder);
 
-
+        swipe();
     }
 
     private void init(View view) {
@@ -90,6 +94,40 @@ public class DialogOrderFragment extends BottomSheetDialogFragment {
         mtvTitle = (TextView)view.findViewById(R.id.tv_title);
 
         orderSqlHelper = new OrderSqlHelper(OsmApplication.getInstance());
+    }
+
+    private void swipe(){
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+                    @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                Order order = mOrderAdapter.get(viewHolder.getLayoutPosition());
+                if(!order.isSynced())
+                    DialogHelper.confirm(getActivity(), R.string.message_delete_order,
+                            (dialogInterface, i) -> {
+                                if(order != null){
+                                    if(orderSqlHelper.DELETE.execute(order)) {
+                                        mOrderAdapter.remove(viewHolder.getLayoutPosition());
+                                    }
+                                }
+                            },
+                            (dialogInterface1, i1) -> mOrderAdapter.notifyDataSetChanged()
+                    );
+                else{
+                    mOrderAdapter.notifyDataSetChanged();
+                    Toast.makeText(OsmApplication.getInstance(), R.string.order_synced, Toast.LENGTH_LONG);
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(mRvOrders);
     }
 
 }

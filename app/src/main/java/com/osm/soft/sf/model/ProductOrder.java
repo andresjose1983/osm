@@ -79,4 +79,8 @@ public class ProductOrder implements Serializable {
             return new ProductOrder(this);
         }
     }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

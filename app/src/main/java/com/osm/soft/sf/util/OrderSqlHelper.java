@@ -19,15 +19,17 @@ import java.util.List;
  */
 public class OrderSqlHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "osm.db";
-    public static final String TABLE_NAME  = "orders";
-    public static final String ID  = "id";
-    public static final String CUSTOMER_CODE  = "id_customer";
-    public static final String DATE  = "order_date";
-    public static final String SYNC  = "sync";
+    private static final String DATABASE_NAME = "osm.db";
+    private static final String TABLE_NAME  = "orders";
+    private static final String ID  = "id";
+    private static final String CUSTOMER_CODE  = "id_customer";
+    private static final String DATE  = "order_date";
+    private static final String SYNC  = "sync";
+    private ProductOrderSqlHelper mProductOrderSqlHelper;
 
     public OrderSqlHelper(Context context) {
         super(context, DATABASE_NAME, null, BuildConfig.VERSION_BD);
+        mProductOrderSqlHelper = new ProductOrderSqlHelper(context);
     }
 
     @Override
@@ -82,13 +84,16 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
     public DeleteOrder DELETE = order->{
         SQLiteDatabase sqLiteOpenHelper = this.getWritableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
-            if(order != null && !order.isSynced()){
-                sqLiteOpenHelper.delete(TABLE_NAME, ID, new String[]{
-                        String.valueOf(order.getId())
-                });
+            int delete = 0;
+            if(order != null && !order.isSynced()) {
+                delete = sqLiteOpenHelper.delete(TABLE_NAME, ID + " = " + order.getId(), null);
+                if(delete > 0)
+                    mProductOrderSqlHelper.DELETE_BY_ORDER.execute(order);
             }
             sqLiteOpenHelper.close();
+            return delete > 0;
         }
+        return false;
     };
 
     public GetCustomerOrder GET = customer->{
@@ -133,7 +138,7 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
 
     @FunctionalInterface
     public interface DeleteOrder{
-        void execute(Order order);
+        boolean execute(Order order);
     }
 
     @FunctionalInterface

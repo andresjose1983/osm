@@ -84,25 +84,35 @@ public class ProductOrderSqlHelper extends SQLiteOpenHelper {
         return productOrder;
     };
 
+    public UpdateProductOrder UPDATE = productOrder->{
+        SQLiteDatabase sqLiteOpenHelper = this.getWritableDatabase();
+        if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(QUANTITY, productOrder.getQuantity());
+            sqLiteOpenHelper.update(TABLE_NAME, contentValues, ID + "=" + productOrder.getId(), null);
+            sqLiteOpenHelper.close();
+        }
+        return productOrder;
+    };
+
     public DeleteProductOrder DELETE = productOrder->{
         SQLiteDatabase sqLiteOpenHelper = this.getWritableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            int delete = 0;
             if(productOrder != null){
-                sqLiteOpenHelper.delete(TABLE_NAME, ID, new String[]{
-                        String.valueOf(productOrder.getId())
-                });
+                delete = sqLiteOpenHelper.delete(TABLE_NAME, ID + "=" + productOrder.getId(), null);
             }
             sqLiteOpenHelper.close();
+            return delete > 0;
         }
+        return false;
     };
 
     public DeleteByOrder DELETE_BY_ORDER = order->{
         SQLiteDatabase sqLiteOpenHelper = this.getWritableDatabase();
         if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
             if(order != null){
-                sqLiteOpenHelper.delete(TABLE_NAME, ORDER_ID, new String[]{
-                        String.valueOf(order.getId())
-                });
+                sqLiteOpenHelper.delete(TABLE_NAME, ORDER_ID + "=" +order.getId() , null);
             }
             sqLiteOpenHelper.close();
         }
@@ -152,7 +162,7 @@ public class ProductOrderSqlHelper extends SQLiteOpenHelper {
 
     @FunctionalInterface
     public interface DeleteProductOrder{
-        void execute(ProductOrder productOrder);
+        boolean execute(ProductOrder productOrder);
     }
 
     @FunctionalInterface
@@ -163,5 +173,10 @@ public class ProductOrderSqlHelper extends SQLiteOpenHelper {
     @FunctionalInterface
     public interface DeleteByOrder{
         void execute(Order order);
+    }
+
+    @FunctionalInterface
+    public interface UpdateProductOrder{
+        ProductOrder execute(ProductOrder productOrder);
     }
 }

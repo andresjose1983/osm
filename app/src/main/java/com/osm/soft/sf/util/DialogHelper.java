@@ -31,11 +31,18 @@ public final class DialogHelper {
                                final DialogInterface.OnClickListener positive){
 
         init(context, content);
+        confirm(context, content, positive, (dialogInterface, i) ->
+                dialogInterface.dismiss());
+    }
+
+    public static void confirm(final Context context, final int content,
+                               final DialogInterface.OnClickListener positive,
+                               final DialogInterface.OnClickListener negative){
+
+        init(context, content);
 
         builder.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.ok), positive );
-        builder.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (dialogInterface, i) -> {
-            dialogInterface.dismiss();
-        } );
+        builder.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel),negative);
 
         builder.show();
     }

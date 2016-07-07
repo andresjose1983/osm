@@ -5,7 +5,9 @@ import android.animation.ValueAnimator;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,13 +15,14 @@ import android.widget.TextView;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.util.Functions;
+import com.osm.soft.sf.util.ProductOrderSqlHelper;
 
 import java.util.List;
 
 /**
  * Created by andres on 09/06/16.
  */
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>{
 
     private List<Order> mOrders;
 
@@ -27,7 +30,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         this.mOrders = mOrders;
     }
 
-    public class OrderHolder extends RecyclerView.ViewHolder {
+    public class OrderHolder extends RecyclerView.ViewHolder  {
 
         private TextView mTvNumber;
         private TextView mTvDate;
@@ -35,7 +38,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         private RecyclerView.LayoutManager mLayoutManager;
         private ProductOrderAdapter mProductAdapter;
         private View mvProducts;
-
 
         public OrderHolder(View itemView) {
             super(itemView);
@@ -48,10 +50,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
                 Order order = mOrders.get(getAdapterPosition());
                 if (order.isView()) {
                     order.setView(false);
-                    //collapse();
                 } else {
                     order.setView(true);
-                    //expand();
                 }
                 mOrders.set(getAdapterPosition(), order);
                 notifyItemChanged(getAdapterPosition());
@@ -61,6 +61,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             mRvProducts.setLayoutManager(mLayoutManager);
             mRvProducts.setItemAnimator(new DefaultItemAnimator());
             mRvProducts.setHasFixedSize(true);
+
         }
 
         private void expand() {
@@ -158,12 +159,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             holder.expand();
         else
             holder.collapse();
-
     }
 
     @Override
     public int getItemCount() {
         return mOrders.size();
+    }
+
+    public Order get(final int position){
+        if(mOrders != null && !mOrders.isEmpty())
+            return mOrders.get(position);
+        return null;
+    }
+
+    public void remove(int position) {
+        if (position < 0 || position >= mOrders.size()) {
+            return;
+        }
+        mOrders.remove(position);
+        notifyItemRemoved(position);
     }
 
 }

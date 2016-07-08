@@ -89,7 +89,7 @@ public class OrderJobService extends Service {
             if(execute != null) {
                 if(BuildConfig.DEBUG)
                     Log.e(OrderJobService.class.getCanonicalName(), "Code " + execute.getStatus());
-                if(execute.getStatus() == 201) {
+                if(execute.getStatus() == 200) {
                     synced(order);
                 }
             }

@@ -1,5 +1,7 @@
 package com.osm.soft.sf.adapter;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,6 +45,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         private ProductOrderAdapter mProductAdapter;
         private ImageView mIvEditOrder;
         private ImageView mIvSync;
+        private ImageView mIvColor;
 
         public OrderHolder(View itemView) {
             super(itemView);
@@ -53,6 +56,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
             mRvProducts = (RecyclerView) itemView.findViewById(R.id.rv_products);
             mIvEditOrder = (ImageView) itemView.findViewById(R.id.iv_edit_order);
             mIvSync = (ImageView) itemView.findViewById(R.id.iv_sync);
+            mIvColor = (ImageView) itemView.findViewById(R.id.iv_color);
 
             itemView.setOnClickListener(v -> {
                 Order order = mOrders.get(getAdapterPosition());
@@ -93,6 +97,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         holder.mRvProducts.setNestedScrollingEnabled(false);
         holder.mRvProducts.setHasFixedSize(false);
         holder.mRvProducts.setAdapter(holder.mProductAdapter);
+
+        String index = String.valueOf(position);
+
+        GradientDrawable bgShape = (GradientDrawable) holder.mIvColor.getBackground();
+        bgShape.setColor(Color.parseColor(Functions.getColor(Integer.valueOf(
+                index.substring(index.length() - 1)))));
 
         if(order.isSync())
             holder.mIvSync.setVisibility(View.GONE);

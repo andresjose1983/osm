@@ -3,6 +3,7 @@ package com.osm.soft.sf.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductH
                         if(mOrder.getId() == 0)
                             mOrder = mOrderSqlHelper.ADD.execute(mOrder);
 
-                        mProductOrderSqlHelper.ADD.execute(new ProductOrder.Builder().product(mProductsFilter.get(getAdapterPosition()))
+                        Log.i("Hola", getAdapterPosition() + " " + mProducts.get(getAdapterPosition()).getName());
+
+                        mProductOrderSqlHelper.ADD.execute(new ProductOrder.Builder().product(
+                                mProducts.get(getAdapterPosition()))
                                 .quantity(Integer.valueOf(input.getText().toString()))
                                 .order(mOrder).build());
                     }

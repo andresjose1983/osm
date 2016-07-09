@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,16 +17,19 @@ import com.osm.soft.sf.DefaultActivity;
 import com.osm.soft.sf.ProductsActivity;
 import com.osm.soft.sf.R;
 import com.osm.soft.sf.model.Order;
+import com.osm.soft.sf.model.ProductOrder;
 import com.osm.soft.sf.util.Functions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by andres on 09/06/16.
  */
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>{
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder> implements Filterable {
 
     private List<Order> mOrders;
+    private List<Order> mOrdersFilter;
     private DefaultActivity mDefaultActivity;
     private boolean showCustomerInfo;
 
@@ -33,6 +38,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         mDefaultActivity = defaultActivity;
         this.mOrders = mOrders;
         this.showCustomerInfo = showCustomerInfo;
+        mOrdersFilter = new ArrayList<>(mOrders);
     }
 
     public class OrderHolder extends RecyclerView.ViewHolder {
@@ -136,4 +142,59 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderHolder>
         notifyItemRemoved(position);
     }
 
+    @Override
+    public Filter getFilter() {
+        return new OrderFilter(this, mOrdersFilter);
+    }
+
+    private static class OrderFilter extends Filter{
+
+        private List<Order> filtersOrder = new ArrayList<>();
+        final private List<Order> orders;
+        final private OrderAdapter orderAdapter;
+
+        public OrderFilter(OrderAdapter orderAdapter, List<Order> orders) {
+            super();
+            this.orders = orders;
+            this.orderAdapter = orderAdapter;
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filtersOrder.clear();
+            final FilterResults results = new FilterResults();
+
+            if (constraint.length() == 0) {
+                filtersOrder.addAll(orders);
+            } else {
+                final String filterPattern = constraint.toString().toUpperCase().trim();
+
+                for (final Order order : orders) {
+                    if (order.getCustomer().getName().toUpperCase().contains(filterPattern)
+                            || order.getCustomer().getCode().toUpperCase().contains(filterPattern)) {
+                        filtersOrder.add(order);
+                    }else{
+                        for (ProductOrder productOrder : order.getProducts()) {
+                            if(productOrder.getProduct().getName().contains(filterPattern) ||
+                                    productOrder.getProduct().getCode().contains(filterPattern)) {
+                                filtersOrder.add(order);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            results.values = filtersOrder;
+            results.count = filtersOrder.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            orderAdapter.mOrders.clear();
+            orderAdapter.mOrders.addAll((ArrayList<Order>) results.values);
+            orderAdapter.notifyDataSetChanged();
+        }
+
+    }
 }

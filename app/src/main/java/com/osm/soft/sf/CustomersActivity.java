@@ -47,7 +47,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_customers, menu);
+        getMenuInflater().inflate(R.menu.menu_filters, menu);
         mMenu = menu.findItem(R.id.action_search);
         // Associate searchable configuration with the SearchView
         mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();

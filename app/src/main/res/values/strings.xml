@@ -2,6 +2,8 @@
     <string name="app_name">Sales force</string>
     <string name="error_server_unavailable">Server unavailable</string>
     <string name="error_service_unavailable">Service unavailable</string>
+    <string name="error_no_data_synced">You haven\'t synced any data</string>
+    <string name="error_no_order_created">You haven\'t created any orders</string>
     <!-- Login -->
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>

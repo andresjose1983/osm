@@ -14,10 +14,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import com.osm.soft.sf.adapter.CustomerAdapter;
 import com.osm.soft.sf.adapter.OrderAdapter;
-import com.osm.soft.sf.model.Customer;
 import com.osm.soft.sf.model.Order;
 import com.osm.soft.sf.util.DialogHelper;
 import com.osm.soft.sf.util.OrderSqlHelper;
@@ -28,6 +28,7 @@ import java.util.List;
 public class OrdersActivity extends DefaultActivity implements SearchView.OnQueryTextListener {
 
     private RecyclerView mRvOrders;
+    private TextView mTvNoData;
     private OrderAdapter mOrderAdapter;
     private CoordinatorLayout mClOrder;
     private OrderSqlHelper orderSqlHelper;
@@ -64,6 +65,12 @@ public class OrdersActivity extends DefaultActivity implements SearchView.OnQuer
         super.onResume();
         try {
             mOrders = orderSqlHelper.GET_ALL.execute();
+
+            if(mOrders.isEmpty())
+                mTvNoData.setVisibility(View.VISIBLE);
+            else
+                mTvNoData.setVisibility(View.GONE);
+
             reset(mOrders);
 
             if(mSearchView != null) {
@@ -129,6 +136,7 @@ public class OrdersActivity extends DefaultActivity implements SearchView.OnQuer
     protected void init() {
         mRvOrders = (RecyclerView) findViewById(R.id.rv_orders);
         mClOrder = (CoordinatorLayout) findViewById(R.id.cl_order);
+        mTvNoData = (TextView)findViewById(R.id.tv_no_data);
 
         orderSqlHelper = new OrderSqlHelper(this);
     }

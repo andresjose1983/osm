@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.osm.soft.sf.adapter.CustomerAdapter;
 import com.osm.soft.sf.fragment.DialogOrderFragment;
@@ -25,6 +27,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
 
     private FloatingActionButton mFabAdd;
     private RecyclerView mRvCustomers;
+    private TextView mTvNoData;
     private CustomerAdapter mCustomerAdapter;
     private MenuItem mMenu;
     private SearchView mSearchView;
@@ -92,6 +95,7 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     public void init() {
         mFabAdd = (FloatingActionButton) findViewById(R.id.fab_add);
         mRvCustomers = (RecyclerView) findViewById(R.id.rv_customers);
+        mTvNoData = (TextView)findViewById(R.id.tv_no_data);
 
         customerSqlHelper = new CustomerSqlHelper(this);
         bsdFragment = DialogOrderFragment.newInstance();
@@ -101,6 +105,10 @@ public class CustomersActivity extends DefaultActivity implements SearchView.OnQ
     protected void onResume() {
         super.onResume();
         mCustomers = customerSqlHelper.GET.execute();
+        if(mCustomers.isEmpty())
+            mTvNoData.setVisibility(View.VISIBLE);
+        else
+            mTvNoData.setVisibility(View.GONE);
         reset(mCustomers);
 
         if(mSearchView != null) {

@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.osm.soft.sf.adapter.ProductAdapter;
 import com.osm.soft.sf.model.Customer;
@@ -24,6 +26,7 @@ import java.util.List;
 public class ProductsActivity extends DefaultActivity implements SearchView.OnQueryTextListener {
 
     private SearchView mSearchView;
+    private TextView mTvNoData;
     private RecyclerView mRvProducts;
     private ProductAdapter mProductAdapter;
     private ProductsSqlHelper productsSqlHelper;
@@ -61,6 +64,7 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
     @Override
     public void init() {
         productsSqlHelper = new ProductsSqlHelper(this);
+        mTvNoData = (TextView)findViewById(R.id.tv_no_data);
 
         mRvProducts = (RecyclerView) findViewById(R.id.rv_products);
 
@@ -104,6 +108,11 @@ public class ProductsActivity extends DefaultActivity implements SearchView.OnQu
                             final int dpi) {
 
         mProducts = productsSqlHelper.GET.execute();
+
+        if(mProducts.isEmpty())
+            mTvNoData.setVisibility(View.VISIBLE);
+        else
+            mTvNoData.setVisibility(View.GONE);
 
         mRvProducts.setLayoutManager(layoutManage);
         mRvProducts.setItemAnimator(new DefaultItemAnimator());

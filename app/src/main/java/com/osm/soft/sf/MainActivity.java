@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.osm.soft.sf.util.CustomerSqlHelper;
 import com.osm.soft.sf.util.NotificationHelper;
+import com.osm.soft.sf.util.OrderSqlHelper;
 
 import org.eazegraph.lib.charts.StackedBarChart;
 import org.eazegraph.lib.models.BarModel;
@@ -30,6 +31,8 @@ public class MainActivity extends DefaultActivity
     private StackedBarChart mStackedBarChart;
     private StackedBarModel mSGraphCustomer;
     private StackedBarModel mSsGraphOrder;
+    private CustomerSqlHelper mCustomerSqlHelper;
+    private OrderSqlHelper mOrderSqlHelper;
 
     public static void show(LoginActivity activity){
         activity.startActivity(new Intent(activity, MainActivity.class));
@@ -50,39 +53,9 @@ public class MainActivity extends DefaultActivity
                 NotificationHelper.NOTIFICATION_DOWNLOADED_TAX_TYPE,
                 NotificationHelper.NOTIFICATION_DOWNLOADED_PRODUCT);
         new Handler().post(() -> {
-            CustomerSqlHelper customerSqlHelper = new CustomerSqlHelper(this);
-            Integer[] customerGraphs = customerSqlHelper.GET_GRAPH.execute();
-            if(customerGraphs != null){
-                float updated = 0.0f;
-                float notUpdated = 0.0f;
-                DecimalFormat decimalFormat = new DecimalFormat("##.00");
-                if(customerGraphs[0] != null){
-                    if(customerGraphs[1] != null){
-                        updated = Float.valueOf(customerGraphs[1] * 100) / customerGraphs[0];
-                    }
-                    if(customerGraphs[2] != null){
-                        notUpdated = Float.valueOf(customerGraphs[2] * 100) / customerGraphs[0];
-                    }
-
-                    int colorSync = ContextCompat.getColor(this, R.color.colorPrimary);
-                    int colorUnSync = ContextCompat.getColor(this, R.color.red);
-
-                    mSGraphCustomer.getBars().clear();
-                    mSGraphCustomer.addBar(new BarModel(Float.valueOf(decimalFormat.format(updated)), colorSync));
-                    mSGraphCustomer.addBar(new BarModel(Float.valueOf(decimalFormat.format(notUpdated)), colorUnSync));
-
-                    mSsGraphOrder.getBars().clear();
-                    mSsGraphOrder.addBar(new BarModel(60f, colorSync));
-                    mSsGraphOrder.addBar(new BarModel(40f, colorUnSync));
-
-                    mStackedBarChart.clearChart();
-                    mStackedBarChart.addBar(mSGraphCustomer);
-                    mStackedBarChart.addBar(mSsGraphOrder);
-
-                    mStackedBarChart.startAnimation();
-                }
-            }
-
+            mStackedBarChart.clearChart();
+            paint(mCustomerSqlHelper.GET_GRAPH.execute(), mSGraphCustomer);
+            paint(mOrderSqlHelper.GET_GRAPH.execute(), mSsGraphOrder);
         });
     }
 
@@ -97,19 +70,14 @@ public class MainActivity extends DefaultActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             return true;
         }
@@ -154,6 +122,8 @@ public class MainActivity extends DefaultActivity
 
         mSGraphCustomer = new StackedBarModel(getString(R.string.nav_customers));
         mSsGraphOrder = new StackedBarModel(getString(R.string.nav_orders));
+        mCustomerSqlHelper = new CustomerSqlHelper(this);
+        mOrderSqlHelper = new OrderSqlHelper(this);
     }
 
     @Override
@@ -164,4 +134,30 @@ public class MainActivity extends DefaultActivity
         mStackedBarChart = (StackedBarChart) findViewById(R.id.sbc_view);
     }
 
+
+    private void paint(Integer[] graphs, StackedBarModel sGraph){
+        if(graphs != null){
+            float updated = 0.0f;
+            float notUpdated = 0.0f;
+            DecimalFormat decimalFormat = new DecimalFormat("##.00");
+            if(graphs[0] != null){
+                if(graphs[1] != null){
+                    updated = Float.valueOf(graphs[1] * 100) / graphs[0];
+                }
+                if(graphs[2] != null){
+                    notUpdated = Float.valueOf(graphs[2] * 100) / graphs[0];
+                }
+
+                int colorSync = ContextCompat.getColor(this, R.color.colorPrimary);
+                int colorUnSync = ContextCompat.getColor(this, R.color.red);
+
+                sGraph.getBars().clear();
+                sGraph.addBar(new BarModel(Float.valueOf(decimalFormat.format(updated)), colorSync));
+                sGraph.addBar(new BarModel(Float.valueOf(decimalFormat.format(notUpdated)), colorUnSync));
+
+                mStackedBarChart.addBar(sGraph);
+                mStackedBarChart.startAnimation();
+            }
+        }
+    }
 }

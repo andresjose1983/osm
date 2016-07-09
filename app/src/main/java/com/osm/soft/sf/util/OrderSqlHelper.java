@@ -160,6 +160,52 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
         return orders;
     };
 
+    public GetOrderGraph GET_GRAPH = ()->{
+        Integer[] total = new Integer[3];
+        SQLiteDatabase sqLiteOpenHelper = this.getReadableDatabase();
+        if(sqLiteOpenHelper != null && sqLiteOpenHelper.isOpen()){
+            Cursor cursor = sqLiteOpenHelper.rawQuery(new StringBuilder()
+                    .append("select ")
+                    .append("count( ")
+                    .append(SYNC)
+                    .append(") ")
+                    .append(" from ")
+                    .append(TABLE_NAME)
+                    .append(" union all ")
+                    .append("select ")
+                    .append("count( ")
+                    .append(SYNC)
+                    .append(") ")
+                    .append(" from ")
+                    .append(TABLE_NAME)
+                    .append(" where ")
+                    .append(SYNC)
+                    .append(" = 1")
+                    .append(" union all ")
+                    .append("select ")
+                    .append("count( ")
+                    .append(SYNC)
+                    .append(") ")
+                    .append(" from ")
+                    .append(TABLE_NAME)
+                    .append(" where ")
+                    .append(SYNC)
+                    .append(" = 0").toString(), null);
+            if(cursor != null){
+                cursor.moveToFirst();
+                while(!cursor.isAfterLast()){
+                    total[cursor.getPosition()] = cursor.getInt(0);
+                    cursor.moveToNext();
+                }
+            }
+            if(cursor != null)
+                cursor.close();
+        }
+        if(sqLiteOpenHelper != null)
+            sqLiteOpenHelper.close();
+        return total;
+    };
+
     private Order add(Cursor cursor, SQLiteDatabase sqLiteOpenHelper){
         Calendar instance = Calendar.getInstance();
         instance.setTimeInMillis(cursor.getLong(3));
@@ -220,5 +266,10 @@ public class OrderSqlHelper extends SQLiteOpenHelper {
     @FunctionalInterface
     public interface Get{
         List<Order> execute();
+    }
+
+    @FunctionalInterface
+    public interface GetOrderGraph{
+        Integer[] execute();
     }
 }
